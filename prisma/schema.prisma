@@ -7,8 +7,122 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL") // Uses the variable from Vercel/your .env file
-  directUrl = env("DIRECT_URL")   // For migration
+  url       = env("DATABASE_URL")
 }
 
-// We will add our data models (User, Report, etc.) here later.
+// ENUMERATIONS
+enum Role {
+  CITIZEN
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BANNED
+}
+
+enum ReportStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  RESOLVED
+}
+
+enum IssueType {
+  POTHOLE
+  DAMAGED_SURFACE
+  OBSTRUCTION_DEBRIS
+  FLOODING_WATER_ISSUE
+  DAMAGED_SIGNAGE
+  OTHER
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+
+// MODELS
+model User {
+  id      String    @id @default(cuid())
+  name    String?
+  email   String?   @unique
+  emailVerified DateTime?
+  image   String?
+
+  role    Role      @default(CITIZEN)
+  status  UserStatus @default(ACTIVE)
+
+  reports Report[]  // A user can have many reports
+
+  // Auth.js specific fields
+  accounts Account[]
+  sessions Session[]
+}
+
+model Report {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  latitude  Float
+  longitude Float
+
+  issueType IssueType
+  severity  Severity
+  status    ReportStatus @default(PENDING)
+
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+}
+
+model RoadWork {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+
+  description String
+  startDate   DateTime
+  endDate     DateTime
+
+  // The GeoJSON for the multiline will be stored as a JSON object
+  geometry    Json
+}
+
+
+// Auth.js required models for Google Authentication
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
