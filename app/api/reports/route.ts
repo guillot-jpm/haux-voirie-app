@@ -3,7 +3,21 @@ import { PrismaClient } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
+
+export async function GET() {
+  try {
+    const approvedReports = await prisma.report.findMany({
+      where: {
+        status: 'APPROVED',
+      },
+    });
+    return NextResponse.json(approvedReports, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching approved reports:", error);
+    return NextResponse.json({ error: "Could not fetch reports" }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)

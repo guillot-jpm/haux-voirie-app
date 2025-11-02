@@ -1,10 +1,12 @@
 "use client";
 
-import { MapContainer, TileLayer, GeoJSON, useMapEvents, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, useMapEvents, Popup, useMap, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useEffect, useState } from 'react';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
+import { Report } from '@prisma/client';
 import L, { LatLngExpression } from 'leaflet';
 import { useSession } from 'next-auth/react';
 import { ISSUE_TYPES, SEVERITY_LEVELS, LABELS } from '@/app/lib/constants';
@@ -167,11 +169,31 @@ const Map = () => {
   const { data: session } = useSession();
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [reportLocation, setReportLocation] = useState<L.LatLng | null>(null);
+  const [reports, setReports] = useState<Report[]>([]);
 
   useEffect(() => {
-    fetch('/data/haux-boundary.geojson')
-      .then((response) => response.json())
-      .then((data) => setGeoJsonData(data));
+    const fetchGeoJson = async () => {
+      try {
+        const response = await fetch('/data/haux-boundary.geojson');
+        const data = await response.json();
+        setGeoJsonData(data);
+      } catch (error) {
+        console.error('Failed to fetch GeoJSON data:', error);
+      }
+    };
+
+    const fetchReports = async () => {
+      try {
+        const response = await fetch('/api/reports');
+        const data = await response.json();
+        setReports(data);
+      } catch (error) {
+        console.error('Failed to fetch reports:', error);
+      }
+    };
+
+    fetchGeoJson();
+    fetchReports();
   }, []);
 
   const handleMapClick = (latlng: L.LatLng) => {
@@ -193,6 +215,21 @@ const Map = () => {
 
   const center: LatLngExpression = [44.75, -0.38];
 
+  const getIconBySeverity = (severity: string) => {
+    const iconUrl = `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${
+      severity === 'HIGH' ? 'red' : severity === 'MEDIUM' ? 'orange' : 'yellow'
+    }.png`;
+
+    return new L.Icon({
+      iconUrl,
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+  };
+
   return (
     <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }}>
       <TileLayer
@@ -201,6 +238,21 @@ const Map = () => {
       />
       {geoJsonData && <GeoJSON data={geoJsonData} style={() => ({ color: '#4a83ec', weight: 2 })} />}
       
+      <MarkerClusterGroup>
+        {reports.map((report) => (
+          <Marker
+            key={report.id}
+            position={[report.latitude, report.longitude]}
+            icon={getIconBySeverity(report.severity)}
+          >
+            <Popup>
+              <b>Issue Type:</b> {report.issueType} <br />
+              <b>Severity:</b> {report.severity}
+            </Popup>
+          </Marker>
+        ))}
+      </MarkerClusterGroup>
+
       <MapClickHandler onMapClick={handleMapClick} />
 
       {reportLocation && (
