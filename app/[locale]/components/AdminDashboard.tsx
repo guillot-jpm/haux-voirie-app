@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useTranslations } from "next-intl";
 
 interface Report {
   id: string;
@@ -40,6 +41,9 @@ const AdminDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [isBanConfirmOpen, setIsBanConfirmOpen] = useState(false);
+  const t = useTranslations('AdminDashboard');
+  const tEnums = useTranslations('Enums');
+
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -116,7 +120,7 @@ const AdminDashboard = () => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Pending Reports</CardTitle>
+          <CardTitle>{t('title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -132,8 +136,8 @@ const AdminDashboard = () => {
             <TableBody>
               {reports.map((report) => (
                 <TableRow key={report.id}>
-                  <TableCell>{report.issueType}</TableCell>
-                  <TableCell>{report.severity}</TableCell>
+                  <TableCell>{tEnums(report.issueType)}</TableCell>
+                  <TableCell>{tEnums(report.severity)}</TableCell>
                   <TableCell>{report.author.email}</TableCell>
                   <TableCell>
                     {new Date(report.createdAt).toLocaleDateString()}
@@ -143,14 +147,14 @@ const AdminDashboard = () => {
                       onClick={() => handleUpdateStatus(report.id, "APPROVED")}
                       className="mr-2"
                     >
-                      Approve
+                      {t('approveButton')}
                     </Button>
                     <Button
                       onClick={() => handleUpdateStatus(report.id, "REJECTED")}
                       variant="destructive"
                       className="mr-2"
                     >
-                      Reject
+                      {t('rejectButton')}
                     </Button>
                     <Button
                       onClick={() => {
@@ -159,7 +163,7 @@ const AdminDashboard = () => {
                       }}
                       variant="destructive"
                     >
-                      Ban User
+                      {t('banUserButton')}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -172,19 +176,17 @@ const AdminDashboard = () => {
       <AlertDialog open={isBanConfirmOpen} onOpenChange={setIsBanConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>{t('banConfirmTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action will permanently ban the user{" "}
-              <strong>{selectedReport?.author.email}</strong> and reject their
-              report. This cannot be undone.
+              {t('banConfirmDescription', {userEmail: selectedReport?.author.email})}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setSelectedReport(null)}>
-              Cancel
+              {t('cancelButton')}
             </AlertDialogCancel>
             <AlertDialogAction onClick={handleBanUser}>
-              Confirm
+              {t('confirmButton')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -26,8 +26,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ISSUE_TYPES, SEVERITY_LEVELS, LABELS } from "@/app/lib/constants";
+import { ISSUE_TYPES, SEVERITY_LEVELS } from "@/app/[locale]/lib/constants";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 const formSchema = z.object({
   issueType: z.enum(ISSUE_TYPES),
@@ -46,6 +47,8 @@ export default function ReportDialog({
   onReportSubmitted,
 }: ReportDialogProps) {
   const { toast } = useToast();
+  const t = useTranslations('ReportDialog');
+  const tEnums = useTranslations('Enums');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -82,10 +85,9 @@ export default function ReportDialog({
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Report a New Issue</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>
-            Submit a report for the selected location:{" "}
-            {location.lat.toFixed(5)}, {location.lng.toFixed(5)}
+            {t('location', {lat: location.lat.toFixed(5), lng: location.lng.toFixed(5)})}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -95,20 +97,20 @@ export default function ReportDialog({
               name="issueType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type of Issue</FormLabel>
+                  <FormLabel>{t('issueTypeLabel')}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select an issue type" />
+                        <SelectValue placeholder={t('issueTypePlaceholder')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {ISSUE_TYPES.map((type) => (
                         <SelectItem key={type} value={type}>
-                          {LABELS[type]}
+                          {tEnums(type)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -122,20 +124,20 @@ export default function ReportDialog({
               name="severity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Severity</FormLabel>
+                  <FormLabel>{t('severityLabel')}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a severity level" />
+                        <SelectValue placeholder={t('severityPlaceholder')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {SEVERITY_LEVELS.map((level) => (
                         <SelectItem key={level} value={level}>
-                          {LABELS[level]}
+                          {tEnums(level)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -146,8 +148,8 @@ export default function ReportDialog({
             />
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting
-                ? "Submitting..."
-                : "Submit Report"}
+                ? t('submittingButton')
+                : t('submitButton')}
             </Button>
           </form>
         </Form>

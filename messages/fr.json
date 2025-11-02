@@ -1,0 +1,44 @@
+{
+  "LoginPage": {
+    "title": "Application Voirie de Haux",
+    "signedInAs": "Connecté en tant que {email}",
+    "notSignedIn": "Non connecté",
+    "signInButton": "Se connecter avec Google",
+    "signOutButton": "Se déconnecter"
+  },
+  "Map": {
+    "loginToReport": "Veuillez vous connecter pour signaler un problème.",
+    "reportSubmitted": "Merci ! Votre signalement a été soumis pour examen."
+  },
+  "ReportDialog": {
+    "title": "Signaler un Nouveau Problème",
+    "location": "Position : {lat}, {lng}",
+    "issueTypeLabel": "Type de Problème",
+    "issueTypePlaceholder": "Sélectionnez un type de problème",
+    "severityLabel": "Gravité",
+    "severityPlaceholder": "Sélectionnez un niveau de gravité",
+    "submitButton": "Envoyer le Signalement",
+    "submittingButton": "Envoi en cours..."
+  },
+  "AdminDashboard": {
+    "title": "Tableau de Bord Admin - Signalements en Attente",
+    "approveButton": "Approuver",
+    "rejectButton": "Rejeter",
+    "banUserButton": "Bannir l'Utilisateur",
+    "banConfirmTitle": "Êtes-vous sûr ?",
+    "banConfirmDescription": "Cette action bannira définitivement l'utilisateur {userEmail} et rejettera ce signalement.",
+    "cancelButton": "Annuler",
+    "confirmButton": "Confirmer"
+  },
+  "Enums": {
+    "POTHOLE": "Nid-de-poule",
+    "DAMAGED_SURFACE": "Chaussée dégradée",
+    "OBSTRUCTION_DEBRIS": "Obstacle / Débris",
+    "FLOODING_WATER_ISSUE": "Inondation / Problème d'évacuation",
+    "DAMAGED_SIGNAGE": "Signalisation endommagée",
+    "OTHER": "Autre",
+    "LOW": "Faible",
+    "MEDIUM": "Moyenne",
+    "HIGH": "Haute / Urgente"
+  }
+}

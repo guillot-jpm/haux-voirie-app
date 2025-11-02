@@ -1,0 +1,5 @@
+export const ISSUE_TYPES = [
+  "POTHOLE", "DAMAGED_SURFACE", "OBSTRUCTION_DEBRIS", "FLOODING_WATER_ISSUE", "DAMAGED_SIGNAGE", "OTHER"
+] as const;
+
+export const SEVERITY_LEVELS = ["LOW", "MEDIUM", "HIGH"] as const;
