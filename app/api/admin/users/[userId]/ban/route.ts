@@ -6,7 +6,7 @@ import { User } from "@prisma/client";
 
 export async function POST(
   request: NextRequest,
-  context: { params: { userId: string } }
+  { params: paramsPromise }: { params: Promise<{ userId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -22,7 +22,7 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { userId } = context.params;
+  const { userId } = await paramsPromise;
 
   try {
     const updatedUser = await prisma.user.update({
