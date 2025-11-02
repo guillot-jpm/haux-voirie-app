@@ -10,7 +10,7 @@ export default function LoginButton() {
   if (session) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <p>{t('signedInAs', {email: session.user?.email})}</p>
+        <p>{t('signedInAs', {email: session.user?.email || ''})}</p>
         <button onClick={() => signOut()}>{t('signOutButton')}</button>
       </div>
     );
