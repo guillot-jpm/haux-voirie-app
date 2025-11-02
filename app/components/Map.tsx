@@ -58,7 +58,7 @@ const Map = () => {
   const center: LatLngExpression = [44.75, -0.38];
 
   return (
-    <>
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -72,13 +72,17 @@ const Map = () => {
       </MapContainer>
 
       {reportLocation && (
-        <ReportDialog 
-          location={reportLocation} 
-          onClose={closeDialog} 
-          onReportSubmitted={handleReportSubmitted}
-        />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 1000 }}>
+          <div style={{ pointerEvents: 'auto' }}>
+            <ReportDialog 
+              location={reportLocation} 
+              onClose={closeDialog} 
+              onReportSubmitted={handleReportSubmitted}
+            />
+          </div>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 
