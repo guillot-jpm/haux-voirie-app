@@ -178,7 +178,7 @@ const AdminDashboard = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>{t('banConfirmTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t('banConfirmDescription', {userEmail: selectedReport?.author.email})}
+              {t('banConfirmDescription', {userEmail: selectedReport?.author.email || ''})}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
