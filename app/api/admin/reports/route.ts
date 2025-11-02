@@ -26,6 +26,7 @@ export async function GET() {
       include: {
         author: {
           select: {
+            id: true,
             email: true,
           },
         },

@@ -11,12 +11,24 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Report {
   id: string;
   issueType: string;
   severity: string;
   author: {
+    id: string;
     email: string | null;
   };
   createdAt: string;
@@ -26,6 +38,8 @@ const AdminDashboard = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const [isBanConfirmOpen, setIsBanConfirmOpen] = useState(false);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -48,7 +62,7 @@ const AdminDashboard = () => {
 
   const handleUpdateStatus = async (reportId: string, status: "APPROVED" | "REJECTED") => {
     try {
-      const response = await fetch(`/api/reports/${reportId}`, {
+      const response = await fetch(`/api/admin/reports/${reportId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -68,6 +82,28 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleBanUser = async () => {
+    if (!selectedReport) return;
+
+    try {
+      const response = await fetch(`/api/admin/users/${selectedReport.author.id}/ban`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to ban user");
+      }
+
+      // Automatically reject the report after banning the user
+      await handleUpdateStatus(selectedReport.id, "REJECTED");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsBanConfirmOpen(false);
+      setSelectedReport(null);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -77,50 +113,83 @@ const AdminDashboard = () => {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Pending Reports</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Issue Type</TableHead>
-              <TableHead>Severity</TableHead>
-              <TableHead>Author</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {reports.map((report) => (
-              <TableRow key={report.id}>
-                <TableCell>{report.issueType}</TableCell>
-                <TableCell>{report.severity}</TableCell>
-                <TableCell>{report.author.email}</TableCell>
-                <TableCell>
-                  {new Date(report.createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    onClick={() => handleUpdateStatus(report.id, "APPROVED")}
-                    className="mr-2"
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    onClick={() => handleUpdateStatus(report.id, "REJECTED")}
-                    variant="destructive"
-                  >
-                    Reject
-                  </Button>
-                </TableCell>
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>Pending Reports</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Issue Type</TableHead>
+                <TableHead>Severity</TableHead>
+                <TableHead>Author</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+            </TableHeader>
+            <TableBody>
+              {reports.map((report) => (
+                <TableRow key={report.id}>
+                  <TableCell>{report.issueType}</TableCell>
+                  <TableCell>{report.severity}</TableCell>
+                  <TableCell>{report.author.email}</TableCell>
+                  <TableCell>
+                    {new Date(report.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => handleUpdateStatus(report.id, "APPROVED")}
+                      className="mr-2"
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      onClick={() => handleUpdateStatus(report.id, "REJECTED")}
+                      variant="destructive"
+                      className="mr-2"
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setSelectedReport(report);
+                        setIsBanConfirmOpen(true);
+                      }}
+                      variant="destructive"
+                    >
+                      Ban User
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      <AlertDialog open={isBanConfirmOpen} onOpenChange={setIsBanConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will permanently ban the user{" "}
+              <strong>{selectedReport?.author.email}</strong> and reject their
+              report. This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setSelectedReport(null)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleBanUser}>
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
