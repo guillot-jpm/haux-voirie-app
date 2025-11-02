@@ -79,3 +79,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+
+body[data-scroll-locked] {
+  pointer-events: auto !important;
+}
