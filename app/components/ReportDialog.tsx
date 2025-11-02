@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ISSUE_TYPES, SEVERITY_LEVELS, LABELS } from "@/app/lib/constants";
@@ -53,8 +53,10 @@ export default function ReportDialog({ location, onClose, onReportSubmitted }: R
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Report a New Issue</DialogTitle>
+          <DialogDescription>
+            Submit a report for the selected location: {location.lat.toFixed(5)}, {location.lng.toFixed(5)}
+          </DialogDescription>
         </DialogHeader>
-        <p className="text-sm text-muted-foreground">Location: {location.lat.toFixed(5)}, {location.lng.toFixed(5)}</p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
