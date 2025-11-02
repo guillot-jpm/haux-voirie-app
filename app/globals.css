@@ -82,6 +82,23 @@ body {
 
 
 
+/* Force pointer events on body even when scroll-locked */
 body[data-scroll-locked] {
+  pointer-events: auto !important;
+}
+
+/* Ensure dialog and overlay are interactive */
+[role="dialog"],
+[data-state="open"][class*="fixed inset-0"] {
+  pointer-events: auto !important;
+}
+
+/* Block pointer events only on the main content when dialog is open */
+body[data-scroll-locked] > main {
+  pointer-events: none;
+}
+
+body[data-scroll-locked] [role="dialog"],
+body[data-scroll-locked] [role="dialog"] * {
   pointer-events: auto !important;
 }
