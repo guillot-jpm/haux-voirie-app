@@ -34,6 +34,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "User not found" }, { status: 404 })
   }
 
+  if (user.status === 'BANNED') {
+    return NextResponse.json({ error: "Your account has been banned." }, { status: 403 });
+  }
+
   const data = await request.json()
   const { latitude, longitude, issueType, severity } = data
 
