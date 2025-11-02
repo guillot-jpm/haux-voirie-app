@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-import AdminDashboard from "@/components/AdminDashboard";
+import AdminDashboard from "@/app/components/AdminDashboard";
 import prisma from "@/lib/prisma";
 
 const AdminPage = async () => {
