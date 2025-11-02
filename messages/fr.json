@@ -21,6 +21,7 @@
     "submittingButton": "Envoi en cours..."
   },
   "AdminDashboard": {
+    "pageTitle": "Tableau de Bord Admin",
     "title": "Tableau de Bord Admin - Signalements en Attente",
     "approveButton": "Approuver",
     "rejectButton": "Rejeter",

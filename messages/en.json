@@ -21,6 +21,7 @@
     "submittingButton": "Submitting..."
   },
   "AdminDashboard": {
+    "pageTitle": "Admin Dashboard",
     "title": "Admin Dashboard - Pending Reports",
     "approveButton": "Approve",
     "rejectButton": "Reject",
