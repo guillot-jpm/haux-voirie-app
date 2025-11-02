@@ -72,7 +72,12 @@ const ReportPopup = ({
   };
 
   return (
-    <Popup position={position} onClose={onClose}>
+    <Popup 
+      position={position} 
+      eventHandlers={{
+        remove: onClose
+      }}
+    >
       <div style={{ minWidth: '250px' }}>
         <h3 style={{ marginTop: 0, marginBottom: '10px', fontSize: '16px', fontWeight: 'bold' }}>
           Report New Issue
