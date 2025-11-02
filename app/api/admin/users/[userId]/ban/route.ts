@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import prisma from "@/lib/prisma";
 import { User } from "@prisma/client";
 
 export async function POST(
-  request: Request,
-  { params }: { params: { userId: string } }
+  request: NextRequest,
+  { params: paramsPromise }: { params: Promise<{ userId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -22,7 +22,7 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { userId } = params;
+  const { userId } = await paramsPromise;
 
   try {
     const updatedUser = await prisma.user.update({
