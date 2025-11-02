@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AuthProvider from "./components/AuthProvider"; // <-- IMPORT
+import AuthProvider from "./components/AuthProvider";
+import { Toaster } from "@/components/ui/toaster"; // <-- IMPORT THIS
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Haux Road Network App",
-  description: "Report road degradations in Haux",
+  title: "Haux Voirie App",
+  description: "Crowdsourced road health monitoring for Haux",
 };
 
 export default function RootLayout({
@@ -18,9 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider> {/* <-- WRAPPER START */}
+        <AuthProvider>
           {children}
-        </AuthProvider> {/* <-- WRAPPER END */}
+        </AuthProvider>
+        <Toaster /> {/* <-- ADD THIS COMPONENT HERE */}
       </body>
     </html>
   );
