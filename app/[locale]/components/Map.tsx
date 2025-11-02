@@ -1,0 +1,148 @@
+"use client";
+
+import { MapContainer, TileLayer, GeoJSON, useMapEvents, Popup, Marker } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import { useEffect, useState } from 'react';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
+import { Report } from '@prisma/client';
+import L, { LatLngExpression } from 'leaflet';
+import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
+import { useToast } from '@/hooks/use-toast';
+import ReportDialog from './ReportDialog';
+
+// Fix for default icon issue with Webpack
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+});
+
+// Component to handle map click events
+const MapClickHandler = ({ onMapClick }: { onMapClick: (latlng: L.LatLng) => void }) => {
+  useMapEvents({
+    click(e) {
+      onMapClick(e.latlng);
+    },
+  });
+  return null;
+};
+
+const Map = () => {
+  const { data: session } = useSession();
+  const [geoJsonData, setGeoJsonData] = useState(null);
+  const [reportLocation, setReportLocation] = useState<L.LatLng | null>(null);
+  const [reports, setReports] = useState<Report[]>([]);
+  const { toast } = useToast();
+  const t = useTranslations('Map');
+  const tEnums = useTranslations('Enums');
+  const tReportDialog = useTranslations('ReportDialog');
+
+  useEffect(() => {
+    const fetchGeoJson = async () => {
+      try {
+        const response = await fetch('/data/haux-boundary.geojson');
+        const data = await response.json();
+        setGeoJsonData(data);
+      } catch (error) {
+        console.error('Failed to fetch GeoJSON data:', error);
+      }
+    };
+
+    const fetchReports = async () => {
+      try {
+        const response = await fetch('/api/reports');
+        const data = await response.json();
+        setReports(data);
+      } catch (error) {
+        console.error('Failed to fetch reports:', error);
+      }
+    };
+
+    fetchGeoJson();
+    fetchReports();
+  }, []);
+
+  const handleMapClick = (latlng: L.LatLng) => {
+    if (session) {
+      setReportLocation(latlng);
+    } else {
+      toast({
+        title: "Login Required",
+        description: t('loginToReport'),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const closeDialog = () => {
+    setReportLocation(null);
+  };
+
+  const handleReportSubmitted = () => {
+    toast({
+      title: "Success",
+      description: t('reportSubmitted'),
+    });
+    // Refetch reports to display the new one
+    fetch('/api/reports').then(res => res.json()).then(setReports);
+    closeDialog();
+  };
+
+  const center: LatLngExpression = [44.75, -0.38];
+
+  const getIconBySeverity = (severity: string) => {
+    const iconUrl = `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${
+      severity === 'HIGH' ? 'red' : severity === 'MEDIUM' ? 'orange' : 'yellow'
+    }.png`;
+
+    return new L.Icon({
+      iconUrl,
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+  };
+
+  return (
+    <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {geoJsonData && <GeoJSON data={geoJsonData} style={() => ({ color: '#4a83ec', weight: 2 })} />}
+
+      <MarkerClusterGroup>
+        {reports.map((report) => (
+          <Marker
+            key={report.id}
+            position={[report.latitude, report.longitude]}
+            icon={getIconBySeverity(report.severity)}
+          >
+            <Popup>
+              <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
+              <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)}
+            </Popup>
+          </Marker>
+        ))}
+      </MarkerClusterGroup>
+
+      <MapClickHandler onMapClick={handleMapClick} />
+
+      {reportLocation && (
+        <ReportDialog
+          location={{ lat: reportLocation.lat, lng: reportLocation.lng }}
+          onClose={closeDialog}
+          onReportSubmitted={handleReportSubmitted}
+        />
+      )}
+    </MapContainer>
+  );
+};
+
+export default Map;

@@ -1,0 +1,45 @@
+{
+  "LoginPage": {
+    "title": "Haux Road Network App",
+    "signedInAs": "Signed in as {email}",
+    "notSignedIn": "Not signed in",
+    "signInButton": "Sign in with Google",
+    "signOutButton": "Sign out"
+  },
+  "Map": {
+    "loginToReport": "Please log in to report an issue.",
+    "reportSubmitted": "Thank you! Your report has been submitted for review."
+  },
+  "ReportDialog": {
+    "title": "Report a New Issue",
+    "location": "Location: {lat}, {lng}",
+    "issueTypeLabel": "Type of Issue",
+    "issueTypePlaceholder": "Select an issue type",
+    "severityLabel": "Severity",
+    "severityPlaceholder": "Select a severity level",
+    "submitButton": "Submit Report",
+    "submittingButton": "Submitting..."
+  },
+  "AdminDashboard": {
+    "pageTitle": "Admin Dashboard",
+    "title": "Admin Dashboard - Pending Reports",
+    "approveButton": "Approve",
+    "rejectButton": "Reject",
+    "banUserButton": "Ban User",
+    "banConfirmTitle": "Are you sure?",
+    "banConfirmDescription": "This will permanently ban the user {userEmail} and reject this report.",
+    "cancelButton": "Cancel",
+    "confirmButton": "Confirm"
+  },
+  "Enums": {
+    "POTHOLE": "Pothole",
+    "DAMAGED_SURFACE": "Damaged Surface",
+    "OBSTRUCTION_DEBRIS": "Obstruction / Debris",
+    "FLOODING_WATER_ISSUE": "Flooding / Water Issue",
+    "DAMAGED_SIGNAGE": "Damaged Signage",
+    "OTHER": "Other",
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High / Urgent"
+  }
+}
