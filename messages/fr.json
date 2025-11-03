@@ -8,7 +8,9 @@
   },
   "Map": {
     "loginToReport": "Veuillez vous connecter pour signaler un problème.",
-    "reportSubmitted": "Merci ! Votre signalement a été soumis pour examen."
+    "reportSubmitted": "Merci ! Votre signalement a été soumis pour examen.",
+    "geolocationErrorTitle": "Erreur de Géolocalisation",
+    "geolocationErrorDescription": "Impossible de récupérer votre position. Veuillez vous assurer d'avoir accordé la permission et que les services de localisation sont activés."
   },
   "ReportDialog": {
     "title": "Signaler un Nouveau Problème",

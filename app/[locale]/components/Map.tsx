@@ -11,6 +11,7 @@ import L, { LatLngExpression } from 'leaflet';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useToast } from '@/hooks/use-toast';
+import GeolocationButton from './GeolocationButton';
 import ReportDialog from './ReportDialog';
 
 // Fix for default icon issue with Webpack
@@ -133,6 +134,9 @@ const Map = () => {
       </MarkerClusterGroup>
 
       <MapClickHandler onMapClick={handleMapClick} />
+    
+      {/* Add GeolocationButton here, inside MapContainer */}
+      <GeolocationButton />
 
       {reportLocation && (
         <ReportDialog

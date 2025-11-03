@@ -8,7 +8,9 @@
   },
   "Map": {
     "loginToReport": "Please log in to report an issue.",
-    "reportSubmitted": "Thank you! Your report has been submitted for review."
+    "reportSubmitted": "Thank you! Your report has been submitted for review.",
+    "geolocationErrorTitle": "Geolocation Error",
+    "geolocationErrorDescription": "Could not retrieve your location. Please ensure you have granted permission and location services are enabled."
   },
   "ReportDialog": {
     "title": "Report a New Issue",

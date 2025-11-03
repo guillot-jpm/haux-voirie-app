@@ -1,11 +1,21 @@
 "use client";
 
 import { useTranslations } from 'next-intl';
-import LoginButton from "./components/LoginButton";
-import MapLoader from "./components/MapLoader";
+import LoginButton from "@/app/[locale]/components/LoginButton"; // Adjust path if needed
+import GeolocationButton from "@/app/[locale]/components/GeolocationButton"; // Import the new component
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 
 export default function Home() {
   const t = useTranslations('LoginPage');
+
+  const Map = useMemo(() => dynamic(
+    () => import('@/app/[locale]/components/Map'), // Adjust path if needed
+    {
+      loading: () => <p>A map is loading</p>,
+      ssr: false
+    }
+  ), []);
 
   return (
     <main className="flex min-h-screen flex-col items-center">
@@ -13,8 +23,10 @@ export default function Home() {
         <h1 className="text-2xl font-bold">{t('title')}</h1>
         <LoginButton />
       </div>
-      <div className="w-full h-[calc(100vh-80px)]">
-        <MapLoader />
+      {/* Add relative positioning to this container */}
+      <div className="relative w-full h-[calc(100vh-80px)]">
+        <Map />
+        {/* The GeolocationButton renders here, on top of the map */}
       </div>
     </main>
   );
