@@ -27,7 +27,6 @@ export default function Home() {
       <div className="relative w-full h-[calc(100vh-80px)]">
         <Map />
         {/* The GeolocationButton renders here, on top of the map */}
-        <GeolocationButton />
       </div>
     </main>
   );
