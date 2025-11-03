@@ -119,7 +119,18 @@ const Map = () => {
       {geoJsonData && <GeoJSON data={geoJsonData} style={() => ({ color: '#4a83ec', weight: 2 })} />}
 
       <MarkerClusterGroup>
-        {/* ... markers ... */}
+        {reports.map((report) => (
+          <Marker
+            key={report.id}
+            position={[report.latitude, report.longitude]}
+            icon={getIconBySeverity(report.severity)}
+          >
+            <Popup>
+              <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
+              <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)}
+            </Popup>
+          </Marker>
+        ))}
       </MarkerClusterGroup>
 
       <MapClickHandler onMapClick={handleMapClick} />
