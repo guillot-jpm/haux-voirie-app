@@ -2,19 +2,18 @@ import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import prisma from "@/lib/prisma";
+import { User } from "next-auth";
+
+// Extend the SessionUser type to include role
+interface SessionUser extends User {
+  role?: string;
+}
 
 export async function GET() {
   const session = await getServerSession(authOptions);
+  const user = session?.user as SessionUser;
 
-  if (!session?.user?.email) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-  });
-
-  if (user?.role !== "ADMIN") {
+  if (!session?.user?.email || user?.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

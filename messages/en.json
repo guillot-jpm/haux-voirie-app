@@ -37,6 +37,12 @@
     "cancelButton": "Cancel",
     "confirmButton": "Confirm"
   },
+  "Admin": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "approved": "approved",
+    "rejected": "rejected"
+  },
   "Enums": {
     "POTHOLE": "Pothole",
     "DAMAGED_SURFACE": "Damaged Surface",

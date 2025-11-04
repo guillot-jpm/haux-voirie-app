@@ -20,14 +20,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useTranslations } from "next-intl";
+import dynamic from 'next/dynamic';
+
+const MiniMap = dynamic(() => import('./MiniMap'), { ssr: false });
 
 interface Report {
   id: string;
   issueType: string;
   severity: string;
+  latitude: number;
+  longitude: number;
   author: {
     id: string;
     email: string | null;
@@ -126,11 +130,12 @@ const AdminDashboard = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Issue Type</TableHead>
-                <TableHead>Severity</TableHead>
-                <TableHead>Author</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('issueType')}</TableHead>
+                <TableHead>{t('severity')}</TableHead>
+                <TableHead>{t('author')}</TableHead>
+                <TableHead>{t('date')}</TableHead>
+                <TableHead>{t('location')}</TableHead>
+                <TableHead>{t('actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -143,28 +148,34 @@ const AdminDashboard = () => {
                     {new Date(report.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
-                    <Button
-                      onClick={() => handleUpdateStatus(report.id, "APPROVED")}
-                      className="mr-2"
-                    >
-                      {t('approveButton')}
-                    </Button>
-                    <Button
-                      onClick={() => handleUpdateStatus(report.id, "REJECTED")}
-                      variant="destructive"
-                      className="mr-2"
-                    >
-                      {t('rejectButton')}
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setSelectedReport(report);
-                        setIsBanConfirmOpen(true);
-                      }}
-                      variant="destructive"
-                    >
-                      {t('banUserButton')}
-                    </Button>
+                    <MiniMap latitude={report.latitude} longitude={report.longitude} />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col space-y-2">
+                      <Button
+                        onClick={() => handleUpdateStatus(report.id, "APPROVED")}
+                        className="w-full"
+                      >
+                        {t('approveButton')}
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdateStatus(report.id, "REJECTED")}
+                        variant="destructive"
+                        className="w-full"
+                      >
+                        {t('rejectButton')}
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setSelectedReport(report);
+                          setIsBanConfirmOpen(true);
+                        }}
+                        variant="destructive"
+                        className="w-full"
+                      >
+                        {t('banUserButton')}
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

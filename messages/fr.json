@@ -37,6 +37,12 @@
     "cancelButton": "Annuler",
     "confirmButton": "Confirmer"
   },
+  "Admin": {
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "approved": "approuvé",
+    "rejected": "rejeté"
+  },
   "Enums": {
     "POTHOLE": "Nid-de-poule",
     "DAMAGED_SURFACE": "Chaussée dégradée",
