@@ -7,8 +7,9 @@
     "signOutButton": "Sign out"
   },
   "Map": {
+    "loginRequiredTitle": "Login Required",
     "loginToReport": "Please log in to report an issue.",
-    "reportSubmitted": "Thank you! Your report has been submitted for review.",
+    "reportSubmitted": "Thank you! Your report has been submitted and is pending review by an administrator.",
     "geolocationErrorTitle": "Geolocation Error",
     "geolocationErrorDescription": "Could not retrieve your location. Please ensure you have granted permission and location services are enabled."
   },
@@ -21,7 +22,9 @@
     "severityPlaceholder": "Select a severity level",
     "submitButton": "Submit Report",
     "submittingButton": "Submitting...",
-    "cancelButton": "Cancel"
+    "cancelButton": "Cancel",
+    "bannedUserTitle": "Account Suspended",
+    "bannedUserDescription": "Your account has been suspended. Please contact an administrator for assistance."
   },
   "AdminDashboard": {
     "pageTitle": "Admin Dashboard",

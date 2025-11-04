@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, GeoJSON, useMapEvents, Popup, Marker } from 'r
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { Report } from '@prisma/client';
 import L, { LatLngExpression } from 'leaflet';
@@ -13,6 +13,8 @@ import { useTranslations } from 'next-intl';
 import { useToast } from '@/hooks/use-toast';
 import GeolocationButton from './GeolocationButton';
 import ReportForm from './ReportForm';
+import MapNotification from './MapNotification';
+import './MapNotification.css';
 
 // Fix for default icon issue with Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -21,6 +23,22 @@ L.Icon.Default.mergeOptions({
   iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
+
+// Helper function to create icons, moved outside the component to prevent recreation on re-renders
+const getIconBySeverity = (severity: string) => {
+  const iconUrl = `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${
+    severity === 'HIGH' ? 'red' : severity === 'MEDIUM' ? 'orange' : 'yellow'
+  }.png`;
+
+  return new L.Icon({
+    iconUrl,
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+};
 
 // Component to handle map click events
 const MapClickHandler = ({ onMapClick }: { onMapClick: (latlng: L.LatLng) => void }) => {
@@ -38,7 +56,7 @@ const Map = () => {
   const [reportLocation, setReportLocation] = useState<L.LatLng | null>(null);
   const [reports, setReports] = useState<Report[]>([]);
   const reportMarkerRef = useRef<L.Marker | null>(null);
-  const { toast } = useToast();
+  const [notification, setNotification] = useState<{ title: string; description: string; type: 'success' | 'error' | 'info' } | null>(null);
   const t = useTranslations('Map');
   const tEnums = useTranslations('Enums');
   const tReportDialog = useTranslations('ReportDialog');
@@ -80,18 +98,19 @@ const Map = () => {
     if (session) {
       setReportLocation(latlng);
     } else {
-      toast({
-        title: "Login Required",
+      setNotification({
+        title: t('loginRequiredTitle'),
         description: t('loginToReport'),
-        variant: "destructive",
+        type: 'error',
       });
     }
   };
 
   const handleReportSubmitted = () => {
-    toast({
+    setNotification({
       title: "Success",
       description: t('reportSubmitted'),
+      type: 'success',
     });
     // Refetch reports to display the new one
     fetch('/api/reports').then(res => res.json()).then(setReports);
@@ -100,20 +119,20 @@ const Map = () => {
 
   const center: LatLngExpression = [44.75, -0.38];
 
-  const getIconBySeverity = (severity: string) => {
-    const iconUrl = `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${
-      severity === 'HIGH' ? 'red' : severity === 'MEDIUM' ? 'orange' : 'yellow'
-    }.png`;
-
-    return new L.Icon({
-      iconUrl,
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-  };
+  const markers = useMemo(() => {
+    return reports.map((report) => (
+      <Marker
+        key={report.id}
+        position={[report.latitude, report.longitude]}
+        icon={getIconBySeverity(report.severity)}
+      >
+        <Popup>
+          <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
+          <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)}
+        </Popup>
+      </Marker>
+    ));
+  }, [reports, tReportDialog, tEnums]);
 
   return (
     <MapContainer
@@ -128,24 +147,15 @@ const Map = () => {
       {geoJsonData && <GeoJSON data={geoJsonData} style={() => ({ color: '#4a83ec', weight: 2 })} />}
 
       <MarkerClusterGroup>
-        {reports.map((report) => (
-          <Marker
-            key={report.id}
-            position={[report.latitude, report.longitude]}
-            icon={getIconBySeverity(report.severity)}
-          >
-            <Popup>
-              <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
-              <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)}
-            </Popup>
-          </Marker>
-        ))}
+        {markers}
       </MarkerClusterGroup>
 
       <MapClickHandler onMapClick={handleMapClick} />
     
       {/* Add GeolocationButton here, inside MapContainer */}
       <GeolocationButton />
+
+      <MapNotification message={notification} onClose={() => setNotification(null)} />
 
       {reportLocation && (
         <Marker position={reportLocation} ref={reportMarkerRef}>
@@ -154,6 +164,7 @@ const Map = () => {
               location={{ lat: reportLocation.lat, lng: reportLocation.lng }}
               onReportSubmitted={handleReportSubmitted}
               onCancel={() => setReportLocation(null)}
+              onError={({ title, description }) => setNotification({ title, description, type: 'error' })}
             />
           </Popup>
         </Marker>

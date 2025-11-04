@@ -7,8 +7,9 @@
     "signOutButton": "Se déconnecter"
   },
   "Map": {
+    "loginRequiredTitle": "Connexion Requise",
     "loginToReport": "Veuillez vous connecter pour signaler un problème.",
-    "reportSubmitted": "Merci ! Votre signalement a été soumis pour examen.",
+    "reportSubmitted": "Merci ! Votre signalement a été soumis et est en attente d'examen par un administrateur.",
     "geolocationErrorTitle": "Erreur de Géolocalisation",
     "geolocationErrorDescription": "Impossible de récupérer votre position. Veuillez vous assurer d'avoir accordé la permission et que les services de localisation sont activés."
   },
@@ -21,7 +22,9 @@
     "severityPlaceholder": "Sélectionnez un niveau de gravité",
     "submitButton": "Envoyer le Signalement",
     "submittingButton": "Envoi en cours...",
-    "cancelButton": "Annuler"
+    "cancelButton": "Annuler",
+    "bannedUserTitle": "Compte Suspendu",
+    "bannedUserDescription": "Votre compte a été suspendu. Veuillez contacter un administrateur pour obtenir de l'aide."
   },
   "AdminDashboard": {
     "pageTitle": "Tableau de Bord Admin",
