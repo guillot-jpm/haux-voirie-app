@@ -22,7 +22,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center">
       <div className="w-full p-4 flex justify-between items-center bg-gray-100 shadow-md">
         <div className="flex items-center space-x-3">
-          <Image src="/logo.svg" alt="Haux & Vous Logo" width={40} height={40} />
+          <Image src="/logo.png" alt="Haux & Vous Logo" width={40} height={40} />
           <h1 className="text-2xl font-bold">{t('title')}</h1>
         </div>
         <LoginButton />
