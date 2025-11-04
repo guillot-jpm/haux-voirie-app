@@ -3,11 +3,11 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import AdminDashboard from "../components/AdminDashboard";
 import prisma from "@/lib/prisma";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 const AdminPage = async () => {
   const session = await getServerSession(authOptions);
-  const t = useTranslations("AdminDashboard");
+  const t = await getTranslations("AdminDashboard");
 
   if (!session?.user?.email) {
     redirect("/");
