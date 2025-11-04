@@ -20,6 +20,8 @@
     "issueTypePlaceholder": "Sélectionnez un type de problème",
     "severityLabel": "Gravité",
     "severityPlaceholder": "Sélectionnez un niveau de gravité",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Fournissez des détails supplémentaires",
     "submitButton": "Envoyer le Signalement",
     "submittingButton": "Envoi en cours...",
     "cancelButton": "Annuler",
@@ -36,6 +38,12 @@
     "banConfirmDescription": "Cette action bannira définitivement l'utilisateur {userEmail} et rejettera ce signalement.",
     "cancelButton": "Annuler",
     "confirmButton": "Confirmer"
+  },
+  "Admin": {
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "approved": "approuvé",
+    "rejected": "rejeté"
   },
   "Enums": {
     "POTHOLE": "Nid-de-poule",

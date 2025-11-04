@@ -5,11 +5,14 @@ const prisma = new PrismaClient()
 async function main() {
   console.log(`Start seeding ...`)
 
-  const user = await prisma.user.create({
+  await prisma.report.deleteMany({})
+  await prisma.user.deleteMany({})
+
+  const admin = await prisma.user.create({
     data: {
-      name: 'Test User',
-      email: 'test@example.com',
-      role: 'CITIZEN',
+      name: 'Admin User',
+      email: 'admin@example.com',
+      role: 'ADMIN',
     },
   })
 
@@ -19,10 +22,20 @@ async function main() {
       longitude: -0.38,
       issueType: 'POTHOLE',
       severity: 'HIGH',
-      status: 'APPROVED',
-      authorId: user.id,
+      status: 'PENDING',
+      description: 'A very large pothole is causing a hazard to traffic.',
+      authorId: admin.id,
     },
   })
+
+  const citizen = await prisma.user.create({
+    data: {
+      name: 'Test User',
+      email: 'test@example.com',
+      role: 'CITIZEN',
+    },
+  })
+
   await prisma.report.create({
     data: {
       latitude: 44.751,
@@ -30,7 +43,7 @@ async function main() {
       issueType: 'DAMAGED_SIGNAGE',
       severity: 'MEDIUM',
       status: 'APPROVED',
-      authorId: user.id,
+      authorId: citizen.id,
     },
   })
   await prisma.report.create({
@@ -40,7 +53,7 @@ async function main() {
       issueType: 'OTHER',
       severity: 'LOW',
       status: 'APPROVED',
-      authorId: user.id,
+      authorId: citizen.id,
     },
   })
   console.log(`Seeding finished.`)

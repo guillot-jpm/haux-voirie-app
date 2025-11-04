@@ -20,6 +20,8 @@
     "issueTypePlaceholder": "Select an issue type",
     "severityLabel": "Severity",
     "severityPlaceholder": "Select a severity level",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Provide any additional details",
     "submitButton": "Submit Report",
     "submittingButton": "Submitting...",
     "cancelButton": "Cancel",
@@ -36,6 +38,12 @@
     "banConfirmDescription": "This will permanently ban the user {userEmail} and reject this report.",
     "cancelButton": "Cancel",
     "confirmButton": "Confirm"
+  },
+  "Admin": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "approved": "approved",
+    "rejected": "rejected"
   },
   "Enums": {
     "POTHOLE": "Pothole",
