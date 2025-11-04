@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
@@ -31,11 +31,11 @@ export default function WelcomeDialog() {
             <Image src="/logo.svg" alt="Haux & Vous Logo" width={60} height={60} />
             <AlertDialogTitle className="text-2xl">{t('title')}</AlertDialogTitle>
           </div>
-          <AlertDialogDescription as="div">
+          <div className="text-sm text-muted-foreground">
             <p className="font-semibold mb-2">{t('greeting')}</p>
             <p className="mb-2">{t('p1')}</p>
             <p>{t('p2')}</p>
-          </AlertDialogDescription>
+          </div>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogAction onClick={handleClose}>{t('closeButton')}</AlertDialogAction>
