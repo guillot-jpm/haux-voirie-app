@@ -1,0 +1,40 @@
+.leaflet-welcome-control-container {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  z-index: 1001;
+}
+
+.leaflet-welcome-control-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.leaflet-welcome-control-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.leaflet-welcome-control-body {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.leaflet-welcome-control-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.leaflet-welcome-control-close-button {
+  background-color: #333;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+}

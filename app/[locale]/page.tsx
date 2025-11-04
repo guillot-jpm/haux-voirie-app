@@ -5,6 +5,7 @@ import LoginButton from "@/app/[locale]/components/LoginButton"; // Adjust path 
 import GeolocationButton from "@/app/[locale]/components/GeolocationButton"; // Import the new component
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
+import Image from 'next/image';
 
 export default function Home() {
   const t = useTranslations('LoginPage');
@@ -20,7 +21,10 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center">
       <div className="w-full p-4 flex justify-between items-center bg-gray-100 shadow-md">
-        <h1 className="text-2xl font-bold">{t('title')}</h1>
+        <div className="flex items-center space-x-3">
+          <Image src="/logo.svg" alt="Haux & Vous Logo" width={40} height={40} />
+          <h1 className="text-2xl font-bold">{t('title')}</h1>
+        </div>
         <LoginButton />
       </div>
       {/* Add relative positioning to this container */}
