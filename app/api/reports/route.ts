@@ -38,6 +38,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Your account has been banned." }, { status: 403 });
   }
 
+  // Enforce reporting limits for VISITOR role
+  if (user.role === 'VISITOR') {
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const reportCount = await prisma.report.count({
+      where: {
+        authorId: user.id,
+        createdAt: {
+          gte: twentyFourHoursAgo,
+        },
+      },
+    });
+
+    if (reportCount >= 10) {
+      return NextResponse.json({ error: "You have reached the reporting limit for today." }, { status: 429 });
+    }
+  }
+
   const data = await request.json()
   const { latitude, longitude, issueType, severity } = data
 

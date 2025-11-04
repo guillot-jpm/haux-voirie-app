@@ -32,7 +32,26 @@ export async function PATCH(
     const updatedReport = await prisma.report.update({
       where: { id: reportId },
       data: { status },
+      include: { author: true },
     });
+
+    // If the report was approved and the author is a VISITOR, check for promotion
+    if (status === "APPROVED" && updatedReport.author.role === "VISITOR") {
+      const approvedReportsCount = await prisma.report.count({
+        where: {
+          authorId: updatedReport.authorId,
+          status: "APPROVED",
+        },
+      });
+
+      if (approvedReportsCount >= 100) {
+        await prisma.user.update({
+          where: { id: updatedReport.authorId },
+          data: { role: "CITIZEN" },
+        });
+      }
+    }
+
     return NextResponse.json(updatedReport, { status: 200 });
   } catch (error) {
     console.error("Failed to update report status:", error);
