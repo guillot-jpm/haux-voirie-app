@@ -5,11 +5,33 @@ const prisma = new PrismaClient()
 async function main() {
   console.log(`Start seeding ...`)
 
+  await prisma.report.deleteMany({})
+  await prisma.user.deleteMany({})
+
+  const admin = await prisma.user.create({
+    data: {
+      name: 'Admin User',
+      email: 'admin@example.com',
+      role: 'ADMIN',
+    },
+  })
+
   const user = await prisma.user.create({
     data: {
       name: 'Test User',
       email: 'test@example.com',
       role: 'CITIZEN',
+    },
+  })
+
+  await prisma.report.create({
+    data: {
+      latitude: 44.752,
+      longitude: -0.382,
+      issueType: 'FLOODING_WATER_ISSUE',
+      severity: 'HIGH',
+      status: 'PENDING',
+      authorId: user.id,
     },
   })
 

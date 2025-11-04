@@ -15,6 +15,7 @@ import GeolocationButton from './GeolocationButton';
 import ReportForm from './ReportForm';
 import MapNotification from './MapNotification';
 import WelcomeControl from './WelcomeControl';
+import AdminPopup from './AdminPopup';
 import './MapNotification.css';
 
 // Fix for default icon issue with Webpack
@@ -143,6 +144,10 @@ const Map = () => {
     setReportLocation(null); // Close the popup
   };
 
+  const handleModerationComplete = (reportId: string) => {
+    setPendingReports(current => current.filter(r => r.id !== reportId));
+  };
+
   const center: LatLngExpression = [44.75, -0.38];
 
   const markers = useMemo(() => {
@@ -170,9 +175,7 @@ const Map = () => {
         icon={getPendingIcon()}
       >
         <Popup>
-          <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
-          <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)} <br />
-          <b>Status:</b> PENDING
+          <AdminPopup report={report} onActionComplete={handleModerationComplete} />
         </Popup>
       </Marker>
     ));
