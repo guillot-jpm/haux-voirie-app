@@ -15,6 +15,7 @@ import GeolocationButton from './GeolocationButton';
 import ReportForm from './ReportForm';
 import MapNotification from './MapNotification';
 import WelcomeControl from './WelcomeControl';
+import AdminPopup from './AdminPopup';
 import './MapNotification.css';
 
 // Fix for default icon issue with Webpack
@@ -89,9 +90,15 @@ const Map = () => {
       try {
         const response = await fetch('/api/reports');
         const data = await response.json();
-        setReports(data);
+        if (Array.isArray(data)) {
+          setReports(data);
+        } else {
+          console.error('Failed to fetch reports: data is not an array', data);
+          setReports([]); // Set to empty array to prevent crash
+        }
       } catch (error) {
         console.error('Failed to fetch reports:', error);
+        setReports([]); // Set to empty array on error
       }
     };
 
@@ -100,9 +107,15 @@ const Map = () => {
         try {
           const response = await fetch('/api/admin/reports');
           const data = await response.json();
-          setPendingReports(data);
+          if (Array.isArray(data)) {
+            setPendingReports(data);
+          } else {
+            console.error('Failed to fetch pending reports: data is not an array', data);
+            setPendingReports([]); // Set to empty array to prevent crash
+          }
         } catch (error) {
           console.error('Failed to fetch pending reports:', error);
+          setPendingReports([]); // Set to empty array on error
         }
       }
     };
@@ -143,6 +156,10 @@ const Map = () => {
     setReportLocation(null); // Close the popup
   };
 
+  const handleModerationComplete = (reportId: string) => {
+    setPendingReports(current => current.filter(r => r.id !== reportId));
+  };
+
   const center: LatLngExpression = [44.75, -0.38];
 
   const markers = useMemo(() => {
@@ -170,9 +187,7 @@ const Map = () => {
         icon={getPendingIcon()}
       >
         <Popup>
-          <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
-          <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)} <br />
-          <b>Status:</b> PENDING
+          <AdminPopup report={report} onActionComplete={handleModerationComplete} />
         </Popup>
       </Marker>
     ));

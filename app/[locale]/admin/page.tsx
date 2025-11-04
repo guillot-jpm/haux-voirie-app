@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-import AdminDashboard from "../components/AdminDashboard";
 import prisma from "@/lib/prisma";
 import { getTranslations } from "next-intl/server";
+import AdminPageClient from "../components/AdminPageClient";
 
 const AdminPage = async () => {
   const session = await getServerSession(authOptions);
@@ -24,7 +24,7 @@ const AdminPage = async () => {
   return (
     <div>
       <h1>{t('pageTitle')}</h1>
-      <AdminDashboard />
+      <AdminPageClient />
     </div>
   );
 };
