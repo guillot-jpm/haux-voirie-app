@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, GeoJSON, useMapEvents, Popup, Marker } from 'r
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { Report } from '@prisma/client';
 import L, { LatLngExpression } from 'leaflet';
@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useToast } from '@/hooks/use-toast';
 import GeolocationButton from './GeolocationButton';
-import ReportDialog from './ReportDialog';
+import ReportForm from './ReportForm';
 
 // Fix for default icon issue with Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -37,6 +37,7 @@ const Map = () => {
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [reportLocation, setReportLocation] = useState<L.LatLng | null>(null);
   const [reports, setReports] = useState<Report[]>([]);
+  const reportMarkerRef = useRef<L.Marker | null>(null);
   const { toast } = useToast();
   const t = useTranslations('Map');
   const tEnums = useTranslations('Enums');
@@ -67,7 +68,15 @@ const Map = () => {
     fetchReports();
   }, []);
 
+  useEffect(() => {
+    if (reportMarkerRef.current) {
+      reportMarkerRef.current.openPopup();
+    }
+  }, [reportLocation]);
+
   const handleMapClick = (latlng: L.LatLng) => {
+    if (reportLocation) return; // Lock map clicks when a report is already open
+
     if (session) {
       setReportLocation(latlng);
     } else {
@@ -79,10 +88,6 @@ const Map = () => {
     }
   };
 
-  const closeDialog = () => {
-    setReportLocation(null);
-  };
-
   const handleReportSubmitted = () => {
     toast({
       title: "Success",
@@ -90,7 +95,7 @@ const Map = () => {
     });
     // Refetch reports to display the new one
     fetch('/api/reports').then(res => res.json()).then(setReports);
-    closeDialog();
+    setReportLocation(null); // Close the popup
   };
 
   const center: LatLngExpression = [44.75, -0.38];
@@ -111,7 +116,11 @@ const Map = () => {
   };
 
   return (
-    <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }}>
+    <MapContainer
+      center={center}
+      zoom={13}
+      style={{ height: '100%', width: '100%' }}
+    >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -139,11 +148,15 @@ const Map = () => {
       <GeolocationButton />
 
       {reportLocation && (
-        <ReportDialog
-          location={{ lat: reportLocation.lat, lng: reportLocation.lng }}
-          onClose={closeDialog}
-          onReportSubmitted={handleReportSubmitted}
-        />
+        <Marker position={reportLocation} ref={reportMarkerRef}>
+          <Popup closeOnClick={false} closeButton={false}>
+            <ReportForm
+              location={{ lat: reportLocation.lat, lng: reportLocation.lng }}
+              onReportSubmitted={handleReportSubmitted}
+              onCancel={() => setReportLocation(null)}
+            />
+          </Popup>
+        </Marker>
       )}
     </MapContainer>
   );

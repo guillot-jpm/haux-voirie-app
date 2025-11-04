@@ -20,7 +20,8 @@
     "severityLabel": "Severity",
     "severityPlaceholder": "Select a severity level",
     "submitButton": "Submit Report",
-    "submittingButton": "Submitting..."
+    "submittingButton": "Submitting...",
+    "cancelButton": "Cancel"
   },
   "AdminDashboard": {
     "pageTitle": "Admin Dashboard",
