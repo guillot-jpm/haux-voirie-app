@@ -156,7 +156,7 @@ const AdminDashboard = () => {
                         {t('approveButton')}
                       </Button>
                       <Button
-                        onClick={() => handleUpdateStatus(report.id, "REJEC TED")}
+                        onClick={() => handleUpdateStatus(report.id, "REJECTED")}
                         variant="destructive"
                         className="mr-2"
                       >
