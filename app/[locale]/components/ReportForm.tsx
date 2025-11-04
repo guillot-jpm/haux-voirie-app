@@ -10,14 +10,15 @@ interface ReportFormProps {
   location: { lat: number; lng: number };
   onReportSubmitted: () => void;
   onCancel: () => void;
+  onError: (error: { title: string; description: string }) => void;
 }
 
 export default function ReportForm({
   location,
   onReportSubmitted,
   onCancel,
+  onError,
 }: ReportFormProps) {
-  const { toast } = useToast();
   const t = useTranslations('ReportDialog');
   const tEnums = useTranslations('Enums');
   const [issueType, setIssueType] = useState('');
@@ -35,10 +36,9 @@ export default function ReportForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!issueType || !severity) {
-      toast({
+      onError({
         title: "Error",
         description: "Please select both issue type and severity",
-        variant: "destructive",
       });
       return;
     }
@@ -64,11 +64,18 @@ export default function ReportForm({
       onReportSubmitted();
     } catch (error: any) {
       console.error(error);
-      toast({
-        title: "Error",
-        description: error.message || "An error occurred. Please try again.",
-        variant: "destructive",
-      });
+      // Specific check for banned user error from the API
+      if (error.message === "Your account has been banned.") {
+        onError({
+          title: t('bannedUserTitle'),
+          description: t('bannedUserDescription'),
+        });
+      } else {
+        onError({
+          title: "Error",
+          description: error.message || "An error occurred. Please try again.",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

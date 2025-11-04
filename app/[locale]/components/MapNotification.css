@@ -1,0 +1,44 @@
+.leaflet-notification-container {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  z-index: 1001; /* Ensure it's above other map elements */
+}
+
+.leaflet-notification-container.success {
+  border-left: 5px solid #4CAF50; /* Green for success */
+}
+
+.leaflet-notification-container.error {
+  border-left: 5px solid #f44336; /* Red for error */
+}
+
+.leaflet-notification-container.info {
+  border-left: 5px solid #2196F3; /* Blue for info */
+}
+
+.leaflet-notification-title {
+  font-weight: bold;
+  margin: 0 0 5px 0;
+  font-size: 16px;
+}
+
+.leaflet-notification-description {
+  margin: 0;
+  font-size: 14px;
+}
+
+.leaflet-notification-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
