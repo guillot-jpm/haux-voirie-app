@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -24,10 +24,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useTranslations } from "next-intl";
 
+import MiniMap from "./MiniMap";
+
 interface Report {
   id: string;
   issueType: string;
   severity: string;
+  latitude: number;
+  longitude: number;
   author: {
     id: string;
     email: string | null;
@@ -41,6 +45,7 @@ const AdminDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [isBanConfirmOpen, setIsBanConfirmOpen] = useState(false);
+  const [expandedReportId, setExpandedReportId] = useState<string | null>(null);
   const t = useTranslations('AdminDashboard');
   const tEnums = useTranslations('Enums');
 
@@ -135,38 +140,60 @@ const AdminDashboard = () => {
             </TableHeader>
             <TableBody>
               {reports.map((report) => (
-                <TableRow key={report.id}>
-                  <TableCell>{tEnums(report.issueType)}</TableCell>
-                  <TableCell>{tEnums(report.severity)}</TableCell>
-                  <TableCell>{report.author.email}</TableCell>
-                  <TableCell>
-                    {new Date(report.createdAt).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => handleUpdateStatus(report.id, "APPROVED")}
-                      className="mr-2"
-                    >
-                      {t('approveButton')}
-                    </Button>
-                    <Button
-                      onClick={() => handleUpdateStatus(report.id, "REJECTED")}
-                      variant="destructive"
-                      className="mr-2"
-                    >
-                      {t('rejectButton')}
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setSelectedReport(report);
-                        setIsBanConfirmOpen(true);
-                      }}
-                      variant="destructive"
-                    >
-                      {t('banUserButton')}
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                <React.Fragment key={report.id}>
+                  <TableRow>
+                    <TableCell>{tEnums(report.issueType)}</TableCell>
+                    <TableCell>{tEnums(report.severity)}</TableCell>
+                    <TableCell>{report.author.email}</TableCell>
+                    <TableCell>
+                      {new Date(report.createdAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => handleUpdateStatus(report.id, "APPROVED")}
+                        className="mr-2"
+                      >
+                        {t('approveButton')}
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdateStatus(report.id, "REJEC TED")}
+                        variant="destructive"
+                        className="mr-2"
+                      >
+                        {t('rejectButton')}
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setSelectedReport(report);
+                          setIsBanConfirmOpen(true);
+                        }}
+                        variant="destructive"
+                        className="mr-2"
+                      >
+                        {t('banUserButton')}
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          setExpandedReportId(
+                            expandedReportId === report.id ? null : report.id
+                          )
+                        }
+                      >
+                        {expandedReportId === report.id ? t('hideMapButton') : t('showMapButton')}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                  {expandedReportId === report.id && (
+                    <TableRow>
+                      <TableCell colSpan={5}>
+                        <MiniMap
+                          latitude={report.latitude}
+                          longitude={report.longitude}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
