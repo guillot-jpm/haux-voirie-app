@@ -41,6 +41,17 @@ const getIconBySeverity = (severity: string) => {
   });
 };
 
+const getPendingIcon = () => {
+  return new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+};
+
 // Component to handle map click events
 const MapClickHandler = ({ onMapClick }: { onMapClick: (latlng: L.LatLng) => void }) => {
   useMapEvents({
@@ -56,6 +67,7 @@ const Map = () => {
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [reportLocation, setReportLocation] = useState<L.LatLng | null>(null);
   const [reports, setReports] = useState<Report[]>([]);
+  const [pendingReports, setPendingReports] = useState<Report[]>([]);
   const reportMarkerRef = useRef<L.Marker | null>(null);
   const [notification, setNotification] = useState<{ title: string; description: string; type: 'success' | 'error' | 'info' } | null>(null);
   const t = useTranslations('Map');
@@ -83,9 +95,22 @@ const Map = () => {
       }
     };
 
+    const fetchPendingReports = async () => {
+      if (session?.user?.role === 'ADMIN') {
+        try {
+          const response = await fetch('/api/admin/reports');
+          const data = await response.json();
+          setPendingReports(data);
+        } catch (error) {
+          console.error('Failed to fetch pending reports:', error);
+        }
+      }
+    };
+
     fetchGeoJson();
     fetchReports();
-  }, []);
+    fetchPendingReports();
+  }, [session]);
 
   useEffect(() => {
     if (reportMarkerRef.current) {
@@ -135,6 +160,24 @@ const Map = () => {
     ));
   }, [reports, tReportDialog, tEnums]);
 
+  const pendingMarkers = useMemo(() => {
+    if (session?.user?.role !== 'ADMIN') return null;
+
+    return pendingReports.map((report) => (
+      <Marker
+        key={report.id}
+        position={[report.latitude, report.longitude]}
+        icon={getPendingIcon()}
+      >
+        <Popup>
+          <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
+          <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)} <br />
+          <b>Status:</b> PENDING
+        </Popup>
+      </Marker>
+    ));
+  }, [pendingReports, tReportDialog, tEnums, session]);
+
   return (
     <MapContainer
       center={center}
@@ -149,6 +192,7 @@ const Map = () => {
 
       <MarkerClusterGroup>
         {markers}
+        {pendingMarkers}
       </MarkerClusterGroup>
 
       <MapClickHandler onMapClick={handleMapClick} />
