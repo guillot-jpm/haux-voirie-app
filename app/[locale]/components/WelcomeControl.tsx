@@ -66,7 +66,7 @@ const WelcomeControl = () => {
       },
     });
 
-    const control = new CustomControl({ position: 'topcenter' });
+    const control = new CustomControl({ position: 'topright' });
     map.addControl(control);
 
     return () => {
