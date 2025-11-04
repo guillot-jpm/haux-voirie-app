@@ -47,5 +47,12 @@
     "LOW": "Faible",
     "MEDIUM": "Moyenne",
     "HIGH": "Haute / Urgente"
+  },
+  "WelcomeDialog": {
+    "title": "Bienvenue sur Haux & Vous !",
+    "greeting": "Une note rapide avant de commencer :",
+    "p1": "Cette application est une initiative citoyenne développée par Haux & Vous. Il ne s'agit pas d'un service officiel de la mairie actuelle.",
+    "p2": "Notre objectif est de soutenir nos valeurs de transparence, de proximité et de collaboration. Nous souhaitons permettre aux citoyens de signaler facilement les problèmes dans leur voisinage et d'être informés de l'état de la voirie, afin de mieux comprendre les priorités des travaux.",
+    "closeButton": "J'ai compris"
   }
 }
