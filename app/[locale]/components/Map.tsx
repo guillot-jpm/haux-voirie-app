@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import GeolocationButton from './GeolocationButton';
 import ReportForm from './ReportForm';
 import MapNotification from './MapNotification';
+import WelcomeControl from './WelcomeControl';
 import './MapNotification.css';
 
 // Fix for default icon issue with Webpack
@@ -151,7 +152,7 @@ const Map = () => {
       </MarkerClusterGroup>
 
       <MapClickHandler onMapClick={handleMapClick} />
-    
+
       {/* Add GeolocationButton here, inside MapContainer */}
       <GeolocationButton />
 
@@ -169,6 +170,8 @@ const Map = () => {
           </Popup>
         </Marker>
       )}
+
+      <WelcomeControl />
     </MapContainer>
   );
 };

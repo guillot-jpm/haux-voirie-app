@@ -6,7 +6,6 @@ import GeolocationButton from "@/app/[locale]/components/GeolocationButton"; // 
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import Image from 'next/image';
-import WelcomeDialog from '@/app/[locale]/components/WelcomeDialog';
 
 export default function Home() {
   const t = useTranslations('LoginPage');
@@ -33,7 +32,6 @@ export default function Home() {
         <Map />
         {/* The GeolocationButton renders here, on top of the map */}
       </div>
-      <WelcomeDialog />
     </main>
   );
 }
