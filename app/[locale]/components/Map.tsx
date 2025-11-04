@@ -55,7 +55,7 @@ const getPendingIcon = () => {
 // Component to handle map click events
 const MapClickHandler = ({ onMapClick }: { onMapClick: (latlng: L.LatLng) => void }) => {
   useMapEvents({
-    click(e) {
+    dblclick(e) { // Changed from click to dblclick
       onMapClick(e.latlng);
     },
   });
