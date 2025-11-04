@@ -20,7 +20,8 @@
     "severityLabel": "Gravité",
     "severityPlaceholder": "Sélectionnez un niveau de gravité",
     "submitButton": "Envoyer le Signalement",
-    "submittingButton": "Envoi en cours..."
+    "submittingButton": "Envoi en cours...",
+    "cancelButton": "Annuler"
   },
   "AdminDashboard": {
     "pageTitle": "Tableau de Bord Admin",
