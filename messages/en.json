@@ -35,7 +35,9 @@
     "banConfirmTitle": "Are you sure?",
     "banConfirmDescription": "This will permanently ban the user {userEmail} and reject this report.",
     "cancelButton": "Cancel",
-    "confirmButton": "Confirm"
+    "confirmButton": "Confirm",
+    "showMapButton": "Show Map",
+    "hideMapButton": "Hide Map"
   },
   "Enums": {
     "POTHOLE": "Pothole",
