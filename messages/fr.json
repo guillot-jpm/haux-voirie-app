@@ -35,7 +35,9 @@
     "banConfirmTitle": "Êtes-vous sûr ?",
     "banConfirmDescription": "Cette action bannira définitivement l'utilisateur {userEmail} et rejettera ce signalement.",
     "cancelButton": "Annuler",
-    "confirmButton": "Confirmer"
+    "confirmButton": "Confirmer",
+    "showMapButton": "Afficher la Carte",
+    "hideMapButton": "Masquer la Carte"
   },
   "Enums": {
     "POTHOLE": "Nid-de-poule",
