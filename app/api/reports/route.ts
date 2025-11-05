@@ -81,19 +81,24 @@ export async function POST(request: Request) {
   }
 
   try {
+    const reportData: any = {
+      latitude,
+      longitude,
+      issueType,
+      severity,
+      status: 'PENDING',
+      authorId: user.id,
+    };
+
+    if (user.role !== 'VISITOR') {
+      reportData.description = description;
+      reportData.photoUrl = photoUrl;
+    }
+
     const newReport = await prisma.report.create({
-      data: {
-        latitude,
-        longitude,
-        issueType,
-        severity,
-        description,
-        photoUrl,
-        status: 'PENDING',
-        authorId: user.id,
-      },
-    })
-    return NextResponse.json(newReport, { status: 201 })
+      data: reportData,
+    });
+    return NextResponse.json(newReport, { status: 201 });
   } catch (error) {
     console.error("Error creating report:", error)
     return NextResponse.json({ error: "Could not create report" }, { status: 500 })
