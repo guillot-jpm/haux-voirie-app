@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('CITIZEN', 'ADMIN');
+CREATE TYPE "Role" AS ENUM ('VISITOR', 'CITIZEN', 'ADMIN');
 
 -- CreateEnum
 CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'BANNED');
@@ -20,7 +20,7 @@ CREATE TABLE "User" (
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
-    "role" "Role" NOT NULL DEFAULT 'CITIZEN',
+    "role" "Role" NOT NULL DEFAULT 'VISITOR',
     "status" "UserStatus" NOT NULL DEFAULT 'ACTIVE',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
