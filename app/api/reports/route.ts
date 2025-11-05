@@ -123,7 +123,7 @@ export async function POST(request: Request) {
           const origin = request.headers.get('origin') || 'http://localhost:3000';
           const adminDashboardUrl = `${origin}/en/admin`;
 
-          const emailHtml = render(NewReportEmail({ adminDashboardUrl }));
+          const emailHtml = await render(NewReportEmail({ adminDashboardUrl }));
 
           await resend.emails.send({
             from: 'Haux Voirie <noreply@haux-voirie.com>', // Replace with your verified domain
