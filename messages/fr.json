@@ -1,4 +1,8 @@
 {
+  "AdminPopup": {
+    "approve": "Approuver",
+    "reject": "Rejeter"
+  },
   "LoginPage": {
     "title": "Application Voirie de Haux",
     "signedInAs": "Connecté en tant que {email}",

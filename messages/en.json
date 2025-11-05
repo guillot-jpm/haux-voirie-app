@@ -1,4 +1,8 @@
 {
+  "AdminPopup": {
+    "approve": "Approve",
+    "reject": "Reject"
+  },
   "LoginPage": {
     "title": "Haux Road Network App",
     "signedInAs": "Signed in as {email}",

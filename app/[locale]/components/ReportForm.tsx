@@ -5,10 +5,11 @@ import { useTranslations } from "next-intl";
 import { useToast } from "@/hooks/use-toast";
 import { ISSUE_TYPES, SEVERITY_LEVELS } from "@/app/[locale]/lib/constants";
 import { DomEvent } from "leaflet";
+import { Report } from "@prisma/client";
 
 interface ReportFormProps {
   location: { lat: number; lng: number };
-  onReportSubmitted: () => void;
+  onReportSubmitted: (newReport: Report) => void;
   onCancel: () => void;
   onError: (error: { title: string; description: string }) => void;
 }
@@ -61,7 +62,8 @@ export default function ReportForm({
         throw new Error(errorData.error || "Failed to submit report");
       }
 
-      onReportSubmitted();
+      const newReport = await response.json();
+      onReportSubmitted(newReport);
     } catch (error: any) {
       console.error(error);
       // Specific check for banned user error from the API

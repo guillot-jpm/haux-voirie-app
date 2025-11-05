@@ -3,16 +3,31 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log(`Start seeding ...`)
+  console.log(`Start seeding ...`);
 
-  const user = await prisma.user.create({
+  // Clear existing data
+  await prisma.report.deleteMany({});
+  await prisma.user.deleteMany({});
+  await prisma.session.deleteMany({});
+  await prisma.account.deleteMany({});
+
+  const admin = await prisma.user.create({
     data: {
-      name: 'Test User',
-      email: 'test@example.com',
+      name: 'Admin User',
+      email: 'admin@example.com',
+      role: 'ADMIN',
+    },
+  });
+
+  const citizen = await prisma.user.create({
+    data: {
+      name: 'Citizen User',
+      email: 'citizen@example.com',
       role: 'CITIZEN',
     },
-  })
+  });
 
+  // Create one approved report by the admin
   await prisma.report.create({
     data: {
       latitude: 44.75,
@@ -20,30 +35,23 @@ async function main() {
       issueType: 'POTHOLE',
       severity: 'HIGH',
       status: 'APPROVED',
-      authorId: user.id,
+      authorId: admin.id,
     },
-  })
+  });
+
+  // Create one pending report by the citizen
   await prisma.report.create({
     data: {
-      latitude: 44.751,
-      longitude: -0.381,
-      issueType: 'DAMAGED_SIGNAGE',
+      latitude: 44.755,
+      longitude: -0.385,
+      issueType: 'FLOODING_WATER_ISSUE',
       severity: 'MEDIUM',
-      status: 'APPROVED',
-      authorId: user.id,
+      status: 'PENDING',
+      authorId: citizen.id,
     },
-  })
-  await prisma.report.create({
-    data: {
-      latitude: 44.749,
-      longitude: -0.379,
-      issueType: 'OTHER',
-      severity: 'LOW',
-      status: 'APPROVED',
-      authorId: user.id,
-    },
-  })
-  console.log(`Seeding finished.`)
+  });
+
+  console.log(`Seeding finished.`);
 }
 
 main()

@@ -6,15 +6,33 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 const prisma = new PrismaClient();
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+
   try {
-    const approvedReports = await prisma.report.findMany({
-      where: {
-        status: 'APPROVED',
-      },
+    const whereClause: any = {
+      status: 'APPROVED',
+    };
+
+    if (session?.user?.email) {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      });
+
+      if (user) {
+        whereClause.OR = [
+          { status: 'APPROVED' },
+          { authorId: user.id, status: 'PENDING' }
+        ];
+        delete whereClause.status; // Remove the top-level status filter as it's now in the OR
+      }
+    }
+
+    const reports = await prisma.report.findMany({
+      where: whereClause,
     });
-    return NextResponse.json(approvedReports, { status: 200 });
+    return NextResponse.json(reports, { status: 200 });
   } catch (error) {
-    console.error("Error fetching approved reports:", error);
+    console.error("Error fetching reports:", error);
     return NextResponse.json({ error: "Could not fetch reports" }, { status: 500 });
   }
 }
