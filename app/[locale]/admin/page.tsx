@@ -1,9 +1,14 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-import AdminDashboard from "../components/AdminDashboard";
+import dynamic from "next/dynamic";
 import prisma from "@/lib/prisma";
 import { getTranslations } from "next-intl/server";
+
+const AdminDashboard = dynamic(
+  () => import("../components/AdminDashboard"),
+  { ssr: false }
+);
 
 const AdminPage = async () => {
   const session = await getServerSession(authOptions);

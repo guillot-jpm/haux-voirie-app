@@ -92,11 +92,15 @@ const Map = () => {
         const response = await fetch('/api/reports');
         const allReports: Report[] = await response.json();
 
-        const approved = allReports.filter(r => r.status === 'APPROVED');
-        const userPending = allReports.filter(r => r.status === 'PENDING');
+        if (Array.isArray(allReports)) {
+          const approved = allReports.filter(r => r.status === 'APPROVED');
+          const userPending = allReports.filter(r => r.status === 'PENDING');
 
-        setReports(approved);
-        setUserPendingReports(userPending);
+          setReports(approved);
+          setUserPendingReports(userPending);
+        } else {
+          console.error('Failed to fetch reports: API did not return an array.');
+        }
 
       } catch (error) {
         console.error('Failed to fetch reports:', error);
@@ -108,7 +112,11 @@ const Map = () => {
         try {
           const response = await fetch('/api/admin/reports');
           const data = await response.json();
-          setAdminPendingReports(data);
+          if (Array.isArray(data)) {
+            setAdminPendingReports(data);
+          } else {
+            console.error('Failed to fetch admin pending reports: API did not return an array.');
+          }
         } catch (error) {
           console.error('Failed to fetch admin pending reports:', error);
         }
