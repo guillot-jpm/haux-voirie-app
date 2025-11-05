@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/hooks/use-toast";
 import { ISSUE_TYPES, SEVERITY_LEVELS } from "@/app/[locale]/lib/constants";
@@ -20,11 +21,13 @@ export default function ReportForm({
   onCancel,
   onError,
 }: ReportFormProps) {
+  const { data: session } = useSession();
   const t = useTranslations('ReportDialog');
   const tEnums = useTranslations('Enums');
   const [issueType, setIssueType] = useState('');
   const [severity, setSeverity] = useState('');
   const [description, setDescription] = useState('');
+  const [photo, setPhoto] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -47,6 +50,16 @@ export default function ReportForm({
 
     setIsSubmitting(true);
     try {
+      let photoUrl = null;
+      if (photo) {
+        const response = await fetch(`/api/upload?filename=${photo.name}`, {
+          method: 'POST',
+          body: photo,
+        });
+        const newBlob = await response.json();
+        photoUrl = newBlob.url;
+      }
+
       const response = await fetch("/api/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -56,6 +69,7 @@ export default function ReportForm({
           description,
           latitude: location.lat,
           longitude: location.lng,
+          photoUrl,
         }),
       });
 
@@ -138,23 +152,48 @@ export default function ReportForm({
             ))}
           </select>
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
-            Description (Optional)
-          </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '8px',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              fontSize: '14px',
-              minHeight: '80px',
-            }}
-          />
-        </div>
+        {session?.user?.role !== 'VISITOR' && (
+          <>
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
+                Description (Optional)
+              </label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                  minHeight: '80px',
+                }}
+              />
+            </div>
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
+                Photo (Optional)
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files) {
+                    setPhoto(e.target.files[0]);
+                  }
+                }}
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  fontSize: '14px',
+                }}
+              />
+            </div>
+          </>
+        )}
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
           <button
             type="submit"

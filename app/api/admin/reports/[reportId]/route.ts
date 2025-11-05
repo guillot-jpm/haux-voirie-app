@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import prisma from "@/lib/prisma";
+import { IssueType, Severity, ReportStatus } from "@prisma/client";
 
 export async function PATCH(
   request: NextRequest,
@@ -22,16 +23,43 @@ export async function PATCH(
   }
 
   const { reportId } = await paramsPromise;
-  const { status } = await request.json();
+  const { status, description, photoUrl, issueType, severity } = await request.json();
 
-  if (!status || !["APPROVED", "REJECTED"].includes(status)) {
-    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+  const updateData: {
+    status?: ReportStatus;
+    description?: string;
+    photoUrl?: string;
+    issueType?: IssueType;
+    severity?: Severity;
+  } = {};
+
+  if (status) {
+    if (!["PENDING", "APPROVED", "REJECTED", "RESOLVED"].includes(status)) {
+      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    }
+    updateData.status = status as ReportStatus;
+  }
+
+  if (description) {
+    updateData.description = description;
+  }
+
+  if (photoUrl) {
+    updateData.photoUrl = photoUrl;
+  }
+
+  if (issueType) {
+    updateData.issueType = issueType as IssueType;
+  }
+
+  if (severity) {
+    updateData.severity = severity as Severity;
   }
 
   try {
     const updatedReport = await prisma.report.update({
       where: { id: reportId },
-      data: { status },
+      data: updateData,
       include: { author: true },
     });
 

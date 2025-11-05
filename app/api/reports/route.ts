@@ -74,25 +74,31 @@ export async function POST(request: Request) {
   }
 
   const data = await request.json()
-  const { latitude, longitude, issueType, severity, description } = data
+  const { latitude, longitude, issueType, severity, description, photoUrl } = data
 
   if (!latitude || !longitude || !issueType || !severity) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
   }
 
   try {
+    const reportData: any = {
+      latitude,
+      longitude,
+      issueType,
+      severity,
+      status: 'PENDING',
+      authorId: user.id,
+    };
+
+    if (user.role !== 'VISITOR') {
+      reportData.description = description;
+      reportData.photoUrl = photoUrl;
+    }
+
     const newReport = await prisma.report.create({
-      data: {
-        latitude,
-        longitude,
-        issueType,
-        severity,
-        description,
-        status: 'PENDING',
-        authorId: user.id,
-      },
-    })
-    return NextResponse.json(newReport, { status: 201 })
+      data: reportData,
+    });
+    return NextResponse.json(newReport, { status: 201 });
   } catch (error) {
     console.error("Error creating report:", error)
     return NextResponse.json({ error: "Could not create report" }, { status: 500 })
