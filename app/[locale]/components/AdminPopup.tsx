@@ -1,54 +1,54 @@
-"use client";
+'use client';
 
-import { Report } from "@prisma/client";
-import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
+import { Report } from '@prisma/client';
+import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 interface AdminPopupProps {
   report: Report;
-  onActionComplete: (reportId: string) => void;
+  onActionComplete: (reportId: string, approvedReport?: Report) => void;
 }
 
 const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
-  const tEnums = useTranslations("Enums");
-  const tAdmin = useTranslations("Admin");
+  const t = useTranslations('AdminPopup');
 
-  const handleModeration = async (status: "APPROVED" | "REJECTED") => {
+  const handleModeration = async (status: 'APPROVED' | 'REJECTED') => {
     try {
       const response = await fetch(`/api/reports/${report.id}`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ status }),
       });
 
       if (response.ok) {
-        onActionComplete(report.id);
+        if (status === 'APPROVED') {
+          const approvedReport = await response.json();
+          onActionComplete(report.id, approvedReport);
+        } else {
+          onActionComplete(report.id);
+        }
       } else {
-        // Handle error - maybe show a toast notification in the future
-        console.error("Failed to update report status");
+        console.error('Failed to update report status');
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      console.error('An error occurred:', error);
     }
   };
 
-  const handleApprove = () => handleModeration("APPROVED");
-  const handleReject = () => handleModeration("REJECTED");
-
   return (
     <div>
-      <p>
-        <b>Issue Type:</b> {tEnums(report.issueType)}
-      </p>
-      <p>
-        <b>Severity:</b> {tEnums(report.severity)}
-      </p>
-      <div style={{ display: "flex", justifyContent: "space-around", marginTop: "10px" }}>
-        <Button onClick={handleApprove}>{tAdmin("approve")}</Button>
-        <Button onClick={handleReject} variant="destructive">
-          {tAdmin("reject")}
+      <h3 className="font-bold">{report.issueType}</h3>
+      <p>Severity: {report.severity}</p>
+      <p>Status: {report.status}</p>
+      {report.description && <p>Description: {report.description}</p>}
+      <div className="flex justify-end space-x-2 mt-4">
+        <Button variant="outline" size="sm" onClick={() => handleModeration('REJECTED')}>
+          {t('reject')}
+        </Button>
+        <Button size="sm" onClick={() => handleModeration('APPROVED')}>
+          {t('approve')}
         </Button>
       </div>
     </div>

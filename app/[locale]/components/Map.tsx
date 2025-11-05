@@ -68,7 +68,8 @@ const Map = () => {
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [reportLocation, setReportLocation] = useState<L.LatLng | null>(null);
   const [reports, setReports] = useState<Report[]>([]);
-  const [pendingReports, setPendingReports] = useState<Report[]>([]);
+  const [adminPendingReports, setAdminPendingReports] = useState<Report[]>([]);
+  const [userPendingReports, setUserPendingReports] = useState<Report[]>([]);
   const reportMarkerRef = useRef<L.Marker | null>(null);
   const [notification, setNotification] = useState<{ title: string; description: string; type: 'success' | 'error' | 'info' } | null>(null);
   const t = useTranslations('Map');
@@ -89,40 +90,34 @@ const Map = () => {
     const fetchReports = async () => {
       try {
         const response = await fetch('/api/reports');
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setReports(data);
-        } else {
-          console.error('Failed to fetch reports: data is not an array', data);
-          setReports([]); // Set to empty array to prevent crash
-        }
+        const allReports: Report[] = await response.json();
+
+        const approved = allReports.filter(r => r.status === 'APPROVED');
+        const userPending = allReports.filter(r => r.status === 'PENDING');
+
+        setReports(approved);
+        setUserPendingReports(userPending);
+
       } catch (error) {
         console.error('Failed to fetch reports:', error);
-        setReports([]); // Set to empty array on error
       }
     };
 
-    const fetchPendingReports = async () => {
+    const fetchAdminPendingReports = async () => {
       if (session?.user?.role === 'ADMIN') {
         try {
           const response = await fetch('/api/admin/reports');
           const data = await response.json();
-          if (Array.isArray(data)) {
-            setPendingReports(data);
-          } else {
-            console.error('Failed to fetch pending reports: data is not an array', data);
-            setPendingReports([]); // Set to empty array to prevent crash
-          }
+          setAdminPendingReports(data);
         } catch (error) {
-          console.error('Failed to fetch pending reports:', error);
-          setPendingReports([]); // Set to empty array on error
+          console.error('Failed to fetch admin pending reports:', error);
         }
       }
     };
 
     fetchGeoJson();
     fetchReports();
-    fetchPendingReports();
+    fetchAdminPendingReports();
   }, [session]);
 
   useEffect(() => {
@@ -145,19 +140,25 @@ const Map = () => {
     }
   };
 
-  const handleReportSubmitted = () => {
+  const handleReportSubmitted = (newReport: Report) => {
     setNotification({
       title: "Success",
       description: t('reportSubmitted'),
       type: 'success',
     });
-    // Refetch reports to display the new one
-    fetch('/api/reports').then(res => res.json()).then(setReports);
+    if (session?.user?.role === 'ADMIN') {
+      setAdminPendingReports(current => [...current, newReport]);
+    } else {
+      setUserPendingReports(current => [...current, newReport]);
+    }
     setReportLocation(null); // Close the popup
   };
 
-  const handleModerationComplete = (reportId: string) => {
-    setPendingReports(current => current.filter(r => r.id !== reportId));
+  const handleModerationComplete = (reportId: string, approvedReport?: Report) => {
+    setAdminPendingReports(current => current.filter(r => r.id !== reportId));
+    if (approvedReport) {
+      setReports(current => [...current, approvedReport]);
+    }
   };
 
   const center: LatLngExpression = [44.75, -0.38];
@@ -178,20 +179,29 @@ const Map = () => {
   }, [reports, tReportDialog, tEnums]);
 
   const pendingMarkers = useMemo(() => {
-    if (session?.user?.role !== 'ADMIN') return null;
+    const isAdmin = session?.user?.role === 'ADMIN';
+    const reportsToRender = isAdmin ? adminPendingReports : userPendingReports;
 
-    return pendingReports.map((report) => (
+    return reportsToRender.map((report) => (
       <Marker
         key={report.id}
         position={[report.latitude, report.longitude]}
         icon={getPendingIcon()}
       >
         <Popup>
-          <AdminPopup report={report} onActionComplete={handleModerationComplete} />
+          {isAdmin ? (
+            <AdminPopup report={report} onActionComplete={handleModerationComplete} />
+          ) : (
+            <>
+              <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
+              <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)} <br />
+              <b>Status:</b> PENDING
+            </>
+          )}
         </Popup>
       </Marker>
     ));
-  }, [pendingReports, tReportDialog, tEnums, session]);
+  }, [adminPendingReports, userPendingReports, session, tReportDialog, tEnums]);
 
   return (
     <MapContainer
