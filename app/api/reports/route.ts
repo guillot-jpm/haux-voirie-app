@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 import { Resend } from "resend"
 import { NewReportEmail } from "@/emails/NewReportEmail"
+import { render } from "@react-email/render"
 
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -122,11 +123,13 @@ export async function POST(request: Request) {
           const origin = request.headers.get('origin') || 'http://localhost:3000';
           const adminDashboardUrl = `${origin}/en/admin`;
 
+          const emailHtml = render(NewReportEmail({ adminDashboardUrl }));
+
           await resend.emails.send({
             from: 'Haux Voirie <noreply@haux-voirie.com>', // Replace with your verified domain
             to: adminEmails,
             subject: 'New Road Report Submitted - Haux Voirie',
-            react: NewReportEmail({ adminDashboardUrl }),
+            html: emailHtml,
           });
 
           await prisma.appState.update({
