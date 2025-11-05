@@ -78,6 +78,12 @@ export async function PATCH(
           data: { role: "CITIZEN" },
         });
       }
+
+      // Reset the notification timer if the report is approved
+      await prisma.appState.update({
+        where: { singletonKey: "primary" },
+        data: { lastNotificationSentAt: null },
+      });
     }
 
     return NextResponse.json(updatedReport, { status: 200 });

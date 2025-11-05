@@ -10,6 +10,14 @@ async function main() {
   await prisma.user.deleteMany({});
   await prisma.session.deleteMany({});
   await prisma.account.deleteMany({});
+  await prisma.appState.deleteMany({});
+
+  // Seed the AppState singleton
+  await prisma.appState.upsert({
+    where: { singletonKey: "primary" },
+    update: {},
+    create: { singletonKey: "primary" },
+  });
 
   const admin = await prisma.user.create({
     data: {
