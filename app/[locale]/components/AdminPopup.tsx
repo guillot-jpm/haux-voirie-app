@@ -1,6 +1,6 @@
 'use client';
 
-import { Report } from '@prisma/client';
+import { Report, IssueType, Severity, ReportStatus } from '@prisma/client';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -16,11 +16,11 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
   const tEnums = useTranslations('Enums');
 
   const [isEditing, setIsEditing] = useState(false);
-  const [issueType, setIssueType] = useState(report.issueType);
-  const [severity, setSeverity] = useState(report.severity);
+  const [issueType, setIssueType] = useState<IssueType>(report.issueType);
+  const [severity, setSeverity] = useState<Severity>(report.severity);
   const [description, setDescription] = useState(report.description || '');
   const [photo, setPhoto] = useState<File | null>(null);
-  const [status, setStatus] = useState(report.status);
+  const [status, setStatus] = useState<ReportStatus>(report.status);
 
   const handleSave = async () => {
     let photoUrl = report.photoUrl;
@@ -87,7 +87,7 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
           <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
             {t('issueTypeLabel')}
           </label>
-          <select value={issueType} onChange={(e) => setIssueType(e.target.value)} style={{ width: '100%' }}>
+          <select value={issueType} onChange={(e) => setIssueType(e.target.value as IssueType)} style={{ width: '100%' }}>
             {ISSUE_TYPES.map(type => (
               <option key={type} value={type}>{tEnums(type)}</option>
             ))}
@@ -97,7 +97,7 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
           <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
             {t('severityLabel')}
           </label>
-          <select value={severity} onChange={(e) => setSeverity(e.target.value)} style={{ width: '100%' }}>
+          <select value={severity} onChange={(e) => setSeverity(e.target.value as Severity)} style={{ width: '100%' }}>
             {SEVERITY_LEVELS.map(level => (
               <option key={level} value={level}>{tEnums(level)}</option>
             ))}
@@ -119,7 +119,7 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
           <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
             {t('statusLabel')}
           </label>
-          <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ width: '100%' }}>
+          <select value={status} onChange={(e) => setStatus(e.target.value as ReportStatus)} style={{ width: '100%' }}>
             <option value="PENDING">Pending</option>
             <option value="APPROVED">Approved</option>
             <option value="REJECTED">Rejected</option>
