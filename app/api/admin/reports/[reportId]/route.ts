@@ -22,16 +22,43 @@ export async function PATCH(
   }
 
   const { reportId } = await paramsPromise;
-  const { status } = await request.json();
+  const { status, description, photoUrl, issueType, severity } = await request.json();
 
-  if (!status || !["APPROVED", "REJECTED"].includes(status)) {
-    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+  const updateData: {
+    status?: string;
+    description?: string;
+    photoUrl?: string;
+    issueType?: string;
+    severity?: string;
+  } = {};
+
+  if (status) {
+    if (!["PENDING", "APPROVED", "REJECTED", "RESOLVED"].includes(status)) {
+      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    }
+    updateData.status = status;
+  }
+
+  if (description) {
+    updateData.description = description;
+  }
+
+  if (photoUrl) {
+    updateData.photoUrl = photoUrl;
+  }
+
+  if (issueType) {
+    updateData.issueType = issueType;
+  }
+
+  if (severity) {
+    updateData.severity = severity;
   }
 
   try {
     const updatedReport = await prisma.report.update({
       where: { id: reportId },
-      data: { status },
+      data: updateData,
       include: { author: true },
     });
 

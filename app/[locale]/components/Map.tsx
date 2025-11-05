@@ -180,7 +180,9 @@ const Map = () => {
       >
         <Popup>
           <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
-          <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)}
+          <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)} <br />
+          {report.description && <><b>Description:</b> {report.description} <br /></>}
+          {report.photoUrl && <><br /><img src={report.photoUrl} alt="Report photo" style={{ maxWidth: '200px', maxHeight: '200px' }} /></>}
         </Popup>
       </Marker>
     ));
@@ -203,6 +205,8 @@ const Map = () => {
             <>
               <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
               <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)} <br />
+              {report.description && <><b>Description:</b> {report.description} <br /></>}
+              {report.photoUrl && <><br /><img src={report.photoUrl} alt="Report photo" style={{ maxWidth: '200px', maxHeight: '200px' }} /></>}
               <b>Status:</b> PENDING
             </>
           )}

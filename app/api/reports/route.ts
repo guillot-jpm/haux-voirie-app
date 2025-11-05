@@ -74,7 +74,7 @@ export async function POST(request: Request) {
   }
 
   const data = await request.json()
-  const { latitude, longitude, issueType, severity, description } = data
+  const { latitude, longitude, issueType, severity, description, photoUrl } = data
 
   if (!latitude || !longitude || !issueType || !severity) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
@@ -88,6 +88,7 @@ export async function POST(request: Request) {
         issueType,
         severity,
         description,
+        photoUrl,
         status: 'PENDING',
         authorId: user.id,
       },
