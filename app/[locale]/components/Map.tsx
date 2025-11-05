@@ -162,12 +162,6 @@ const Map = () => {
     setReportLocation(null); // Close the popup
   };
 
-  const handleModerationComplete = (reportId: string, approvedReport?: Report) => {
-    setAdminPendingReports(current => current.filter(r => r.id !== reportId));
-    if (approvedReport) {
-      setReports(current => [...current, approvedReport]);
-    }
-  };
 
   const center: LatLngExpression = [44.75, -0.38];
 
@@ -200,7 +194,7 @@ const Map = () => {
       >
         <Popup>
           {isAdmin ? (
-            <AdminPopup report={report} onActionComplete={handleModerationComplete} />
+            <AdminPopup report={report} />
           ) : (
             <>
               <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
