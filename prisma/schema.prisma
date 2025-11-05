@@ -129,3 +129,9 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model AppState {
+  id                    String    @id @default(cuid())
+  singletonKey          String    @unique // Ensures we only have one row
+  lastNotificationSentAt DateTime?
+}

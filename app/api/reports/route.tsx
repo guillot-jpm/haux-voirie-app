@@ -2,8 +2,12 @@ import { getServerSession } from "next-auth/next"
 import { PrismaClient } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
+import { Resend } from "resend"
+import { NewReportEmail } from "@/emails/NewReportEmail"
+import { render } from "@react-email/render"
 
 const prisma = new PrismaClient();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -98,6 +102,52 @@ export async function POST(request: Request) {
     const newReport = await prisma.report.create({
       data: reportData,
     });
+
+    // --- Start Admin Notification Logic ---
+    try {
+      const appState = await prisma.appState.findUnique({
+        where: { singletonKey: "primary" },
+      });
+
+      const now = new Date();
+      const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+
+      if (!appState?.lastNotificationSentAt || appState.lastNotificationSentAt < twelveHoursAgo) {
+        const admins = await prisma.user.findMany({
+          where: { role: 'ADMIN' },
+        });
+
+        const adminEmails = admins.map(admin => admin.email).filter((email): email is string => email !== null);
+
+        if (adminEmails.length > 0) {
+          const origin = request.headers.get('origin') || 'http://localhost:3000';
+          const adminDashboardUrl = `${origin}/en/admin`;
+
+          const emailHtml = await render(<NewReportEmail adminDashboardUrl={adminDashboardUrl} />);
+
+          await resend.emails.send({
+            from: 'Haux Voirie <guillot.jpm@gmail.com>', // Replace with your verified domain
+            to: adminEmails,
+            subject: 'New Road Report Submitted - Haux Voirie',
+            html: emailHtml,
+          });
+
+          await prisma.appState.upsert({
+            where: { singletonKey: "primary" },
+            update: { lastNotificationSentAt: now },
+            create: {
+              singletonKey: "primary",
+              lastNotificationSentAt: now
+            },
+          });
+        }
+      }
+    } catch (emailError) {
+      console.error("Failed to send admin notification email:", emailError);
+      // Do not block the response for the user if email fails
+    }
+    // --- End Admin Notification Logic ---
+
     return NextResponse.json(newReport, { status: 201 });
   } catch (error) {
     console.error("Error creating report:", error)
