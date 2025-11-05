@@ -58,7 +58,11 @@ const AdminDashboard = () => {
           throw new Error("Failed to fetch reports");
         }
         const data = await response.json();
-        setReports(data);
+        if (Array.isArray(data)) {
+          setReports(data);
+        } else {
+          throw new Error("API did not return an array of reports");
+        }
       } catch (err: any) {
         setError(err.message);
       } finally {

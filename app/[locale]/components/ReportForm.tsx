@@ -5,10 +5,11 @@ import { useTranslations } from "next-intl";
 import { useToast } from "@/hooks/use-toast";
 import { ISSUE_TYPES, SEVERITY_LEVELS } from "@/app/[locale]/lib/constants";
 import { DomEvent } from "leaflet";
+import { Report } from "@prisma/client";
 
 interface ReportFormProps {
   location: { lat: number; lng: number };
-  onReportSubmitted: () => void;
+  onReportSubmitted: (newReport: Report) => void;
   onCancel: () => void;
   onError: (error: { title: string; description: string }) => void;
 }
@@ -23,6 +24,7 @@ export default function ReportForm({
   const tEnums = useTranslations('Enums');
   const [issueType, setIssueType] = useState('');
   const [severity, setSeverity] = useState('');
+  const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +53,7 @@ export default function ReportForm({
         body: JSON.stringify({
           issueType,
           severity,
+          description,
           latitude: location.lat,
           longitude: location.lng,
         }),
@@ -61,7 +64,8 @@ export default function ReportForm({
         throw new Error(errorData.error || "Failed to submit report");
       }
 
-      onReportSubmitted();
+      const newReport = await response.json();
+      onReportSubmitted(newReport);
     } catch (error: any) {
       console.error(error);
       // Specific check for banned user error from the API
@@ -133,6 +137,23 @@ export default function ReportForm({
               <option key={level} value={level}>{tEnums(level)}</option>
             ))}
           </select>
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
+            Description (Optional)
+          </label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              fontSize: '14px',
+              minHeight: '80px',
+            }}
+          />
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
           <button

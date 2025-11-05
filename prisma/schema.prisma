@@ -74,6 +74,7 @@ model Report {
   issueType IssueType
   severity  Severity
   status    ReportStatus @default(PENDING)
+  description String?
 
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String

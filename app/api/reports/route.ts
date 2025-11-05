@@ -6,15 +6,33 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 const prisma = new PrismaClient();
 
 export async function GET() {
+  const session = await getServerSession(authOptions);
+
   try {
-    const approvedReports = await prisma.report.findMany({
-      where: {
-        status: 'APPROVED',
-      },
+    const whereClause: any = {
+      status: 'APPROVED',
+    };
+
+    if (session?.user?.email) {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      });
+
+      if (user) {
+        whereClause.OR = [
+          { status: 'APPROVED' },
+          { authorId: user.id, status: 'PENDING' }
+        ];
+        delete whereClause.status; // Remove the top-level status filter as it's now in the OR
+      }
+    }
+
+    const reports = await prisma.report.findMany({
+      where: whereClause,
     });
-    return NextResponse.json(approvedReports, { status: 200 });
+    return NextResponse.json(reports, { status: 200 });
   } catch (error) {
-    console.error("Error fetching approved reports:", error);
+    console.error("Error fetching reports:", error);
     return NextResponse.json({ error: "Could not fetch reports" }, { status: 500 });
   }
 }
@@ -56,7 +74,7 @@ export async function POST(request: Request) {
   }
 
   const data = await request.json()
-  const { latitude, longitude, issueType, severity } = data
+  const { latitude, longitude, issueType, severity, description } = data
 
   if (!latitude || !longitude || !issueType || !severity) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
@@ -69,6 +87,7 @@ export async function POST(request: Request) {
         longitude,
         issueType,
         severity,
+        description,
         status: 'PENDING',
         authorId: user.id,
       },
