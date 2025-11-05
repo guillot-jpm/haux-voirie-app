@@ -80,9 +80,13 @@ export async function PATCH(
       }
 
       // Reset the notification timer if the report is approved
-      await prisma.appState.update({
+      await prisma.appState.upsert({
         where: { singletonKey: "primary" },
-        data: { lastNotificationSentAt: null },
+        update: { lastNotificationSentAt: null },
+        create: {
+          singletonKey: "primary",
+          lastNotificationSentAt: null
+        },
       });
     }
 

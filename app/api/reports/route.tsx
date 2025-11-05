@@ -132,9 +132,13 @@ export async function POST(request: Request) {
             html: emailHtml,
           });
 
-          await prisma.appState.update({
+          await prisma.appState.upsert({
             where: { singletonKey: "primary" },
-            data: { lastNotificationSentAt: now },
+            update: { lastNotificationSentAt: now },
+            create: {
+              singletonKey: "primary",
+              lastNotificationSentAt: now
+            },
           });
         }
       }
