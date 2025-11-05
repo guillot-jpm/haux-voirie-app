@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import prisma from "@/lib/prisma";
+import { IssueType, Severity, ReportStatus } from "@prisma/client";
 
 export async function PATCH(
   request: NextRequest,
@@ -25,18 +26,18 @@ export async function PATCH(
   const { status, description, photoUrl, issueType, severity } = await request.json();
 
   const updateData: {
-    status?: string;
+    status?: ReportStatus;
     description?: string;
     photoUrl?: string;
-    issueType?: string;
-    severity?: string;
+    issueType?: IssueType;
+    severity?: Severity;
   } = {};
 
   if (status) {
     if (!["PENDING", "APPROVED", "REJECTED", "RESOLVED"].includes(status)) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 });
     }
-    updateData.status = status;
+    updateData.status = status as ReportStatus;
   }
 
   if (description) {
@@ -48,11 +49,11 @@ export async function PATCH(
   }
 
   if (issueType) {
-    updateData.issueType = issueType;
+    updateData.issueType = issueType as IssueType;
   }
 
   if (severity) {
-    updateData.severity = severity;
+    updateData.severity = severity as Severity;
   }
 
   try {

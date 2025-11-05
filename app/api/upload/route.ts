@@ -2,9 +2,7 @@ import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function POST(request: Request): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
