@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import imageCompression from 'browser-image-compression';
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useToast } from "@/hooks/use-toast";
@@ -29,6 +30,7 @@ export default function ReportForm({
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -178,9 +180,36 @@ export default function ReportForm({
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => {
-                  if (e.target.files) {
-                    setPhoto(e.target.files[0]);
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  if (!file.type.startsWith('image/')) {
+                    onError({
+                      title: 'Invalid File',
+                      description: 'Please select an image file.',
+                    });
+                    return;
+                  }
+
+                  setIsCompressing(true);
+                  try {
+                    const options = {
+                      maxSizeMB: 2,
+                      maxWidthOrHeight: 1920,
+                      useWebWorker: true,
+                    };
+                    const compressedFile = await imageCompression(file, options);
+                    setPhoto(compressedFile);
+                  } catch (error) {
+                    console.error('Image compression failed:', error);
+                    setPhoto(file); // Fallback to original file
+                    onError({
+                      title: 'Compression Error',
+                      description: 'Could not compress image, using original file.',
+                    });
+                  } finally {
+                    setIsCompressing(false);
                   }
                 }}
                 style={{
@@ -194,23 +223,28 @@ export default function ReportForm({
             </div>
           </>
         )}
+        {isCompressing && (
+          <p style={{ fontSize: '12px', color: '#666', marginBottom: '15px' }}>
+            {t('compressingMessage')}
+          </p>
+        )}
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isCompressing}
             style={{
               flex: 1,
               padding: '10px',
-              backgroundColor: isSubmitting ? '#ccc' : '#000',
+              backgroundColor: isSubmitting || isCompressing ? '#ccc' : '#000',
               color: 'white',
               border: 'none',
               borderRadius: '4px',
-              cursor: isSubmitting ? 'not-allowed' : 'pointer',
+              cursor: isSubmitting || isCompressing ? 'not-allowed' : 'pointer',
               fontSize: '14px',
               fontWeight: '500'
             }}
           >
-            {isSubmitting ? t('submittingButton') : t('submitButton')}
+            {isCompressing ? t('compressingMessage') : (isSubmitting ? t('submittingButton') : t('submitButton'))}
           </button>
           <button
             type="button"
