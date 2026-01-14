@@ -4,7 +4,7 @@
     "reject": "Reject"
   },
   "LoginPage": {
-    "title": "Haux Road Network App",
+    "title": "Haux Alerte",
     "signedInAs": "Signed in as {email}",
     "notSignedIn": "Not signed in",
     "signInButton": "Sign in with Google",
@@ -55,7 +55,7 @@
     "HIGH": "High / Urgent"
   },
   "WelcomeDialog": {
-    "title": "Welcome to Haux & Vous!",
+    "title": "Welcome to Haux Alerte!",
     "greeting": "A quick note before you start:",
     "p1": "This application is a citizen initiative from Haux & Vous, a list of candidates for the municipal elections on March 15 and 22, 2026. It is not an official service of the current city council.",
     "p2": "Our goal is to support our values of transparency, proximity, and collaboration. We want to empower citizens to easily report issues in their neighborhoods and to be informed about the state of our roads, helping everyone understand the priorities for roadworks.",
