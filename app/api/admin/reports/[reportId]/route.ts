@@ -63,23 +63,29 @@ export async function PATCH(
       include: { author: true },
     });
 
-    // If the report was approved and the author is a VISITOR, check for promotion
-    if (status === "APPROVED" && updatedReport.author.role === "VISITOR") {
+    // Promotion Logic
+    if (status === "APPROVED") {
+      const author = updatedReport.author;
       const approvedReportsCount = await prisma.report.count({
         where: {
-          authorId: updatedReport.authorId,
+          authorId: author.id,
           status: "APPROVED",
         },
       });
 
-      if (approvedReportsCount >= 100) {
+      if (author.role === "NEWCOMER" && approvedReportsCount >= 1) {
         await prisma.user.update({
-          where: { id: updatedReport.authorId },
+          where: { id: author.id },
+          data: { role: "VISITOR" },
+        });
+      } else if (author.role === "VISITOR" && approvedReportsCount >= 100) {
+        await prisma.user.update({
+          where: { id: author.id },
           data: { role: "CITIZEN" },
         });
       }
 
-      // Reset the notification timer if the report is approved
+      // Reset the notification timer if a report is approved
       await prisma.appState.upsert({
         where: { singletonKey: "primary" },
         update: { lastNotificationSentAt: null },
