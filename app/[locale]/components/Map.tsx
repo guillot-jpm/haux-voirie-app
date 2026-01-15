@@ -16,6 +16,7 @@ import ReportForm from './ReportForm';
 import MapNotification from './MapNotification';
 import WelcomeControl from './WelcomeControl';
 import AdminPopup from './AdminPopup';
+import FilterControl from './FilterControl';
 import './MapNotification.css';
 
 // Fix for default icon issue with Webpack
@@ -70,6 +71,7 @@ const Map = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [adminPendingReports, setAdminPendingReports] = useState<Report[]>([]);
   const [userPendingReports, setUserPendingReports] = useState<Report[]>([]);
+  const [severityFilter, setSeverityFilter] = useState('ALL');
   const reportMarkerRef = useRef<L.Marker | null>(null);
   const [notification, setNotification] = useState<{ title: string; description: string; type: 'success' | 'error' | 'info' } | null>(null);
   const t = useTranslations('Map');
@@ -172,7 +174,11 @@ const Map = () => {
   const center: LatLngExpression = [44.75, -0.38];
 
   const markers = useMemo(() => {
-    return reports.map((report) => (
+    const visibleReports = reports.filter(r =>
+      severityFilter === 'ALL' || r.severity === severityFilter
+    );
+
+    return visibleReports.map((report) => (
       <Marker
         key={report.id}
         position={[report.latitude, report.longitude]}
@@ -192,7 +198,11 @@ const Map = () => {
     const isAdmin = session?.user?.role === 'ADMIN';
     const reportsToRender = isAdmin ? adminPendingReports : userPendingReports;
 
-    return reportsToRender.map((report) => (
+    const visiblePendingReports = reportsToRender.filter(r =>
+      severityFilter === 'ALL' || r.severity === severityFilter
+    );
+
+    return visiblePendingReports.map((report) => (
       <Marker
         key={report.id}
         position={[report.latitude, report.longitude]}
@@ -256,6 +266,10 @@ const Map = () => {
       )}
 
       <WelcomeControl />
+      <FilterControl
+        currentFilter={severityFilter}
+        onFilterChange={setSeverityFilter}
+      />
     </MapContainer>
   );
 };
