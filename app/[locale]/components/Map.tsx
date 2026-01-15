@@ -230,7 +230,7 @@ const Map = () => {
       />
       {geoJsonData && <GeoJSON data={geoJsonData} style={() => ({ color: '#4a83ec', weight: 2 })} />}
 
-      <MarkerClusterGroup>
+      <MarkerClusterGroup disableClusteringAtZoom={19}>
         {markers}
         {pendingMarkers}
       </MarkerClusterGroup>
