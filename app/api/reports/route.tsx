@@ -126,9 +126,9 @@ export async function POST(request: Request) {
           const emailHtml = await render(<NewReportEmail adminDashboardUrl={adminDashboardUrl} />);
 
           await resend.emails.send({
-            from: 'Haux Voirie <guillot.jpm@gmail.com>', // Replace with your verified domain
+            from: 'Haux Alerte <guillot.jpm@gmail.com>', // Replace with your verified domain
             to: adminEmails,
-            subject: 'New Road Report Submitted - Haux Voirie',
+            subject: 'New Road Report Submitted - Haux Alerte',
             html: emailHtml,
           });
 

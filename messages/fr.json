@@ -4,7 +4,7 @@
     "reject": "Rejeter"
   },
   "LoginPage": {
-    "title": "Application Voirie de Haux",
+    "title": "Haux Alerte",
     "signedInAs": "Connecté en tant que {email}",
     "notSignedIn": "Non connecté",
     "signInButton": "Se connecter avec Google",
@@ -55,7 +55,7 @@
     "HIGH": "Haute / Urgente"
   },
   "WelcomeDialog": {
-    "title": "Bienvenue sur Haux & Vous !",
+    "title": "Bienvenue sur Haux Alerte !",
     "greeting": "Une note rapide avant de commencer :",
     "p1": "Cette application est une initiative citoyenne de Haux & Vous, liste de candidats pour les élections municipales des 15 et 22 mars 2026. Il ne s'agit pas d'un service officiel de la mairie actuelle.",
     "p2": "Notre objectif est de soutenir nos valeurs de transparence, de proximité et de collaboration. Nous souhaitons permettre aux citoyens de signaler facilement les problèmes dans leur voisinage et d'être informés de l'état de la voirie, afin de mieux comprendre les priorités des travaux.",
