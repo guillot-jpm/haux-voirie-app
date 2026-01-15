@@ -220,10 +220,13 @@ const Map = () => {
       center={center}
       zoom={13}
       style={{ height: '100%', width: '100%' }}
+      maxZoom={20}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        maxZoom={20}
+        maxNativeZoom={19}
       />
       {geoJsonData && <GeoJSON data={geoJsonData} style={() => ({ color: '#4a83ec', weight: 2 })} />}
 
