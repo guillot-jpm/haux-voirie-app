@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next"
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, Role } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth"
 import { Resend } from "resend"
@@ -71,13 +71,14 @@ export async function POST(request: Request) {
     },
   });
 
-  const limits = {
+  const limits: Partial<Record<Role, number>> = {
     NEWCOMER: 1,
     VISITOR: 10,
     CITIZEN: 100,
   };
 
-  if (user.role in limits && reportCount >= limits[user.role]) {
+  const limit = limits[user.role];
+  if (limit !== undefined && reportCount >= limit) {
     return NextResponse.json({ error: "You have reached the reporting limit for today." }, { status: 429 });
   }
 
