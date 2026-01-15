@@ -154,75 +154,73 @@ export default function ReportForm({
             ))}
           </select>
         </div>
-        {session?.user?.role !== 'VISITOR' && (
-          <>
-            <div style={{ marginBottom: '15px' }}>
-              <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
-                Description (Optional)
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                  minHeight: '80px',
-                }}
-              />
-            </div>
-            <div style={{ marginBottom: '15px' }}>
-              <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
-                Photo (Optional)
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-
-                  if (!file.type.startsWith('image/')) {
-                    onError({
-                      title: 'Invalid File',
-                      description: 'Please select an image file.',
-                    });
-                    return;
-                  }
-
-                  setIsCompressing(true);
-                  try {
-                    const options = {
-                      maxSizeMB: 2,
-                      maxWidthOrHeight: 1920,
-                      useWebWorker: true,
-                    };
-                    const compressedFile = await imageCompression(file, options);
-                    setPhoto(compressedFile);
-                  } catch (error) {
-                    console.error('Image compression failed:', error);
-                    setPhoto(file); // Fallback to original file
-                    onError({
-                      title: 'Compression Error',
-                      description: 'Could not compress image, using original file.',
-                    });
-                  } finally {
-                    setIsCompressing(false);
-                  }
-                }}
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  fontSize: '14px',
-                }}
-              />
-            </div>
-          </>
+        {session?.user?.role !== 'NEWCOMER' && (
+          <div style={{ marginBottom: '15px' }}>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
+              Description (Optional)
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                fontSize: '14px',
+                minHeight: '80px',
+              }}
+            />
+          </div>
         )}
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', fontWeight: '500' }}>
+            Photo (Optional)
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              if (!file.type.startsWith('image/')) {
+                onError({
+                  title: 'Invalid File',
+                  description: 'Please select an image file.',
+                });
+                return;
+              }
+
+              setIsCompressing(true);
+              try {
+                const options = {
+                  maxSizeMB: 2,
+                  maxWidthOrHeight: 1920,
+                  useWebWorker: true,
+                };
+                const compressedFile = await imageCompression(file, options);
+                setPhoto(compressedFile);
+              } catch (error) {
+                console.error('Image compression failed:', error);
+                setPhoto(file); // Fallback to original file
+                onError({
+                  title: 'Compression Error',
+                  description: 'Could not compress image, using original file.',
+                });
+              } finally {
+                setIsCompressing(false);
+              }
+            }}
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              fontSize: '14px',
+            }}
+          />
+        </div>
         {isCompressing && (
           <p style={{ fontSize: '12px', color: '#666', marginBottom: '15px' }}>
             {t('compressingMessage')}

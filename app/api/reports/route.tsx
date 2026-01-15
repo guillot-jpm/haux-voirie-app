@@ -60,21 +60,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Your account has been banned." }, { status: 403 });
   }
 
-  // Enforce reporting limits for VISITOR role
-  if (user.role === 'VISITOR') {
-    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    const reportCount = await prisma.report.count({
-      where: {
-        authorId: user.id,
-        createdAt: {
-          gte: twentyFourHoursAgo,
-        },
+  // Enforce reporting limits based on user role
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const reportCount = await prisma.report.count({
+    where: {
+      authorId: user.id,
+      createdAt: {
+        gte: twentyFourHoursAgo,
       },
-    });
+    },
+  });
 
-    if (reportCount >= 10) {
-      return NextResponse.json({ error: "You have reached the reporting limit for today." }, { status: 429 });
-    }
+  const limits = {
+    NEWCOMER: 1,
+    VISITOR: 10,
+    CITIZEN: 100,
+  };
+
+  if (user.role in limits && reportCount >= limits[user.role]) {
+    return NextResponse.json({ error: "You have reached the reporting limit for today." }, { status: 429 });
   }
 
   const data = await request.json()
@@ -92,11 +96,11 @@ export async function POST(request: Request) {
       severity,
       status: 'PENDING',
       authorId: user.id,
+      photoUrl,
     };
 
-    if (user.role !== 'VISITOR') {
+    if (user.role !== 'NEWCOMER') {
       reportData.description = description;
-      reportData.photoUrl = photoUrl;
     }
 
     const newReport = await prisma.report.create({

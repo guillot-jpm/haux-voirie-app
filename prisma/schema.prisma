@@ -12,6 +12,7 @@ datasource db {
 
 // ENUMERATIONS
 enum Role {
+  NEWCOMER
   VISITOR
   CITIZEN
   ADMIN
@@ -53,7 +54,7 @@ model User {
   emailVerified DateTime?
   image   String?
 
-  role    Role      @default(VISITOR)
+  role    Role      @default(NEWCOMER)
   status  UserStatus @default(ACTIVE)
 
   reports Report[]  // A user can have many reports

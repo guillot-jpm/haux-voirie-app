@@ -15,8 +15,8 @@ export async function POST(request: Request): Promise<NextResponse> {
     where: { email: session.user.email },
   });
 
-  if (!user || (user.role !== 'CITIZEN' && user.role !== 'ADMIN')) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
   const { searchParams } = new URL(request.url);
