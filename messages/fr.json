@@ -14,7 +14,9 @@
     "signInWithGoogle": "Se connecter avec Google",
     "orContinueWith": "Ou continuer avec",
     "sendLoginLink": "Envoyer le lien de connexion",
-    "checkYourEmail": "Vérifiez votre boîte de réception pour le lien de connexion."
+    "checkYourEmail": "Vérifiez votre boîte de réception pour le lien de connexion.",
+    "checkYourEmailTitle": "Vérifiez votre boîte de réception",
+    "checkYourEmailDescription": "Un lien de connexion a été envoyé à votre adresse e-mail."
   },
   "Map": {
     "loginRequiredTitle": "Connexion Requise",
