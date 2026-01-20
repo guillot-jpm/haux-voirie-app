@@ -7,8 +7,16 @@
     "title": "Haux Alerte",
     "signedInAs": "Connecté en tant que {email}",
     "notSignedIn": "Non connecté",
-    "signInButton": "Se connecter avec Google",
-    "signOutButton": "Se déconnecter"
+    "signInButton": "Se connecter",
+    "signOutButton": "Se déconnecter",
+    "signIn": "Se connecter",
+    "signInDescription": "Choisissez votre méthode de connexion.",
+    "signInWithGoogle": "Se connecter avec Google",
+    "orContinueWith": "Ou continuer avec",
+    "sendLoginLink": "Envoyer le lien de connexion",
+    "checkYourEmail": "Vérifiez votre boîte de réception pour le lien de connexion.",
+    "checkYourEmailTitle": "Vérifiez votre boîte de réception",
+    "checkYourEmailDescription": "Un lien de connexion a été envoyé à votre adresse e-mail."
   },
   "Map": {
     "loginRequiredTitle": "Connexion Requise",

@@ -19,7 +19,7 @@ export default function LoginButton() {
   return (
     <div>
       <p>{t('notSignedIn')}</p>
-      <button onClick={() => signIn("google")}>{t('signInButton')}</button>
+      <button onClick={() => signIn()}>{t('signInButton')}</button>
     </div>
   );
 }

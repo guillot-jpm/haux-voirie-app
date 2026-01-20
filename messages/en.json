@@ -7,8 +7,16 @@
     "title": "Haux Alerte",
     "signedInAs": "Signed in as {email}",
     "notSignedIn": "Not signed in",
-    "signInButton": "Sign in with Google",
-    "signOutButton": "Sign out"
+    "signInButton": "Sign In",
+    "signOutButton": "Sign out",
+    "signIn": "Sign In",
+    "signInDescription": "Choose your sign-in method.",
+    "signInWithGoogle": "Sign in with Google",
+    "orContinueWith": "Or continue with",
+    "sendLoginLink": "Send Login Link",
+    "checkYourEmail": "Check your inbox for the login link.",
+    "checkYourEmailTitle": "Check your inbox",
+    "checkYourEmailDescription": "A login link has been sent to your email address."
   },
   "Map": {
     "loginRequiredTitle": "Login Required",
