@@ -3,3 +3,12 @@ export const ISSUE_TYPES = [
 ] as const;
 
 export const SEVERITY_LEVELS = ["LOW", "MEDIUM", "HIGH"] as const;
+
+export const REJECTION_REASONS = [
+  "DUPLICATE",
+  "PRIVATE_DOMAIN",
+  "OUTSIDE_JURISDICTION",
+  "NOT_AN_ISSUE",
+  "LACK_OF_INFO",
+  "BREACH_OF_TERMS"
+] as const;

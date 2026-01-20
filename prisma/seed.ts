@@ -1,73 +1,52 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 async function main() {
-  console.log(`Start seeding ...`);
-
-  // Clear existing data
+  // Delete existing data
   await prisma.report.deleteMany({});
-  await prisma.user.deleteMany({});
   await prisma.session.deleteMany({});
   await prisma.account.deleteMany({});
+  await prisma.user.deleteMany({});
   await prisma.appState.deleteMany({});
 
-  // Seed the AppState singleton
-  await prisma.appState.upsert({
-    where: { singletonKey: "primary" },
-    update: {},
-    create: { singletonKey: "primary" },
-  });
 
+  // Create an admin user
   const admin = await prisma.user.create({
     data: {
-      name: 'Admin User',
-      email: 'admin@example.com',
+      email: 'admin@test.com',
       role: 'ADMIN',
     },
   });
 
-  const citizen = await prisma.user.create({
+  // Create a session for the admin user
+  await prisma.session.create({
     data: {
-      name: 'Citizen User',
-      email: 'citizen@example.com',
-      role: 'CITIZEN',
+      userId: admin.id,
+      expires: new Date(Date.now() + 86400 * 1000), // 24 hours
+      sessionToken: 'test-session-token',
     },
   });
 
-  // Create one approved report by the admin
-  await prisma.report.create({
-    data: {
-      latitude: 44.75,
-      longitude: -0.38,
-      issueType: 'POTHOLE',
-      severity: 'HIGH',
-      status: 'APPROVED',
-      authorId: admin.id,
-    },
-  });
+    // Create one pending report by the admin
+    await prisma.report.create({
+        data: {
+          latitude: 44.755,
+          longitude: -0.385,
+          issueType: 'FLOODING_WATER_ISSUE',
+          severity: 'MEDIUM',
+          status: 'PENDING',
+          authorId: admin.id,
+        },
+      });
 
-  // Create one pending report by the citizen
-  await prisma.report.create({
-    data: {
-      latitude: 44.755,
-      longitude: -0.385,
-      issueType: 'FLOODING_WATER_ISSUE',
-      severity: 'MEDIUM',
-      status: 'PENDING',
-      authorId: citizen.id,
-    },
-  });
-
-  console.log(`Seeding finished.`);
+  console.log('Admin user and session created successfully');
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
   })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

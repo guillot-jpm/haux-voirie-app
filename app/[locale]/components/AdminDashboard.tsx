@@ -20,11 +20,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useTranslations } from "next-intl";
-
 import MiniMap from "./MiniMap";
+import { RejectionDialog } from "@/components/RejectionDialog";
 
 interface Report {
   id: string;
@@ -46,9 +45,10 @@ const AdminDashboard = () => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [isBanConfirmOpen, setIsBanConfirmOpen] = useState(false);
   const [expandedReportId, setExpandedReportId] = useState<string | null>(null);
-  const t = useTranslations('AdminDashboard');
-  const tEnums = useTranslations('Enums');
-
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+  const [reportToReject, setReportToReject] = useState<Report | null>(null);
+  const t = useTranslations("AdminDashboard");
+  const tEnums = useTranslations("Enums");
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -73,14 +73,23 @@ const AdminDashboard = () => {
     fetchReports();
   }, []);
 
-  const handleUpdateStatus = async (reportId: string, status: "APPROVED" | "REJECTED") => {
+  const handleUpdateStatus = async (
+    reportId: string,
+    status: "APPROVED" | "REJECTED",
+    rejectionReason?: string
+  ) => {
     try {
+      const body: { status: string; rejectionReason?: string } = { status };
+      if (rejectionReason) {
+        body.rejectionReason = rejectionReason;
+      }
+
       const response = await fetch(`/api/admin/reports/${reportId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
@@ -99,16 +108,23 @@ const AdminDashboard = () => {
     if (!selectedReport) return;
 
     try {
-      const response = await fetch(`/api/admin/users/${selectedReport.author.id}/ban`, {
-        method: "POST",
-      });
+      const response = await fetch(
+        `/api/admin/users/${selectedReport.author.id}/ban`,
+        {
+          method: "POST",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to ban user");
       }
 
       // Automatically reject the report after banning the user
-      await handleUpdateStatus(selectedReport.id, "REJECTED");
+      await handleUpdateStatus(
+        selectedReport.id,
+        "REJECTED",
+        "BREACH_OF_TERMS"
+      );
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -129,7 +145,7 @@ const AdminDashboard = () => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>{t('title')}</CardTitle>
+          <CardTitle>{t("title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -154,17 +170,22 @@ const AdminDashboard = () => {
                     </TableCell>
                     <TableCell>
                       <Button
-                        onClick={() => handleUpdateStatus(report.id, "APPROVED")}
+                        onClick={() =>
+                          handleUpdateStatus(report.id, "APPROVED")
+                        }
                         className="mr-2"
                       >
-                        {t('approveButton')}
+                        {t("approveButton")}
                       </Button>
                       <Button
-                        onClick={() => handleUpdateStatus(report.id, "REJECTED")}
+                        onClick={() => {
+                          setReportToReject(report);
+                          setIsRejectDialogOpen(true);
+                        }}
                         variant="destructive"
                         className="mr-2"
                       >
-                        {t('rejectButton')}
+                        {t("rejectButton")}
                       </Button>
                       <Button
                         onClick={() => {
@@ -174,7 +195,7 @@ const AdminDashboard = () => {
                         variant="destructive"
                         className="mr-2"
                       >
-                        {t('banUserButton')}
+                        {t("banUserButton")}
                       </Button>
                       <Button
                         onClick={() =>
@@ -183,7 +204,9 @@ const AdminDashboard = () => {
                           )
                         }
                       >
-                        {expandedReportId === report.id ? t('hideMapButton') : t('showMapButton')}
+                        {expandedReportId === report.id
+                          ? t("hideMapButton")
+                          : t("showMapButton")}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -207,21 +230,35 @@ const AdminDashboard = () => {
       <AlertDialog open={isBanConfirmOpen} onOpenChange={setIsBanConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t('banConfirmTitle')}</AlertDialogTitle>
+            <AlertDialogTitle>{t("banConfirmTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t('banConfirmDescription', {userEmail: selectedReport?.author.email || ''})}
+              {t("banConfirmDescription", {
+                userEmail: selectedReport?.author.email || "",
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setSelectedReport(null)}>
-              {t('cancelButton')}
+              {t("cancelButton")}
             </AlertDialogCancel>
             <AlertDialogAction onClick={handleBanUser}>
-              {t('confirmButton')}
+              {t("confirmButton")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <RejectionDialog
+        open={isRejectDialogOpen}
+        onOpenChange={setIsRejectDialogOpen}
+        onConfirm={(reason) => {
+          if (reportToReject) {
+            handleUpdateStatus(reportToReject.id, "REJECTED", reason);
+            setIsRejectDialogOpen(false);
+            setReportToReject(null);
+          }
+        }}
+      />
     </>
   );
 };

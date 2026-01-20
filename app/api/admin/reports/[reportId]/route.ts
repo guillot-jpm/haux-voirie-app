@@ -6,7 +6,7 @@ import { IssueType, Severity, ReportStatus } from "@prisma/client";
 
 export async function PATCH(
   request: NextRequest,
-  { params: paramsPromise }: { params: Promise<{ reportId: string }> }
+  { params }: { params: { reportId: string } }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -22,8 +22,9 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { reportId } = await paramsPromise;
-  const { status, description, photoUrl, issueType, severity } = await request.json();
+  const { reportId } = params;
+  const { status, description, photoUrl, issueType, severity, rejectionReason } =
+    await request.json();
 
   const updateData: {
     status?: ReportStatus;
@@ -31,6 +32,7 @@ export async function PATCH(
     photoUrl?: string;
     issueType?: IssueType;
     severity?: Severity;
+    rejectionReason?: string;
   } = {};
 
   if (status) {
@@ -56,6 +58,10 @@ export async function PATCH(
     updateData.severity = severity as Severity;
   }
 
+  if (rejectionReason) {
+    updateData.rejectionReason = rejectionReason;
+  }
+
   try {
     const updatedReport = await prisma.report.update({
       where: { id: reportId },
@@ -63,9 +69,26 @@ export async function PATCH(
       include: { author: true },
     });
 
+    const { author } = updatedReport;
+
+    // Notification logic
+    if (
+      (status === "APPROVED" || status === "REJECTED") &&
+      author.notifyOnStatusChange
+    ) {
+      if (status === "APPROVED") {
+        // TODO: Send approval email
+        console.log(`Sending approval notification to ${author.email}`);
+      } else if (status === "REJECTED") {
+        // TODO: Send rejection email with reason
+        console.log(
+          `Sending rejection notification to ${author.email} with reason: ${rejectionReason}`
+        );
+      }
+    }
+
     // Promotion Logic
     if (status === "APPROVED") {
-      const author = updatedReport.author;
       const approvedReportsCount = await prisma.report.count({
         where: {
           authorId: author.id,
@@ -91,7 +114,7 @@ export async function PATCH(
         update: { lastNotificationSentAt: null },
         create: {
           singletonKey: "primary",
-          lastNotificationSentAt: null
+          lastNotificationSentAt: null,
         },
       });
     }

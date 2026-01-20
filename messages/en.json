@@ -60,7 +60,13 @@
     "OTHER": "Other",
     "LOW": "Low",
     "MEDIUM": "Medium",
-    "HIGH": "High / Urgent"
+    "HIGH": "High / Urgent",
+    "DUPLICATE": "Duplicate",
+    "PRIVATE_DOMAIN": "Private Property",
+    "OUTSIDE_JURISDICTION": "Outside Jurisdiction",
+    "NOT_AN_ISSUE": "Not an Issue",
+    "LACK_OF_INFO": "Lack of Information",
+    "BREACH_OF_TERMS": "Breach of Terms of Use"
   },
   "WelcomeDialog": {
     "title": "Welcome to Haux Alerte!",
@@ -68,5 +74,16 @@
     "p1": "This application is a citizen initiative from Haux & Vous, a list of candidates for the municipal elections on March 15 and 22, 2026. It is not an official service of the current city council.",
     "p2": "Our goal is to support our values of transparency, proximity, and collaboration. We want to empower citizens to easily report issues in their neighborhoods and to be informed about the state of our roads, helping everyone understand the priorities for roadworks.",
     "closeButton": "I Understand"
+  },
+  "RejectionDialog": {
+    "title": "Select Rejection Reason",
+    "description": "Please select a reason for rejecting this report. This will be communicated to the user.",
+    "placeholder": "Select a reason",
+    "cancelButton": "Cancel",
+    "confirmButton": "Confirm"
+  },
+  "UnsubscribePage": {
+    "title": "Unsubscribed Successfully",
+    "description": "You will no longer receive email notifications about the status of your reports."
   }
 }
