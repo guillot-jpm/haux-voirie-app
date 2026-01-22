@@ -1,52 +1,73 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 async function main() {
-  // Delete existing data
+  console.log(`Start seeding ...`);
+
+  // Clear existing data
   await prisma.report.deleteMany({});
+  await prisma.user.deleteMany({});
   await prisma.session.deleteMany({});
   await prisma.account.deleteMany({});
-  await prisma.user.deleteMany({});
   await prisma.appState.deleteMany({});
 
+  // Seed the AppState singleton
+  await prisma.appState.upsert({
+    where: { singletonKey: "primary" },
+    update: {},
+    create: { singletonKey: "primary" },
+  });
 
-  // Create an admin user
   const admin = await prisma.user.create({
     data: {
-      email: 'admin@test.com',
+      name: 'Admin User',
+      email: 'admin@example.com',
       role: 'ADMIN',
     },
   });
 
-  // Create a session for the admin user
-  await prisma.session.create({
+  const citizen = await prisma.user.create({
     data: {
-      userId: admin.id,
-      expires: new Date(Date.now() + 86400 * 1000), // 24 hours
-      sessionToken: 'test-session-token',
+      name: 'Citizen User',
+      email: 'citizen@example.com',
+      role: 'CITIZEN',
     },
   });
 
-    // Create one pending report by the admin
-    await prisma.report.create({
-        data: {
-          latitude: 44.755,
-          longitude: -0.385,
-          issueType: 'FLOODING_WATER_ISSUE',
-          severity: 'MEDIUM',
-          status: 'PENDING',
-          authorId: admin.id,
-        },
-      });
+  // Create one approved report by the admin
+  await prisma.report.create({
+    data: {
+      latitude: 44.75,
+      longitude: -0.38,
+      issueType: 'POTHOLE',
+      severity: 'HIGH',
+      status: 'APPROVED',
+      authorId: admin.id,
+    },
+  });
 
-  console.log('Admin user and session created successfully');
+  // Create one pending report by the citizen
+  await prisma.report.create({
+    data: {
+      latitude: 44.755,
+      longitude: -0.385,
+      issueType: 'FLOODING_WATER_ISSUE',
+      severity: 'MEDIUM',
+      status: 'PENDING',
+      authorId: citizen.id,
+    },
+  });
+
+  console.log(`Seeding finished.`);
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
+  .then(async () => {
+    await prisma.$disconnect()
   })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
