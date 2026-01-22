@@ -6,7 +6,7 @@ import { IssueType, Severity, ReportStatus } from "@prisma/client";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { reportId: string } }
+  { params }: { params: Promise<{ reportId: string }> }  // params is a Promise
 ) {
   const session = await getServerSession(authOptions);
 
@@ -22,7 +22,7 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { reportId } = params;
+  const { reportId } = await params;  // Await the params Promise here
   const { status, description, photoUrl, issueType, severity, rejectionReason } =
     await request.json();
 
