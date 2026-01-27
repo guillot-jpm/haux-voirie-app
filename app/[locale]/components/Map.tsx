@@ -75,6 +75,10 @@ const Map = () => {
   const t = useTranslations('Map');
   const tEnums = useTranslations('Enums');
   const tReportDialog = useTranslations('ReportDialog');
+  const [rejectDialogState, setRejectDialogState] = useState<{
+    isOpen: boolean;
+    reportId: string | null;
+  }>({ isOpen: false, reportId: null });
 
   useEffect(() => {
     const fetchGeoJson = async () => {
@@ -169,6 +173,36 @@ const Map = () => {
     }
   };
 
+  // New handler for confirming rejection
+  const handleConfirmReject = async (reason: string) => {
+    const reportId = rejectDialogState.reportId;
+    if (!reportId) return;
+
+    try {
+      const response = await fetch(`/api/admin/reports/${reportId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'REJECTED', rejectionReason: reason }),
+      });
+
+      if (response.ok) {
+        // Remove from admin pending list
+        setAdminPendingReports((current) => current.filter((r) => r.id !== reportId));
+        setNotification({
+          title: "Success",
+          description: "Report rejected successfully",
+          type: 'success'
+        });
+      } else {
+        console.error('Failed to reject report');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    } finally {
+      setRejectDialogState({ isOpen: false, reportId: null });
+    }
+  };
+
   const center: LatLngExpression = [44.75, -0.38];
 
   const markers = useMemo(() => {
@@ -200,7 +234,11 @@ const Map = () => {
       >
         <Popup>
           {isAdmin ? (
-            <AdminPopup report={report} onActionComplete={handleModerationComplete} />
+            <AdminPopup 
+              report={report} 
+              onActionComplete={handleModerationComplete}
+              onRequestReject={(id) => setRejectDialogState({ isOpen: true, reportId: id })} // <--- Open dialog in Map scope
+            />
           ) : (
             <>
               <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
@@ -256,6 +294,12 @@ const Map = () => {
       )}
 
       <WelcomeControl />
+
+      <RejectionDialog
+        open={rejectDialogState.isOpen}
+        onOpenChange={(isOpen) => setRejectDialogState(prev => ({ ...prev, isOpen }))}
+        onConfirm={handleConfirmReject}
+      />
     </MapContainer>
   );
 };

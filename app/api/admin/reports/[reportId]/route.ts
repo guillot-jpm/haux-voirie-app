@@ -77,13 +77,41 @@ export async function PATCH(
       author.notifyOnStatusChange
     ) {
       if (status === "APPROVED") {
-        // TODO: Send approval email
         console.log(`Sending approval notification to ${author.email}`);
+
+	const emailHtml = await render(
+          ReportApprovedEmail({
+            reportId: updatedReport.id,
+            unsubscribeUrl
+          })
+        );
+
+        await resend.emails.send({
+          from: 'Haux Alerte <notifications@haux-alerte.fr>',
+          to: author.email,
+          subject: 'Your Report has been Approved',
+          html: emailHtml,
+        });
       } else if (status === "REJECTED") {
-        // TODO: Send rejection email with reason
         console.log(
           `Sending rejection notification to ${author.email} with reason: ${rejectionReason}`
         );
+
+	const emailHtml = await render(
+          ReportRejectedEmail({
+            reportId: updatedReport.id,
+            rejectionReason: rejectionReason || "Other",
+            unsubscribeUrl
+          })
+        );
+
+        await resend.emails.send({
+          from: 'Haux Alerte <notifications@haux-alerte.fr>',
+          to: author.email,
+          subject: 'Your Report has been Rejected',
+          html: emailHtml,
+        });
+
       }
     }
 

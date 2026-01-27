@@ -3,37 +3,23 @@
 import { Report } from '@prisma/client';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { RejectionDialog } from '@/components/RejectionDialog';
 
 interface AdminPopupProps {
   report: Report;
   onActionComplete: (reportId: string, updatedReport?: Report) => void;
+  onRequestReject: (reportId: string) => void; // <--- NEW PROP
 }
 
-const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
+const AdminPopup = ({ report, onActionComplete, onRequestReject }: AdminPopupProps) => {
   const t = useTranslations('AdminPopup');
   const tEnums = useTranslations('Enums');
-  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
 
-  const handleModeration = async (
-    newStatus: 'APPROVED' | 'REJECTED',
-    rejectionReason?: string
-  ) => {
+  const handleApprove = async () => {
     try {
-      const body: { status: string; rejectionReason?: string } = {
-        status: newStatus,
-      };
-      if (rejectionReason) {
-        body.rejectionReason = rejectionReason;
-      }
-
       const response = await fetch(`/api/admin/reports/${report.id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'APPROVED' }),
       });
 
       if (response.ok) {
@@ -64,23 +50,14 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setIsRejectDialogOpen(true)}
+          onClick={() => onRequestReject(report.id)} // <--- Call parent instead of opening local dialog
         >
           {t('reject')}
         </Button>
-        <Button size="sm" onClick={() => handleModeration('APPROVED')}>
+        <Button size="sm" onClick={handleApprove}>
           {t('approve')}
         </Button>
       </div>
-
-      <RejectionDialog
-        open={isRejectDialogOpen}
-        onOpenChange={setIsRejectDialogOpen}
-        onConfirm={(reason) => {
-          handleModeration('REJECTED', reason);
-          setIsRejectDialogOpen(false);
-        }}
-      />
     </div>
   );
 };
