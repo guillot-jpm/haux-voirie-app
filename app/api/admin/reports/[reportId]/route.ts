@@ -12,7 +12,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ reportId: string }> }  // params is a Promise
+  { params }: { params: Promise<{ reportId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -28,7 +28,7 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { reportId } = await params;  // Await the params Promise here
+  const { reportId } = await params;
   const { status, description, photoUrl, issueType, severity, rejectionReason } =
     await request.json();
 
@@ -78,28 +78,32 @@ export async function PATCH(
     const { author } = updatedReport;
 
     // Notification logic
+    // We explicitly check 'author.email' here so TypeScript knows it is not null inside the block
     if (
       (status === "APPROVED" || status === "REJECTED") &&
-      author.notifyOnStatusChange
+      author.notifyOnStatusChange &&
+      author.email
     ) {
-
-      const origin = request.headers.get('origin') || process.env.NEXTAUTH_URL || 'http://localhost:3000';
+      const origin =
+        request.headers.get("origin") ||
+        process.env.NEXTAUTH_URL ||
+        "http://localhost:3000";
       const unsubscribeUrl = `${origin}/unsubscribe?userId=${author.id}&locale=en`;
 
       if (status === "APPROVED") {
         console.log(`Sending approval notification to ${author.email}`);
 
-	const emailHtml = await render(
+        const emailHtml = await render(
           ReportApprovedEmail({
             reportId: updatedReport.id,
-            unsubscribeUrl
+            unsubscribeUrl,
           })
         );
 
         await resend.emails.send({
-          from: 'Haux Alerte <notifications@haux-alerte.fr>',
+          from: "Haux Alerte <notifications@haux-alerte.fr>",
           to: author.email,
-          subject: 'Your Report has been Approved',
+          subject: "Your Report has been Approved",
           html: emailHtml,
         });
       } else if (status === "REJECTED") {
@@ -107,21 +111,20 @@ export async function PATCH(
           `Sending rejection notification to ${author.email} with reason: ${rejectionReason}`
         );
 
-	const emailHtml = await render(
+        const emailHtml = await render(
           ReportRejectedEmail({
             reportId: updatedReport.id,
             rejectionReason: rejectionReason || "Other",
-            unsubscribeUrl
+            unsubscribeUrl,
           })
         );
 
         await resend.emails.send({
-          from: 'Haux Alerte <notifications@haux-alerte.fr>',
+          from: "Haux Alerte <notifications@haux-alerte.fr>",
           to: author.email,
-          subject: 'Your Report has been Rejected',
+          subject: "Your Report has been Rejected",
           html: emailHtml,
         });
-
       }
     }
 
