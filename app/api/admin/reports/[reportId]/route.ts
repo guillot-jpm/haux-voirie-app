@@ -8,6 +8,8 @@ import { ReportApprovedEmail } from "@/emails/ReportApprovedEmail";
 import { ReportRejectedEmail } from "@/emails/ReportRejectedEmail";
 import { render } from "@react-email/render";
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ reportId: string }> }  // params is a Promise
@@ -80,6 +82,10 @@ export async function PATCH(
       (status === "APPROVED" || status === "REJECTED") &&
       author.notifyOnStatusChange
     ) {
+
+      const origin = request.headers.get('origin') || process.env.NEXTAUTH_URL || 'http://localhost:3000';
+      const unsubscribeUrl = `${origin}/unsubscribe?userId=${author.id}&locale=en`;
+
       if (status === "APPROVED") {
         console.log(`Sending approval notification to ${author.email}`);
 
