@@ -24,7 +24,7 @@ export const ReportApprovedEmail = ({
 }: ReportApprovedEmailProps) => (
   <Html>
     <Head />
-    <Preview>Your report has been approved!</Preview>
+    <Preview>Votre signalement a été approuvé !</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
@@ -33,24 +33,25 @@ export const ReportApprovedEmail = ({
           height="48"
           alt="Haux Alerte Logo"
         />
-        <Heading style={h1}>Report Approved</Heading>
+        <Heading style={h1}>Signalement Approuvé</Heading>
         <Text style={text}>
-          Great news! Your report with ID {reportId} has been approved by an
-          administrator. Thank you for helping us improve our community.
+          Bonne nouvelle ! Votre signalement n°{reportId} a été approuvé par un
+          administrateur. Merci de nous aider à améliorer notre commune.
         </Text>
         <Text style={text}>
-          You can view your report on the map by clicking the link below:
+          Vous pouvez consulter votre signalement sur la carte en cliquant sur le
+          lien ci-dessous :
         </Text>
         <Link
           href={`${baseUrl}/?reportId=${reportId}`}
           style={button}
         >
-          View Report
+          Voir le signalement
         </Link>
         <Text style={footer}>
-          Don't want to receive these notifications?{" "}
+          Vous ne souhaitez plus recevoir ces notifications ?{" "}
           <Link href={unsubscribeUrl} style={link}>
-            Unsubscribe
+            Se désinscrire
           </Link>
         </Text>
       </Container>

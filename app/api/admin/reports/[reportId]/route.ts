@@ -88,7 +88,17 @@ export async function PATCH(
         request.headers.get("origin") ||
         process.env.NEXTAUTH_URL ||
         "http://localhost:3000";
-      const unsubscribeUrl = `${origin}/unsubscribe?userId=${author.id}&locale=en`;
+      const unsubscribeUrl = `${origin}/unsubscribe?userId=${author.id}&locale=fr`;
+
+      const rejectionReasonTranslations: { [key: string]: string } = {
+        DUPLICATE: "Doublon",
+        PRIVATE_DOMAIN: "Propriété Privée",
+        OUTSIDE_JURISDICTION: "Hors Juridiction",
+        NOT_AN_ISSUE: "Pas un Problème",
+        LACK_OF_INFO: "Manque d'Information",
+        BREACH_OF_TERMS: "Violation des Conditions d'Utilisation",
+        OTHER: "Autre",
+      };
 
       if (status === "APPROVED") {
         console.log(`Sending approval notification to ${author.email}`);
@@ -103,18 +113,22 @@ export async function PATCH(
         await resend.emails.send({
           from: "Haux Alerte <notifications@haux-alerte.fr>",
           to: author.email,
-          subject: "Your Report has been Approved",
+          subject: "Votre signalement a été approuvé",
           html: emailHtml,
         });
       } else if (status === "REJECTED") {
+        const translatedReason =
+          rejectionReasonTranslations[rejectionReason as string] ||
+          rejectionReason ||
+          "Autre";
         console.log(
-          `Sending rejection notification to ${author.email} with reason: ${rejectionReason}`
+          `Sending rejection notification to ${author.email} with reason: ${translatedReason}`
         );
 
         const emailHtml = await render(
           ReportRejectedEmail({
             reportId: updatedReport.id,
-            rejectionReason: rejectionReason || "Other",
+            rejectionReason: translatedReason,
             unsubscribeUrl,
           })
         );
@@ -122,7 +136,7 @@ export async function PATCH(
         await resend.emails.send({
           from: "Haux Alerte <notifications@haux-alerte.fr>",
           to: author.email,
-          subject: "Your Report has been Rejected",
+          subject: "Votre signalement a été rejeté",
           html: emailHtml,
         });
       }

@@ -23,19 +23,14 @@ export const MagicLinkEmail = ({ url }: MagicLinkEmailProps) => (
       <Container style={container}>
         <Heading style={h1}>Se connecter à Haux Alerte</Heading>
         <Text style={text}>
-          Cliquez sur le lien ci-dessous pour vous connecter à votre compte Haux Alerte.
+          Cliquez sur le bouton ci-dessous pour vous connecter.
         </Text>
-        <Link
+        <Button
+          style={button}
           href={url}
-          target="_blank"
-          style={{
-            ...link,
-            display: "block",
-            marginBottom: "16px",
-          }}
         >
-          Cliquez ici pour vous connecter
-        </Link>
+          Se connecter
+        </Button>
         <Text style={text}>
           Si vous n&apos;avez pas demandé ce lien, vous pouvez ignorer cet e-mail en toute sécurité.
         </Text>
@@ -84,4 +79,18 @@ const text = {
   color: "#000000",
   fontSize: "14px",
   lineHeight: "24px",
+};
+
+const button = {
+  backgroundColor: "#007bff",
+  borderRadius: "5px",
+  color: "#fff",
+  fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+  fontSize: "15px",
+  fontWeight: "bold",
+  textDecoration: "none",
+  textAlign: "center" as const,
+  display: "inline-block",
+  padding: "12px 20px",
+  margin: "16px 0",
 };

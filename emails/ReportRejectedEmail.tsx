@@ -26,7 +26,7 @@ export const ReportRejectedEmail = ({
 }: ReportRejectedEmailProps) => (
   <Html>
     <Head />
-    <Preview>Your report has been rejected</Preview>
+    <Preview>Votre signalement a été rejeté</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
@@ -35,21 +35,22 @@ export const ReportRejectedEmail = ({
           height="48"
           alt="Haux Alerte Logo"
         />
-        <Heading style={h1}>Report Rejected</Heading>
+        <Heading style={h1}>Signalement Rejeté</Heading>
         <Text style={text}>
-          Unfortunately, your report with ID {reportId} has been rejected by an
-          administrator.
+          Malheureusement, votre signalement n°{reportId} a été rejeté par un
+          administrateur.
         </Text>
         <Text style={text}>
-          <strong>Reason for rejection:</strong> {rejectionReason}
+          <strong>Motif du rejet :</strong> {rejectionReason}
         </Text>
         <Text style={text}>
-          If you believe this was a mistake, please feel free to contact us.
+          Si vous pensez qu'il s'agit d'une erreur, n'hésitez pas à nous
+          contacter.
         </Text>
         <Text style={footer}>
-          Don't want to receive these notifications?{" "}
+          Vous ne souhaitez plus recevoir ces notifications ?{" "}
           <Link href={unsubscribeUrl} style={link}>
-            Unsubscribe
+            Se désinscrire
           </Link>
         </Text>
       </Container>

@@ -8,11 +8,11 @@ export const NewReportEmail: React.FC<Readonly<NewReportEmailProps>> = ({
   adminDashboardUrl,
 }) => (
   <div>
-    <h1>New Report Submitted</h1>
-    <p>A new report has been submitted on Haux Voirie.</p>
+    <h1>Nouveau signalement reçu</h1>
+    <p>Un nouveau signalement a été effectué sur Haux Alerte.</p>
     <p>
-      Please visit the admin dashboard to review it.
+      Veuillez consulter le tableau de bord pour l'examiner.
     </p>
-    <a href={adminDashboardUrl}>View Dashboard</a>
+    <a href={adminDashboardUrl}>Voir le tableau de bord</a>
   </div>
 );
