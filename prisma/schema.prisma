@@ -57,6 +57,8 @@ model User {
   role    Role      @default(NEWCOMER)
   status  UserStatus @default(ACTIVE)
 
+  notifyOnStatusChange Boolean @default(true)
+
   reports Report[]  // A user can have many reports
 
   // Auth.js specific fields
@@ -77,6 +79,7 @@ model Report {
   status    ReportStatus @default(PENDING)
   description String?
   photoUrl String?
+  rejectionReason String?
 
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String

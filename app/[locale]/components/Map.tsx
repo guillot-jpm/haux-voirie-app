@@ -10,7 +10,6 @@ import { Report } from '@prisma/client';
 import L, { LatLngExpression } from 'leaflet';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { useToast } from '@/hooks/use-toast';
 import GeolocationButton from './GeolocationButton';
 import ReportForm from './ReportForm';
 import MapNotification from './MapNotification';
@@ -26,7 +25,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 
-// Helper function to create icons, moved outside the component to prevent recreation on re-renders
+// Helper function to create icons
 const getIconBySeverity = (severity: string) => {
   const iconUrl = `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${
     severity === 'HIGH' ? 'red' : severity === 'MEDIUM' ? 'orange' : 'yellow'
@@ -164,7 +163,7 @@ const Map = () => {
 
   const handleModerationComplete = (reportId: string, approvedReport?: Report) => {
     setAdminPendingReports(current => current.filter(r => r.id !== reportId));
-    if (approvedReport) {
+    if (approvedReport && approvedReport.status === 'APPROVED') {
       setReports(current => [...current, approvedReport]);
     }
   };
@@ -200,7 +199,11 @@ const Map = () => {
       >
         <Popup>
           {isAdmin ? (
-            <AdminPopup report={report} onActionComplete={handleModerationComplete} />
+            <AdminPopup 
+              report={report} 
+              onActionComplete={handleModerationComplete}
+              // onRequestReject Removed: Logic is now internal to AdminPopup
+            />
           ) : (
             <>
               <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
@@ -237,7 +240,6 @@ const Map = () => {
 
       <MapClickHandler onMapClick={handleMapClick} />
 
-      {/* Add GeolocationButton here, inside MapContainer */}
       <GeolocationButton />
 
       <MapNotification message={notification} onClose={() => setNotification(null)} />

@@ -3,10 +3,16 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import prisma from "@/lib/prisma";
 import { IssueType, Severity, ReportStatus } from "@prisma/client";
+import { Resend } from "resend";
+import { ReportApprovedEmail } from "@/emails/ReportApprovedEmail";
+import { ReportRejectedEmail } from "@/emails/ReportRejectedEmail";
+import { render } from "@react-email/render";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function PATCH(
   request: NextRequest,
-  { params: paramsPromise }: { params: Promise<{ reportId: string }> }
+  { params }: { params: Promise<{ reportId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -22,8 +28,9 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { reportId } = await paramsPromise;
-  const { status, description, photoUrl, issueType, severity } = await request.json();
+  const { reportId } = await params;
+  const { status, description, photoUrl, issueType, severity, rejectionReason } =
+    await request.json();
 
   const updateData: {
     status?: ReportStatus;
@@ -31,6 +38,7 @@ export async function PATCH(
     photoUrl?: string;
     issueType?: IssueType;
     severity?: Severity;
+    rejectionReason?: string;
   } = {};
 
   if (status) {
@@ -56,6 +64,10 @@ export async function PATCH(
     updateData.severity = severity as Severity;
   }
 
+  if (rejectionReason) {
+    updateData.rejectionReason = rejectionReason;
+  }
+
   try {
     const updatedReport = await prisma.report.update({
       where: { id: reportId },
@@ -63,9 +75,61 @@ export async function PATCH(
       include: { author: true },
     });
 
+    const { author } = updatedReport;
+
+    // Notification logic
+    // We explicitly check 'author.email' here so TypeScript knows it is not null inside the block
+    if (
+      (status === "APPROVED" || status === "REJECTED") &&
+      author.notifyOnStatusChange &&
+      author.email
+    ) {
+      const origin =
+        request.headers.get("origin") ||
+        process.env.NEXTAUTH_URL ||
+        "http://localhost:3000";
+      const unsubscribeUrl = `${origin}/unsubscribe?userId=${author.id}&locale=en`;
+
+      if (status === "APPROVED") {
+        console.log(`Sending approval notification to ${author.email}`);
+
+        const emailHtml = await render(
+          ReportApprovedEmail({
+            reportId: updatedReport.id,
+            unsubscribeUrl,
+          })
+        );
+
+        await resend.emails.send({
+          from: "Haux Alerte <notifications@haux-alerte.fr>",
+          to: author.email,
+          subject: "Your Report has been Approved",
+          html: emailHtml,
+        });
+      } else if (status === "REJECTED") {
+        console.log(
+          `Sending rejection notification to ${author.email} with reason: ${rejectionReason}`
+        );
+
+        const emailHtml = await render(
+          ReportRejectedEmail({
+            reportId: updatedReport.id,
+            rejectionReason: rejectionReason || "Other",
+            unsubscribeUrl,
+          })
+        );
+
+        await resend.emails.send({
+          from: "Haux Alerte <notifications@haux-alerte.fr>",
+          to: author.email,
+          subject: "Your Report has been Rejected",
+          html: emailHtml,
+        });
+      }
+    }
+
     // Promotion Logic
     if (status === "APPROVED") {
-      const author = updatedReport.author;
       const approvedReportsCount = await prisma.report.count({
         where: {
           authorId: author.id,
@@ -91,7 +155,7 @@ export async function PATCH(
         update: { lastNotificationSentAt: null },
         create: {
           singletonKey: "primary",
-          lastNotificationSentAt: null
+          lastNotificationSentAt: null,
         },
       });
     }

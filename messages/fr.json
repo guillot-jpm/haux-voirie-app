@@ -60,7 +60,13 @@
     "OTHER": "Autre",
     "LOW": "Faible",
     "MEDIUM": "Moyenne",
-    "HIGH": "Haute / Urgente"
+    "HIGH": "Haute / Urgente",
+    "DUPLICATE": "Doublon",
+    "PRIVATE_DOMAIN": "Propriété Privée",
+    "OUTSIDE_JURISDICTION": "Hors Juridiction",
+    "NOT_AN_ISSUE": "Pas un Problème",
+    "LACK_OF_INFO": "Manque d'Information",
+    "BREACH_OF_TERMS": "Violation des Conditions d'Utilisation"
   },
   "WelcomeDialog": {
     "title": "Bienvenue sur Haux Alerte !",
@@ -68,5 +74,16 @@
     "p1": "Cette application est une initiative citoyenne de Haux & Vous, liste de candidats pour les élections municipales des 15 et 22 mars 2026. Il ne s'agit pas d'un service officiel de la mairie actuelle.",
     "p2": "Notre objectif est de soutenir nos valeurs de transparence, de proximité et de collaboration. Nous souhaitons permettre aux citoyens de signaler facilement les problèmes dans leur voisinage et d'être informés de l'état de la voirie, afin de mieux comprendre les priorités des travaux.",
     "closeButton": "J'ai compris"
+  },
+  "RejectionDialog": {
+    "title": "Sélectionner le Motif du Rejet",
+    "description": "Veuillez sélectionner un motif pour le rejet de ce signalement. Il sera communiqué à l'utilisateur.",
+    "placeholder": "Sélectionner un motif",
+    "cancelButton": "Annuler",
+    "confirmButton": "Confirmer"
+  },
+  "UnsubscribePage": {
+    "title": "Désinscription Réussie",
+    "description": "Vous ne recevrez plus de notifications par e-mail concernant le statut de vos signalements."
   }
 }
