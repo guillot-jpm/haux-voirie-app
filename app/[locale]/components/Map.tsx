@@ -10,14 +10,12 @@ import { Report } from '@prisma/client';
 import L, { LatLngExpression } from 'leaflet';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { useToast } from '@/hooks/use-toast';
 import GeolocationButton from './GeolocationButton';
 import ReportForm from './ReportForm';
 import MapNotification from './MapNotification';
 import WelcomeControl from './WelcomeControl';
 import AdminPopup from './AdminPopup';
 import './MapNotification.css';
-import { RejectionDialog } from '@/components/RejectionDialog';
 
 // Fix for default icon issue with Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -27,7 +25,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 
-// Helper function to create icons, moved outside the component to prevent recreation on re-renders
+// Helper function to create icons
 const getIconBySeverity = (severity: string) => {
   const iconUrl = `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${
     severity === 'HIGH' ? 'red' : severity === 'MEDIUM' ? 'orange' : 'yellow'
@@ -76,10 +74,6 @@ const Map = () => {
   const t = useTranslations('Map');
   const tEnums = useTranslations('Enums');
   const tReportDialog = useTranslations('ReportDialog');
-  const [rejectDialogState, setRejectDialogState] = useState<{
-    isOpen: boolean;
-    reportId: string | null;
-  }>({ isOpen: false, reportId: null });
 
   useEffect(() => {
     const fetchGeoJson = async () => {
@@ -169,38 +163,8 @@ const Map = () => {
 
   const handleModerationComplete = (reportId: string, approvedReport?: Report) => {
     setAdminPendingReports(current => current.filter(r => r.id !== reportId));
-    if (approvedReport) {
+    if (approvedReport && approvedReport.status === 'APPROVED') {
       setReports(current => [...current, approvedReport]);
-    }
-  };
-
-  // New handler for confirming rejection
-  const handleConfirmReject = async (reason: string) => {
-    const reportId = rejectDialogState.reportId;
-    if (!reportId) return;
-
-    try {
-      const response = await fetch(`/api/admin/reports/${reportId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'REJECTED', rejectionReason: reason }),
-      });
-
-      if (response.ok) {
-        // Remove from admin pending list
-        setAdminPendingReports((current) => current.filter((r) => r.id !== reportId));
-        setNotification({
-          title: "Success",
-          description: "Report rejected successfully",
-          type: 'success'
-        });
-      } else {
-        console.error('Failed to reject report');
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    } finally {
-      setRejectDialogState({ isOpen: false, reportId: null });
     }
   };
 
@@ -238,7 +202,7 @@ const Map = () => {
             <AdminPopup 
               report={report} 
               onActionComplete={handleModerationComplete}
-              onRequestReject={(id) => setRejectDialogState({ isOpen: true, reportId: id })} // <--- Open dialog in Map scope
+              // onRequestReject Removed: Logic is now internal to AdminPopup
             />
           ) : (
             <>
@@ -276,7 +240,6 @@ const Map = () => {
 
       <MapClickHandler onMapClick={handleMapClick} />
 
-      {/* Add GeolocationButton here, inside MapContainer */}
       <GeolocationButton />
 
       <MapNotification message={notification} onClose={() => setNotification(null)} />
@@ -295,12 +258,6 @@ const Map = () => {
       )}
 
       <WelcomeControl />
-
-      <RejectionDialog
-        open={rejectDialogState.isOpen}
-        onOpenChange={(isOpen) => setRejectDialogState(prev => ({ ...prev, isOpen }))}
-        onConfirm={handleConfirmReject}
-      />
     </MapContainer>
   );
 };
