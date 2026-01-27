@@ -3,6 +3,10 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import prisma from "@/lib/prisma";
 import { IssueType, Severity, ReportStatus } from "@prisma/client";
+import { Resend } from "resend";
+import { ReportApprovedEmail } from "@/emails/ReportApprovedEmail";
+import { ReportRejectedEmail } from "@/emails/ReportRejectedEmail";
+import { render } from "@react-email/render";
 
 export async function PATCH(
   request: NextRequest,
