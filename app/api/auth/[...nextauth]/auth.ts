@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
         await resend.emails.send({
           from: "Haux Alerte <notifications@haux-alerte.fr>",
           to: email,
-          subject: "Votre lien de connexion à Haux Alerte",
+          subject: "Connexion à Haux Alerte",
           html: emailHtml,
         });
       },

@@ -133,7 +133,7 @@ export async function POST(request: Request) {
           await resend.emails.send({
             from: 'Haux Alerte <notifications@haux-alerte.fr>',
             to: adminEmails,
-            subject: 'New Road Report Submitted - Haux Alerte',
+            subject: 'Nouveau signalement voirie - Haux Alerte',
             html: emailHtml,
           });
 
