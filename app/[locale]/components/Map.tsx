@@ -17,6 +17,7 @@ import MapNotification from './MapNotification';
 import WelcomeControl from './WelcomeControl';
 import AdminPopup from './AdminPopup';
 import './MapNotification.css';
+import { RejectionDialog } from '@/components/RejectionDialog';
 
 // Fix for default icon issue with Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
