@@ -1,0 +1,2 @@
+-- Add ILLEGAL_DUMPING to the IssueType enum
+ALTER TYPE "IssueType" ADD VALUE 'ILLEGAL_DUMPING';
