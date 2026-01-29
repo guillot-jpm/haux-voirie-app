@@ -32,7 +32,7 @@ export async function generateMetadata({
       },
     },
     verification: {
-      google: 'your-google-verification-code', // Placeholder for user
+      google: '1ZhlpTB1tWBcMEh-JKssLkE_2iI3BI-YjWdBxphPFVs',
     },
     openGraph: {
       title: t('title'),
