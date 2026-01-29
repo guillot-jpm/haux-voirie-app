@@ -86,5 +86,10 @@
   "UnsubscribePage": {
     "title": "Unsubscribed Successfully",
     "description": "You will no longer receive email notifications about the status of your reports."
+  },
+  "Metadata": {
+    "title": "Haux Alerte - Citizen Initiative by Haux & Vous",
+    "description": "Participatory platform for road reporting in Haux (33550). A citizen initiative by the Haux & Vous list for the 2026 municipal elections.",
+    "keywords": "Haux, Roads, Reporting, Citizen, Haux & Vous, 2026, Streets, Illegal dumping"
   }
 }

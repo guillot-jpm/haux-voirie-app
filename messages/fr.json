@@ -86,5 +86,10 @@
   "UnsubscribePage": {
     "title": "Désinscription Réussie",
     "description": "Vous ne recevrez plus de notifications par e-mail concernant le statut de vos signalements."
+  },
+  "Metadata": {
+    "title": "Haux Alerte - Initiative Citoyenne par Haux & Vous",
+    "description": "Plateforme participative pour le signalement de la voirie à Haux (33550). Une initiative citoyenne de la liste Haux & Vous pour les élections municipales 2026.",
+    "keywords": "Haux, Voirie, Signalement, Citoyen, Haux & Vous, 2026, Routes, Dépôt sauvage"
   }
 }
