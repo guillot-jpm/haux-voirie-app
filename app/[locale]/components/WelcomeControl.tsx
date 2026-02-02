@@ -38,7 +38,7 @@ const WelcomeControl = () => {
         const logoContainer = L.DomUtil.create('div', '', header);
         const logo = document.createElement('img');
         logo.src = '/logo.png';
-        logo.alt = 'Haux & Vous Logo';
+        logo.alt = 'HAUX C'EST VOUS Logo';
         logo.width = 60;
         logo.height = 60;
         logoContainer.appendChild(logo);

@@ -72,7 +72,7 @@
   "WelcomeDialog": {
     "title": "Bienvenue sur Haux Alerte !",
     "greeting": "Une note rapide avant de commencer :",
-    "p1": "Cette application est une initiative citoyenne de Haux & Vous, liste de candidats pour les élections municipales des 15 et 22 mars 2026. Il ne s'agit pas d'un service officiel de la mairie actuelle.",
+    "p1": "Cette application est une initiative citoyenne de HAUX C'EST VOUS, liste de candidats pour les élections municipales des 15 et 22 mars 2026. Il ne s'agit pas d'un service officiel de la mairie actuelle.",
     "p2": "Notre objectif est de soutenir nos valeurs de transparence, de proximité et de collaboration. Nous souhaitons permettre aux citoyens de signaler facilement les problèmes dans leur voisinage et d'être informés de l'état de la voirie, afin de mieux comprendre les priorités des travaux.",
     "closeButton": "J'ai compris"
   },
@@ -88,8 +88,8 @@
     "description": "Vous ne recevrez plus de notifications par e-mail concernant le statut de vos signalements."
   },
   "Metadata": {
-    "title": "Haux Alerte - Initiative Citoyenne par Haux & Vous",
-    "description": "Plateforme participative pour le signalement de la voirie à Haux (33550). Une initiative citoyenne de la liste Haux & Vous pour les élections municipales 2026.",
-    "keywords": "Haux, Voirie, Signalement, Citoyen, Haux & Vous, 2026, Routes, Dépôt sauvage"
+    "title": "Haux Alerte - Initiative Citoyenne par HAUX C'EST VOUS",
+    "description": "Plateforme participative pour le signalement de la voirie à Haux (33550). Une initiative citoyenne de la liste HAUX C'EST VOUS pour les élections municipales 2026.",
+    "keywords": "Haux, Voirie, Signalement, Citoyen, HAUX C'EST VOUS, 2026, Routes, Dépôt sauvage"
   }
 }
