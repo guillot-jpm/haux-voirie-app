@@ -30,6 +30,7 @@ export default function CGUPage() {
       <div className="prose prose-slate dark:prose-invert max-w-none space-y-8">
         <p className="text-lg italic">{t('intro')}</p>
 
+        {/* 1. MENTIONS LÉGALES */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.legal.title')}</h2>
           <div className="whitespace-pre-line text-justify">
@@ -37,6 +38,7 @@ export default function CGUPage() {
           </div>
         </section>
 
+        {/* 2. ACCÈS */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.access.title')}</h2>
           <div className="whitespace-pre-line text-justify">
@@ -44,6 +46,7 @@ export default function CGUPage() {
           </div>
         </section>
 
+        {/* 3. RGPD */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.privacy.title')}</h2>
           <div className="whitespace-pre-line text-justify">
@@ -51,6 +54,7 @@ export default function CGUPage() {
           </div>
         </section>
 
+        {/* 4. MODÉRATION */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.moderation.title')}</h2>
           <div className="whitespace-pre-line text-justify">
@@ -58,6 +62,7 @@ export default function CGUPage() {
           </div>
         </section>
 
+        {/* 5. RESPONSABILITÉ */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.responsibility.title')}</h2>
           <div className="whitespace-pre-line text-justify">
@@ -65,6 +70,7 @@ export default function CGUPage() {
           </div>
         </section>
 
+        {/* 6. PROPRIÉTÉ INTELLECTUELLE */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.ip.title')}</h2>
           <div className="whitespace-pre-line text-justify">
@@ -72,6 +78,15 @@ export default function CGUPage() {
           </div>
         </section>
 
+        {/* 7. ÉVOLUTION DES CGU (Nouvelle section) */}
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.evolution.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.evolution.content')}
+          </div>
+        </section>
+
+        {/* 8. LOI APPLICABLE (Anciennement 7) */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.jurisdiction.title')}</h2>
           <div className="whitespace-pre-line text-justify">

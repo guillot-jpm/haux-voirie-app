@@ -102,11 +102,11 @@
     "title": "Terms of Use",
     "lastUpdated": "Last updated: February 2026",
     "backToHome": "Back to Home",
-    "intro": "Welcome to Haux Alerte. By using this application, you agree to these terms.",
+    "intro": "Welcome to Haux Alerte. By using this application, you acknowledge that you have read, understood, and accepted these terms.",
     "sections": {
       "legal": {
         "title": "1. LEGAL NOTICES AND PURPOSE",
-        "content": "1.1. Service Editor\nThe Haux Alerte application is edited by the citizen initiative 'HAUX C'EST VOUS', represented by Sophie RICAUD.\nContact: S.RICAUD2026@GMAIL.COM\n\n1.2. Nature of the service (Important Warning)\nThis application is a private initiative in the context of the 2026 municipal elections.\nIt is in no way an official service of the Haux City Council.\nReports made on this platform do not trigger immediate technical intervention by current municipal services. They are intended to identify needs for the future municipal program.\n\n1.3. Hosting\nThe application and data are hosted by:\nVercel Inc. (Infrastructure and Photo Storage)\nNeon (Database)"
+        "content": "1.1. Service Editor\nThe Haux Alerte application is edited by the citizen initiative 'HAUX C'EST VOUS', represented by Sophie RICAUD.\nContact: S.RICAUD2026@GMAIL.COM\n\n1.2. Nature of the service (Important Warning)\nThis application is a private initiative in the context of the 2026 municipal elections. It is in no way an official service of the Haux City Council. Reports made on this platform do not trigger immediate technical intervention by current municipal services. They are intended to identify needs for the future municipal program.\n\n1.3. Hosting\nThe application and data are hosted by: Vercel Inc. (Infrastructure and Photo Storage) and Neon (Database)."
       },
       "access": {
         "title": "2. ACCESS AND REGISTRATION",
@@ -114,22 +114,26 @@
       },
       "privacy": {
         "title": "3. PERSONAL DATA (GDPR)",
-        "content": "In accordance with the General Data Protection Regulation, here is how we process your data:\n\n3.1. Collected Data\n- Mandatory: Email address (for authentication and follow-up notifications).\n- Functional: Geolocation (latitude/longitude) during reporting.\n- Content: Photos and descriptions of road issues.\n- Technical: Session cookies necessary to maintain your connection.\n\n3.2. Purpose\nYour data is used exclusively to:\n1. Authenticate your account.\n2. Locate incidents on the map.\n3. Notify you by email of the progress of your report (Approved/Rejected).\n\n3.3. Your Rights\nAs the application does not currently offer an automatic deletion feature in the interface, you can exercise your rights of access, rectification, or erasure by contacting: S.RICAUD2026@GMAIL.COM."
+        "content": "In accordance with the General Data Protection Regulation (GDPR), here is how we process your data:\n\n3.1. Collected Data\n- Mandatory: Email address (for authentication and notifications).\n- Functional: Geolocation during reporting, date, and time.\n- Content: Photos and descriptions of road issues.\n- Technical: Session cookies necessary for operation.\n\n3.2. Purpose\nYour data is used exclusively to authenticate your account, locate incidents on the map, and notify you by email of the progress of your report.\n\n3.3. Your Rights\nYou have the right to access, rectify, erase, limit, oppose, and request the portability of your data. To exercise these rights, contact: S.RICAUD2026@GMAIL.COM.\n\n3.4. Access by Authorities\nYour data is confidential. It will not be shared with third parties except in cases of judicial requisition, serious and imminent danger, or manifest criminal offense."
       },
       "moderation": {
         "title": "4. OPERATION AND MODERATION",
-        "content": "4.1. 'A Priori' Moderation\nAny submitted report is placed in 'PENDING' status. It is not publicly visible on the map until it has been manually validated by an administrator.\n\n4.2. Content Rules and Photos\nBy publishing a photo, you guarantee that you own the rights or necessary authorization.\nFormal Prohibitions:\n- Photos allowing identification of people (faces) or vehicles (legible license plates) without prior blurring.\n- Insulting, defamatory, or discriminatory remarks.\n- Photos relating to private life (interiors of properties, private gardens not visible from the public highway).\n\nPhotos are stored on a third-party service (Vercel Blob) publicly accessible via a secure URL for display in the application.\n\n4.3. Rejection Reasons\nAdministrators reserve the right to reject a report for the following reasons (non-exhaustive list):\n- Duplicate: The issue has already been reported.\n- Private Property: The issue does not concern the public domain.\n- Outside Jurisdiction: The report is located outside the commune of Haux.\n- Lack of information: The photo or location is unusable.\n- Inappropriate content.\n\n4.4. Sanctions\nIn case of serious or repeated abuse (spam, insults), administrators may ban your account. A banned user can no longer submit reports."
+        "content": "4.1. 'A Priori' Moderation\nAny submitted report is placed in 'PENDING' status. It is not publicly visible until it has been manually validated by an administrator.\n\n4.2. Content Rules and Photos\nFormal Prohibitions: photos allowing identification of faces or license plates without prior blurring, insulting or discriminatory remarks, photos of private gardens or interiors not visible from the public highway.\n\nPhotos are stored on Vercel Blob and are accessible via a secure URL for display purposes.\n\n4.3. Rejection Reasons\nDuplicate, private property, outside jurisdiction, lack of information, or inappropriate content.\n\n4.4. Sanctions\nIn case of serious abuse (spam, insults), administrators may permanently ban your account."
       },
       "responsibility": {
         "title": "5. LIABILITY",
-        "content": "5.1. Emergencies\nHaux Alerte is not an emergency service.\nFor any serious and imminent danger (accident, gas leak, electric cable on the ground), immediately contact emergency services (18 or 112) or the Gendarmerie (17).\n\n5.2. Limitation of Liability\nThe 'HAUX C'EST VOUS' initiative declines all liability:\n- In case of technical impossibility to access the service.\n- On the accuracy of information provided by users.\n- On the processing times or resolution of reported road issues (these falling under current municipal competence)."
+        "content": "5.1. Emergencies\nHaux Alerte is not an emergency service. For any serious and imminent danger (accident, gas leak), immediately contact emergency services (18 or 112) or the Gendarmerie (17).\n\n5.2. Limitation of Liability\nThe 'HAUX C'EST VOUS' initiative declines all liability for technical impossibility to access the service, inaccuracy of user-provided data, or delays in resolving reported issues."
       },
       "ip": {
         "title": "6. INTELLECTUAL PROPERTY",
-        "content": "By submitting a report (text and photo) on Haux Alerte, you grant the 'HAUX C'EST VOUS' initiative a non-exclusive, free, and worldwide license to use, reproduce, and distribute this content for the needs of the project (display on the map, communication on road assessment).\n\nThe source code, design, logo, and concept of the application remain the exclusive property of their respective authors."
+        "content": "By submitting a report, you grant 'HAUX C'EST VOUS' a non-exclusive, free, and worldwide license to use this content for project needs. The source code, design, and logo remain the exclusive property of their respective authors."
+      },
+      "evolution": {
+        "title": "7. EVOLUTION OF TERMS",
+        "content": "We reserve the right to modify these terms at any time. Users will be informed of any substantial modification by email. Continued use of the application constitutes acceptance of the new terms."
       },
       "jurisdiction": {
-        "title": "7. APPLICABLE LAW AND JURISDICTION",
+        "title": "8. APPLICABLE LAW AND JURISDICTION",
         "content": "These Terms of Use are governed by French law. In the event of a dispute that cannot be resolved amicably, the competent courts will be those within the jurisdiction of the Court of Appeal of Bordeaux."
       }
     }
