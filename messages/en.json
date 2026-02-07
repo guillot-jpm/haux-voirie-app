@@ -41,7 +41,8 @@
     "submittingButton": "Submitting...",
     "cancelButton": "Cancel",
     "bannedUserTitle": "Account Suspended",
-    "bannedUserDescription": "Your account has been suspended. Please contact an administrator for assistance."
+    "bannedUserDescription": "Your account has been suspended. Please contact an administrator for assistance.",
+    "compressingMessage": "Compressing image..."
   },
   "AdminDashboard": {
     "pageTitle": "Admin Dashboard",
@@ -101,23 +102,39 @@
     "title": "Terms of Use",
     "lastUpdated": "Last updated: February 2026",
     "backToHome": "Back to Home",
-    "intro": "Welcome to Haux Alerte. By using this application, you agree to these terms.",
+    "intro": "Welcome to Haux Alerte. By using this application, you acknowledge that you have read, understood, and accepted these terms.",
     "sections": {
-      "definition": {
-        "title": "1. Project Definition",
-        "content": "This application is a private citizen initiative led by 'HAUX C'EST VOUS'. It is in no way an official service of the Haux City Council. The goal is to facilitate citizen reporting to improve life in the commune."
+      "legal": {
+        "title": "1. LEGAL NOTICES AND PURPOSE",
+        "content": "1.1. Service Editor\nThe Haux Alerte application is edited by the citizen initiative 'HAUX C'EST VOUS', represented by Sophie RICAUD.\nContact: S.RICAUD2026@GMAIL.COM\n\n1.2. Nature of the service (Important Warning)\nThis application is a private initiative in the context of the 2026 municipal elections. It is in no way an official service of the Haux City Council. Reports made on this platform do not trigger immediate technical intervention by current municipal services. They are intended to identify needs for the future municipal program.\n\n1.3. Hosting\nThe application and data are hosted by: Vercel Inc. (Infrastructure and Photo Storage) and Neon (Database)."
+      },
+      "access": {
+        "title": "2. ACCESS AND REGISTRATION",
+        "content": "2.1. Authentication\nAccess to reporting features requires authentication via Google or a Magic Link sent by email. You are responsible for the security of your email access.\n\n2.2. Trust System (User Roles)\nTo guarantee the quality of information:\n- New users ('Newcomer'): You can send reports (type and photo), but adding text descriptions is restricted.\n- Confirmed users ('Citizen'): This feature unlocks automatically after validation of several relevant reports by our administrators."
       },
       "privacy": {
-        "title": "2. Data Protection (GDPR)",
-        "content": "We collect your email address exclusively for authentication (Magic Link) and for sending notifications related to your reports. We do not store users' IP addresses. In accordance with GDPR, you have the right to access and delete your data upon simple request."
-      },
-      "content": {
-        "title": "3. Content Rules",
-        "content": "Users agree not to publish insulting, defamatory, or inappropriate descriptions. Attached photos must not allow the identification of individuals without their explicit consent (faces, legible license plates, etc.)."
+        "title": "3. PERSONAL DATA (GDPR)",
+        "content": "In accordance with the General Data Protection Regulation (GDPR), here is how we process your data:\n\n3.1. Collected Data\n- Mandatory: Email address (for authentication and notifications).\n- Functional: Geolocation during reporting, date, and time.\n- Content: Photos and descriptions of road issues.\n- Technical: Session cookies necessary for operation.\n\n3.2. Purpose\nYour data is used exclusively to authenticate your account, locate incidents on the map, and notify you by email of the progress of your report.\n\n3.3. Your Rights\nYou have the right to access, rectify, erase, limit, oppose, and request the portability of your data. To exercise these rights, contact: S.RICAUD2026@GMAIL.COM.\n\n3.4. Access by Authorities\nYour data is confidential. It will not be shared with third parties except in cases of judicial requisition, serious and imminent danger, or manifest criminal offense."
       },
       "moderation": {
-        "title": "4. Moderation and Liability",
-        "content": "Administrators reserve the right to reject any report or suspend any account that does not comply with these conditions. The initiative declines all responsibility for any misuse of the platform."
+        "title": "4. OPERATION AND MODERATION",
+        "content": "4.1. 'A Priori' Moderation\nAny submitted report is placed in 'PENDING' status. It is not publicly visible until it has been manually validated by an administrator.\n\n4.2. Content Rules and Photos\nFormal Prohibitions: photos allowing identification of faces or license plates without prior blurring, insulting or discriminatory remarks, photos of private gardens or interiors not visible from the public highway.\n\nPhotos are stored on Vercel Blob and are accessible via a secure URL for display purposes.\n\n4.3. Rejection Reasons\nDuplicate, private property, outside jurisdiction, lack of information, or inappropriate content.\n\n4.4. Sanctions\nIn case of serious abuse (spam, insults), administrators may permanently ban your account."
+      },
+      "responsibility": {
+        "title": "5. LIABILITY",
+        "content": "5.1. Emergencies\nHaux Alerte is not an emergency service. For any serious and imminent danger (accident, gas leak), immediately contact emergency services (18 or 112) or the Gendarmerie (17).\n\n5.2. Limitation of Liability\nThe 'HAUX C'EST VOUS' initiative declines all liability for technical impossibility to access the service, inaccuracy of user-provided data, or delays in resolving reported issues."
+      },
+      "ip": {
+        "title": "6. INTELLECTUAL PROPERTY",
+        "content": "By submitting a report, you grant 'HAUX C'EST VOUS' a non-exclusive, free, and worldwide license to use this content for project needs. The source code, design, and logo remain the exclusive property of their respective authors."
+      },
+      "evolution": {
+        "title": "7. EVOLUTION OF TERMS",
+        "content": "We reserve the right to modify these terms at any time. Users will be informed of any substantial modification by email. Continued use of the application constitutes acceptance of the new terms."
+      },
+      "jurisdiction": {
+        "title": "8. APPLICABLE LAW AND JURISDICTION",
+        "content": "These Terms of Use are governed by French law. In the event of a dispute that cannot be resolved amicably, the competent courts will be those within the jurisdiction of the Court of Appeal of Bordeaux."
       }
     }
   }

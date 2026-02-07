@@ -30,24 +30,68 @@ export default function CGUPage() {
       <div className="prose prose-slate dark:prose-invert max-w-none space-y-8">
         <p className="text-lg italic">{t('intro')}</p>
 
+        {/* 1. MENTIONS LÉGALES */}
         <section>
-          <h2 className="text-xl font-semibold mb-2">{t('sections.definition.title')}</h2>
-          <p>{t('sections.definition.content')}</p>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.legal.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.legal.content')}
+          </div>
         </section>
 
+        {/* 2. ACCÈS */}
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.access.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.access.content')}
+          </div>
+        </section>
+
+        {/* 3. RGPD */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.privacy.title')}</h2>
-          <p>{t('sections.privacy.content')}</p>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.privacy.content')}
+          </div>
         </section>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-2">{t('sections.content.title')}</h2>
-          <p>{t('sections.content.content')}</p>
-        </section>
-
+        {/* 4. MODÉRATION */}
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.moderation.title')}</h2>
-          <p>{t('sections.moderation.content')}</p>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.moderation.content')}
+          </div>
+        </section>
+
+        {/* 5. RESPONSABILITÉ */}
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.responsibility.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.responsibility.content')}
+          </div>
+        </section>
+
+        {/* 6. PROPRIÉTÉ INTELLECTUELLE */}
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.ip.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.ip.content')}
+          </div>
+        </section>
+
+        {/* 7. ÉVOLUTION DES CGU (Nouvelle section) */}
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.evolution.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.evolution.content')}
+          </div>
+        </section>
+
+        {/* 8. LOI APPLICABLE (Anciennement 7) */}
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.jurisdiction.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.jurisdiction.content')}
+          </div>
         </section>
       </div>
 
