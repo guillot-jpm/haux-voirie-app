@@ -16,7 +16,12 @@
     "sendLoginLink": "Envoyer le lien de connexion",
     "checkYourEmail": "Vérifiez votre boîte de réception pour le lien de connexion.",
     "checkYourEmailTitle": "Vérifiez votre boîte de réception",
-    "checkYourEmailDescription": "Un lien de connexion a été envoyé à votre adresse e-mail."
+    "checkYourEmailDescription": "Un lien de connexion a été envoyé à votre adresse e-mail.",
+    "termsDisclaimer": "En vous connectant, vous acceptez nos <link>{termsLinkText}</link>.",
+    "termsLinkText": "Conditions Générales d'Utilisation",
+    "backToHome": "Retour à l'accueil",
+    "errorTitle": "Erreur",
+    "errorMessage": "Une erreur est survenue lors de la tentative de connexion."
   },
   "Map": {
     "loginRequiredTitle": "Connexion Requise",
