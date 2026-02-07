@@ -16,7 +16,9 @@
     "sendLoginLink": "Envoyer le lien de connexion",
     "checkYourEmail": "Vérifiez votre boîte de réception pour le lien de connexion.",
     "checkYourEmailTitle": "Vérifiez votre boîte de réception",
-    "checkYourEmailDescription": "Un lien de connexion a été envoyé à votre adresse e-mail."
+    "checkYourEmailDescription": "Un lien de connexion a été envoyé à votre adresse e-mail.",
+    "cguAgreement": "En vous connectant, vous acceptez nos <link>Conditions Générales d'Utilisation</link>.",
+    "cguLinkText": "Conditions Générales d'Utilisation"
   },
   "Map": {
     "loginRequiredTitle": "Connexion Requise",
@@ -74,7 +76,8 @@
     "greeting": "Une note rapide avant de commencer :",
     "p1": "Cette application est une initiative citoyenne de HAUX C'EST VOUS, liste de candidats pour les élections municipales des 15 et 22 mars 2026. Il ne s'agit pas d'un service officiel de la mairie actuelle.",
     "p2": "Notre objectif est de soutenir nos valeurs de transparence, de proximité et de collaboration. Nous souhaitons permettre aux citoyens de signaler facilement les problèmes dans leur voisinage et d'être informés de l'état de la voirie, afin de mieux comprendre les priorités des travaux.",
-    "closeButton": "J'ai compris"
+    "closeButton": "J'ai compris",
+    "cguLinkText": "Conditions Générales d'Utilisation"
   },
   "RejectionDialog": {
     "title": "Sélectionner le Motif du Rejet",
@@ -91,5 +94,29 @@
     "title": "Haux Alerte - Initiative Citoyenne par HAUX C'EST VOUS",
     "description": "Plateforme participative pour le signalement de la voirie à Haux (33550). Une initiative citoyenne de la liste HAUX C'EST VOUS pour les élections municipales 2026.",
     "keywords": "Haux, Voirie, Signalement, Citoyen, HAUX C'EST VOUS, 2026, Routes, Dépôt sauvage"
+  },
+  "CGU": {
+    "title": "Conditions Générales d'Utilisation",
+    "lastUpdated": "Dernière mise à jour : 24 mai 2024",
+    "backToHome": "Retour à l'accueil",
+    "intro": "Bienvenue sur Haux Alerte. En utilisant cette application, vous acceptez les présentes conditions.",
+    "sections": {
+      "definition": {
+        "title": "1. Définition du Projet",
+        "content": "Cette application est une initiative citoyenne privée portée par 'HAUX C'EST VOUS'. Elle ne constitue en aucun cas un service officiel de la Mairie de Haux. L'objectif est de faciliter le signalement citoyen pour améliorer la vie de la commune."
+      },
+      "privacy": {
+        "title": "2. Protection des Données (RGPD)",
+        "content": "Nous collectons votre adresse e-mail exclusivement pour l'authentification (Magic Link) et l'envoi de notifications relatives à vos signalements. Nous ne stockons pas les adresses IP des utilisateurs. Conformément au RGPD, vous disposez d'un droit d'accès et de suppression de vos données sur simple demande."
+      },
+      "content": {
+        "title": "3. Règles de Contenu",
+        "content": "Les utilisateurs s'engagent à ne pas publier de descriptions insultantes, diffamatoires ou inappropriées. Les photos jointes ne doivent pas permettre d'identifier des personnes physiques sans leur consentement explicite (visages, plaques d'immatriculation lisibles, etc.)."
+      },
+      "moderation": {
+        "title": "4. Modération et Responsabilité",
+        "content": "Les administrateurs se réservent le droit de rejeter tout signalement ou de suspendre tout compte ne respectant pas ces conditions. L'initiative décline toute responsabilité en cas de mauvaise utilisation de la plateforme."
+      }
+    }
   }
 }

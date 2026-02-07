@@ -16,7 +16,9 @@
     "sendLoginLink": "Send Login Link",
     "checkYourEmail": "Check your inbox for the login link.",
     "checkYourEmailTitle": "Check your inbox",
-    "checkYourEmailDescription": "A login link has been sent to your email address."
+    "checkYourEmailDescription": "A login link has been sent to your email address.",
+    "cguAgreement": "By signing in, you agree to our <link>Terms of Use</link>.",
+    "cguLinkText": "Terms of Use"
   },
   "Map": {
     "loginRequiredTitle": "Login Required",
@@ -74,7 +76,8 @@
     "greeting": "A quick note before you start:",
     "p1": "This application is a citizen initiative from HAUX C'EST VOUS, a list of candidates for the municipal elections on March 15 and 22, 2026. It is not an official service of the current city council.",
     "p2": "Our goal is to support our values of transparency, proximity, and collaboration. We want to empower citizens to easily report issues in their neighborhoods and to be informed about the state of our roads, helping everyone understand the priorities for roadworks.",
-    "closeButton": "I Understand"
+    "closeButton": "I Understand",
+    "cguLinkText": "Terms of Use"
   },
   "RejectionDialog": {
     "title": "Select Rejection Reason",
@@ -91,5 +94,29 @@
     "title": "Haux Alerte - Citizen Initiative by HAUX C'EST VOUS",
     "description": "Participatory platform for road reporting in Haux (33550). A citizen initiative by the HAUX C'EST VOUS list for the 2026 municipal elections.",
     "keywords": "Haux, Roads, Reporting, Citizen, HAUX C'EST VOUS, 2026, Streets, Illegal dumping"
+  },
+  "CGU": {
+    "title": "Terms of Use",
+    "lastUpdated": "Last updated: May 24, 2024",
+    "backToHome": "Back to Home",
+    "intro": "Welcome to Haux Alerte. By using this application, you agree to these terms.",
+    "sections": {
+      "definition": {
+        "title": "1. Project Definition",
+        "content": "This application is a private citizen initiative led by 'HAUX C'EST VOUS'. It is in no way an official service of the Haux City Council. The goal is to facilitate citizen reporting to improve life in the commune."
+      },
+      "privacy": {
+        "title": "2. Data Protection (GDPR)",
+        "content": "We collect your email address exclusively for authentication (Magic Link) and for sending notifications related to your reports. We do not store users' IP addresses. In accordance with GDPR, you have the right to access and delete your data upon simple request."
+      },
+      "content": {
+        "title": "3. Content Rules",
+        "content": "Users agree not to publish insulting, defamatory, or inappropriate descriptions. Attached photos must not allow the identification of individuals without their explicit consent (faces, legible license plates, etc.)."
+      },
+      "moderation": {
+        "title": "4. Moderation and Liability",
+        "content": "Administrators reserve the right to reject any report or suspend any account that does not comply with these conditions. The initiative declines all responsibility for any misuse of the platform."
+      }
+    }
   }
 }
