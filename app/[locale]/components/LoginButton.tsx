@@ -1,25 +1,18 @@
-"use client";
+'use client';
 
-import { useTranslations } from 'next-intl';
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
+import { Button } from "@/components/ui/button";
 
 export default function LoginButton() {
   const t = useTranslations('LoginPage');
-  const { data: session } = useSession();
-
-  if (session) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <p>{t('signedInAs', {email: session.user?.email || ''})}</p>
-        <button onClick={() => signOut()}>{t('signOutButton')}</button>
-      </div>
-    );
-  }
+  const locale = useLocale();
 
   return (
-    <div>
-      <p>{t('notSignedIn')}</p>
-      <button onClick={() => signIn()}>{t('signInButton')}</button>
-    </div>
+    <Link href={`/${locale}/login`}>
+      <Button variant="outline" size="sm">
+        {t('signInButton')}
+      </Button>
+    </Link>
   );
 }

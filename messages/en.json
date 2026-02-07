@@ -16,7 +16,12 @@
     "sendLoginLink": "Send Login Link",
     "checkYourEmail": "Check your inbox for the login link.",
     "checkYourEmailTitle": "Check your inbox",
-    "checkYourEmailDescription": "A login link has been sent to your email address."
+    "checkYourEmailDescription": "A login link has been sent to your email address.",
+    "termsDisclaimer": "By logging in, you agree to our <link>{termsLinkText}</link>.",
+    "termsLinkText": "Terms of Use",
+    "backToHome": "Back to Home",
+    "errorTitle": "Error",
+    "errorMessage": "An error occurred while trying to sign in."
   },
   "Map": {
     "loginRequiredTitle": "Login Required",
