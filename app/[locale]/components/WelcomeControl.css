@@ -26,19 +26,8 @@
 
 .leaflet-welcome-control-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
   margin-top: 1.5rem;
-}
-
-.leaflet-welcome-control-cgu-link {
-  font-size: 0.75rem;
-  color: #666;
-  text-decoration: underline;
-}
-
-.leaflet-welcome-control-cgu-link:hover {
-  color: #000;
 }
 
 .leaflet-welcome-control-close-button {

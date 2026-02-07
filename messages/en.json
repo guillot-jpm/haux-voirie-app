@@ -16,9 +16,7 @@
     "sendLoginLink": "Send Login Link",
     "checkYourEmail": "Check your inbox for the login link.",
     "checkYourEmailTitle": "Check your inbox",
-    "checkYourEmailDescription": "A login link has been sent to your email address.",
-    "cguAgreement": "By signing in, you agree to our <link>Terms of Use</link>.",
-    "cguLinkText": "Terms of Use"
+    "checkYourEmailDescription": "A login link has been sent to your email address."
   },
   "Map": {
     "loginRequiredTitle": "Login Required",
@@ -76,8 +74,7 @@
     "greeting": "A quick note before you start:",
     "p1": "This application is a citizen initiative from HAUX C'EST VOUS, a list of candidates for the municipal elections on March 15 and 22, 2026. It is not an official service of the current city council.",
     "p2": "Our goal is to support our values of transparency, proximity, and collaboration. We want to empower citizens to easily report issues in their neighborhoods and to be informed about the state of our roads, helping everyone understand the priorities for roadworks.",
-    "closeButton": "I Understand",
-    "cguLinkText": "Terms of Use"
+    "closeButton": "I Understand"
   },
   "RejectionDialog": {
     "title": "Select Rejection Reason",

@@ -1,8 +1,7 @@
 "use client";
 
 import { useTranslations } from 'next-intl';
-import { useSession, signOut } from "next-auth/react";
-import LoginDialog from "./LoginDialog";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function LoginButton() {
   const t = useTranslations('LoginPage');
@@ -18,9 +17,9 @@ export default function LoginButton() {
   }
 
   return (
-    <div className="flex items-center gap-4">
-      <p className="text-sm text-muted-foreground">{t('notSignedIn')}</p>
-      <LoginDialog />
+    <div>
+      <p>{t('notSignedIn')}</p>
+      <button onClick={() => signIn()}>{t('signInButton')}</button>
     </div>
   );
 }

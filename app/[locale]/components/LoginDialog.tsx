@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { signIn } from "next-auth/react";
-import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,7 +17,6 @@ import { toast } from "@/hooks/use-toast";
 
 export default function LoginDialog() {
   const t = useTranslations('LoginPage');
-  const locale = useLocale();
   const [email, setEmail] = useState("");
   const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
 
@@ -78,15 +76,6 @@ export default function LoginDialog() {
                 {t('sendLoginLink')}
               </Button>
             </form>
-            <div className="text-xs text-muted-foreground mt-4 text-center">
-              {t.rich('cguAgreement', {
-                link: (chunks) => (
-                  <Link href={`/${locale}/cgu`} className="underline hover:text-primary">
-                    {chunks}
-                  </Link>
-                ),
-              })}
-            </div>
           </div>
         )}
       </DialogContent>

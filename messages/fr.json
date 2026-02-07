@@ -16,9 +16,7 @@
     "sendLoginLink": "Envoyer le lien de connexion",
     "checkYourEmail": "Vérifiez votre boîte de réception pour le lien de connexion.",
     "checkYourEmailTitle": "Vérifiez votre boîte de réception",
-    "checkYourEmailDescription": "Un lien de connexion a été envoyé à votre adresse e-mail.",
-    "cguAgreement": "En vous connectant, vous acceptez nos <link>Conditions Générales d'Utilisation</link>.",
-    "cguLinkText": "Conditions Générales d'Utilisation"
+    "checkYourEmailDescription": "Un lien de connexion a été envoyé à votre adresse e-mail."
   },
   "Map": {
     "loginRequiredTitle": "Connexion Requise",
@@ -76,8 +74,7 @@
     "greeting": "Une note rapide avant de commencer :",
     "p1": "Cette application est une initiative citoyenne de HAUX C'EST VOUS, liste de candidats pour les élections municipales des 15 et 22 mars 2026. Il ne s'agit pas d'un service officiel de la mairie actuelle.",
     "p2": "Notre objectif est de soutenir nos valeurs de transparence, de proximité et de collaboration. Nous souhaitons permettre aux citoyens de signaler facilement les problèmes dans leur voisinage et d'être informés de l'état de la voirie, afin de mieux comprendre les priorités des travaux.",
-    "closeButton": "J'ai compris",
-    "cguLinkText": "Conditions Générales d'Utilisation"
+    "closeButton": "J'ai compris"
   },
   "RejectionDialog": {
     "title": "Sélectionner le Motif du Rejet",

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import Image from 'next/image';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import './WelcomeControl.css';
 
 const STORAGE_KEY = 'welcomePopupSeen';
@@ -12,7 +12,6 @@ const STORAGE_KEY = 'welcomePopupSeen';
 const WelcomeControl = () => {
   const map = useMap();
   const t = useTranslations('WelcomeDialog');
-  const locale = useLocale();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -56,11 +55,6 @@ const WelcomeControl = () => {
         p2.innerText = t('p2');
 
         const footer = L.DomUtil.create('div', 'leaflet-welcome-control-footer', container);
-
-        const cguLink = L.DomUtil.create('a', 'leaflet-welcome-control-cgu-link', footer);
-        cguLink.innerText = t('cguLinkText');
-        cguLink.href = `/${locale}/cgu`;
-
         const closeButton = L.DomUtil.create('button', 'leaflet-welcome-control-close-button', footer);
         closeButton.innerText = t('closeButton');
         closeButton.onclick = handleClose;
@@ -78,7 +72,7 @@ const WelcomeControl = () => {
     return () => {
       map.removeControl(control);
     };
-  }, [isOpen, map, t, locale]);
+  }, [isOpen, map, t]);
 
   return null;
 };
