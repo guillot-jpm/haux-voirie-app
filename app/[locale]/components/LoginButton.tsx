@@ -12,12 +12,11 @@ export default function LoginButton() {
   const locale = useLocale();
   const { data: session, status } = useSession();
   
-  // Prevent hydration mismatch by ensuring we only render auth state on client
+  // Prevent hydration mismatch
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   if (!mounted || status === 'loading') {
-    // Render a placeholder button of the same size to prevent layout shift
     return <Button variant="ghost" disabled className="opacity-50">...</Button>;
   }
 
@@ -36,10 +35,10 @@ export default function LoginButton() {
         <Button 
           variant="outline" 
           onClick={() => signOut({ callbackUrl: `/${locale}` })}
-          className="gap-2"
+          className="flex flex-row items-center gap-2 h-10 px-4"
         >
           <LogOut className="h-4 w-4" />
-          <span className="hidden sm:inline">{t('signOutButton')}</span>
+          <span className="hidden sm:inline-block whitespace-nowrap">{t('signOutButton')}</span>
         </Button>
       </div>
     );
@@ -47,9 +46,9 @@ export default function LoginButton() {
 
   return (
     <Link href={`/${locale}/login`}>
-      <Button className="gap-2 shadow-sm">
+      <Button className="flex flex-row items-center gap-2 shadow-sm h-10 px-4">
         <User className="h-4 w-4" />
-        {t('signInButton')}
+        <span className="whitespace-nowrap">{t('signInButton')}</span>
       </Button>
     </Link>
   );

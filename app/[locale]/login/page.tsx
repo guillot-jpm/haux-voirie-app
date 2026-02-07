@@ -76,7 +76,7 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardFooter className="flex justify-center pt-4">
-            <Button variant="secondary" asChild className="w-full">
+            <Button variant="secondary" asChild className="w-full h-12 text-base">
               <Link href={`/${locale}`}>{t('backToHome')}</Link>
             </Button>
           </CardFooter>
@@ -103,13 +103,13 @@ export default function LoginPage() {
         </CardHeader>
         
         <CardContent className="space-y-6">
-          {/* Google Button - Removed py-6 for standard height */}
+          {/* Google Button: Increased height (h-12) and font size */}
           <Button
             variant="outline"
-            className="w-full relative"
+            className="w-full h-12 relative text-base font-medium border-gray-300 hover:bg-gray-50"
             onClick={handleGoogleSignIn}
           >
-            <svg className="absolute left-4 h-5 w-5" viewBox="0 0 24 24">
+            <svg className="absolute left-4 h-6 w-6" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -132,10 +132,10 @@ export default function LoginPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+              <span className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
+              <span className="bg-white px-2 text-muted-foreground font-medium">
                 {t('orContinueWith')}
               </span>
             </div>
@@ -144,6 +144,7 @@ export default function LoginPage() {
           <form onSubmit={handleEmailSignIn} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email" className="sr-only">Email</Label>
+              {/* Input: Increased height (h-12) and padding (px-4) */}
               <Input
                 id="email"
                 type="email"
@@ -151,10 +152,15 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-10"
+                className="h-12 px-4 text-base"
               />
             </div>
-            <Button className="w-full" type="submit" disabled={isLoading}>
+            {/* Submit Button: Highlighted with bold font, height, and shadow */}
+            <Button 
+              className="w-full h-12 text-base font-bold shadow-md hover:shadow-lg transition-all" 
+              type="submit" 
+              disabled={isLoading}
+            >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t('sendLoginLink')}
             </Button>
@@ -170,12 +176,12 @@ export default function LoginPage() {
                   {chunks}
                 </Link>
               ),
-              termsLinkText: t('termsLinkText') // <--- FIXED: Passing the value for the variable
+              termsLinkText: t('termsLinkText')
             })}
           </p>
         </CardContent>
         
-        <CardFooter className="flex justify-center border-t p-4 bg-muted/20">
+        <CardFooter className="flex justify-center border-t p-4 bg-gray-50/50">
           <Link 
             href={`/${locale}`}
             className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
