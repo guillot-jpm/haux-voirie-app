@@ -91,5 +91,29 @@
     "title": "Haux Alerte - Citizen Initiative by HAUX C'EST VOUS",
     "description": "Participatory platform for road reporting in Haux (33550). A citizen initiative by the HAUX C'EST VOUS list for the 2026 municipal elections.",
     "keywords": "Haux, Roads, Reporting, Citizen, HAUX C'EST VOUS, 2026, Streets, Illegal dumping"
+  },
+  "CGU": {
+    "title": "Terms of Use",
+    "lastUpdated": "Last updated: February 2026",
+    "backToHome": "Back to Home",
+    "intro": "Welcome to Haux Alerte. By using this application, you agree to these terms.",
+    "sections": {
+      "definition": {
+        "title": "1. Project Definition",
+        "content": "This application is a private citizen initiative led by 'HAUX C'EST VOUS'. It is in no way an official service of the Haux City Council. The goal is to facilitate citizen reporting to improve life in the commune."
+      },
+      "privacy": {
+        "title": "2. Data Protection (GDPR)",
+        "content": "We collect your email address exclusively for authentication (Magic Link) and for sending notifications related to your reports. We do not store users' IP addresses. In accordance with GDPR, you have the right to access and delete your data upon simple request."
+      },
+      "content": {
+        "title": "3. Content Rules",
+        "content": "Users agree not to publish insulting, defamatory, or inappropriate descriptions. Attached photos must not allow the identification of individuals without their explicit consent (faces, legible license plates, etc.)."
+      },
+      "moderation": {
+        "title": "4. Moderation and Liability",
+        "content": "Administrators reserve the right to reject any report or suspend any account that does not comply with these conditions. The initiative declines all responsibility for any misuse of the platform."
+      }
+    }
   }
 }

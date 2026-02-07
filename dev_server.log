@@ -1,3 +1,20 @@
 
 > haux-alerte@0.1.0 dev
 > next dev
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+▲ Next.js 16.1.2 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+- Experiments (use with caution):
+  · serverActions
+
+✓ Starting...
+⚠ Turbopack's filesystem cache has been deleted because we previously detected an internal error in Turbopack. Builds or page loads may be slower as a result.
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 4.4s
+○ Compiling /[locale]/cgu ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ GET /fr/cgu 200 in 11.5s (compile: 10.5s, proxy.ts: 324ms, render: 656ms)
+ GET /en/cgu 200 in 819ms (compile: 81ms, proxy.ts: 19ms, render: 720ms)
+○ Compiling /api/auth/[...nextauth] ...
