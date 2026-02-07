@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Mail, Loader2, Home } from 'lucide-react';
+import { Mail, Loader2, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 
@@ -62,19 +62,21 @@ export default function LoginPage() {
 
   if (isEmailSent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <Mail className="h-12 w-12 text-primary" />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+        <Card className="w-full max-w-md shadow-lg border-none sm:border-solid">
+          <CardHeader className="text-center space-y-4">
+            <div className="flex justify-center">
+              <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <Mail className="h-8 w-8 text-primary" />
+              </div>
             </div>
             <CardTitle className="text-2xl">{t('checkYourEmailTitle')}</CardTitle>
-            <CardDescription>
+            <CardDescription className="text-base">
               {t('checkYourEmailDescription')}
             </CardDescription>
           </CardHeader>
-          <CardFooter className="flex justify-center">
-            <Button variant="outline" asChild>
+          <CardFooter className="flex justify-center pt-4">
+            <Button variant="secondary" asChild className="w-full">
               <Link href={`/${locale}`}>{t('backToHome')}</Link>
             </Button>
           </CardFooter>
@@ -84,28 +86,30 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <Card className="w-full max-w-[400px] shadow-lg border-none sm:border-solid">
+        <CardHeader className="text-center pb-6">
+          <div className="flex justify-center mb-6">
             <Image
               src="/logo.png"
               alt="Logo"
-              width={64}
-              height={64}
-              className="rounded-full"
+              width={80}
+              height={80}
+              className="rounded-lg"
             />
           </div>
           <CardTitle className="text-2xl font-bold">{t('title')}</CardTitle>
           <CardDescription>{t('signInDescription')}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        
+        <CardContent className="space-y-6">
+          {/* Google Button - Removed py-6 for standard height */}
           <Button
             variant="outline"
-            className="w-full py-6 text-base"
+            className="w-full relative"
             onClick={handleGoogleSignIn}
           >
-            <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+            <svg className="absolute left-4 h-5 w-5" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -139,14 +143,15 @@ export default function LoginPage() {
 
           <form onSubmit={handleEmailSignIn} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="sr-only">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="name@example.com"
+                placeholder="nom@exemple.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="h-10"
               />
             </div>
             <Button className="w-full" type="submit" disabled={isLoading}>
@@ -154,26 +159,30 @@ export default function LoginPage() {
               {t('sendLoginLink')}
             </Button>
           </form>
-        </CardContent>
-        <CardFooter className="flex flex-col space-y-4">
-          <p className="text-center text-sm text-muted-foreground">
+
+          <p className="text-center text-xs text-muted-foreground px-4">
             {t.rich('termsDisclaimer', {
               link: (chunks) => (
                 <Link
                   href={`/${locale}/cgu`}
-                  className="underline underline-offset-4 hover:text-primary font-medium"
+                  className="underline underline-offset-2 hover:text-primary font-medium transition-colors"
                 >
                   {chunks}
                 </Link>
               ),
+              termsLinkText: t('termsLinkText') // <--- FIXED: Passing the value for the variable
             })}
           </p>
-          <Button variant="ghost" asChild className="gap-2">
-            <Link href={`/${locale}`}>
-              <Home className="h-4 w-4" />
-              {t('backToHome')}
-            </Link>
-          </Button>
+        </CardContent>
+        
+        <CardFooter className="flex justify-center border-t p-4 bg-muted/20">
+          <Link 
+            href={`/${locale}`}
+            className="flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {t('backToHome')}
+          </Link>
         </CardFooter>
       </Card>
     </div>
