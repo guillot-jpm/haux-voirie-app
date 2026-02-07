@@ -41,7 +41,8 @@
     "submittingButton": "Envoi en cours...",
     "cancelButton": "Annuler",
     "bannedUserTitle": "Compte Suspendu",
-    "bannedUserDescription": "Votre compte a été suspendu. Veuillez contacter un administrateur pour obtenir de l'aide."
+    "bannedUserDescription": "Votre compte a été suspendu. Veuillez contacter un administrateur pour obtenir de l'aide.",
+    "compressingMessage": "Compression de l'image..."
   },
   "AdminDashboard": {
     "pageTitle": "Tableau de Bord Admin",
@@ -103,21 +104,33 @@
     "backToHome": "Retour à l'accueil",
     "intro": "Bienvenue sur Haux Alerte. En utilisant cette application, vous acceptez les présentes conditions.",
     "sections": {
-      "definition": {
-        "title": "1. Définition du Projet",
-        "content": "Cette application est une initiative citoyenne privée portée par 'HAUX C'EST VOUS'. Elle ne constitue en aucun cas un service officiel de la Mairie de Haux. L'objectif est de faciliter le signalement citoyen pour améliorer la vie de la commune."
+      "legal": {
+        "title": "1. MENTIONS LÉGALES ET OBJET",
+        "content": "1.1. Éditeur du service\nL'application Haux Alerte est éditée par l'initiative citoyenne 'HAUX C'EST VOUS', représentée par Sophie RICAUD.\nContact : S.RICAUD2026@GMAIL.COM\n\n1.2. Nature du service (Avertissement Important)\nCette application est une initiative privée dans le cadre des élections municipales de 2026.\nElle ne constitue en aucun cas un service officiel de la Mairie de Haux.\nLes signalements effectués sur cette plateforme ne déclenchent pas d'intervention technique immédiate des services municipaux actuels. Ils ont vocation à recenser les besoins pour le futur programme municipal.\n\n1.3. Hébergement\nL'application et les données sont hébergées par :\nVercel Inc. (Infrastructure et Stockage des photos)\nNeon (Base de données)"
+      },
+      "access": {
+        "title": "2. ACCÈS ET INSCRIPTION",
+        "content": "2.1. Authentification\nL'accès aux fonctionnalités de signalement nécessite une authentification via Google ou un Lien Magique (Magic Link) envoyé par e-mail. Vous êtes responsable de la sécurité de votre accès e-mail.\n\n2.2. Système de Confiance (Rôles Utilisateurs)\nPour garantir la qualité des informations :\n- Nouveaux utilisateurs ('Newcomer') : Vous pouvez envoyer des signalements (type et photo), mais l'ajout de descriptions textuelles est restreint.\n- Utilisateurs confirmés ('Citizen') : Cette fonctionnalité se débloque automatiquement après validation de plusieurs signalements pertinents par nos administrateurs."
       },
       "privacy": {
-        "title": "2. Protection des Données (RGPD)",
-        "content": "Nous collectons votre adresse e-mail exclusivement pour l'authentification (Magic Link) et l'envoi de notifications relatives à vos signalements. Nous ne stockons pas les adresses IP des utilisateurs. Conformément au RGPD, vous disposez d'un droit d'accès et de suppression de vos données sur simple demande."
-      },
-      "content": {
-        "title": "3. Règles de Contenu",
-        "content": "Les utilisateurs s'engagent à ne pas publier de descriptions insultantes, diffamatoires ou inappropriées. Les photos jointes ne doivent pas permettre d'identifier des personnes physiques sans leur consentement explicite (visages, plaques d'immatriculation lisibles, etc.)."
+        "title": "3. DONNÉES PERSONNELLES (RGPD)",
+        "content": "Conformément au Règlement Général sur la Protection des Données, voici comment nous traitons vos données :\n\n3.1. Données collectées\n- Obligatoire : Adresse e-mail (pour l'authentification et les notifications de suivi).\n- Fonctionnel : Géolocalisation (latitude/longitude) lors du signalement.\n- Contenu : Photos et descriptions des problèmes de voirie.\n- Technique : Cookies de session nécessaires au maintien de votre connexion.\n\n3.2. Finalité\nVos données servent exclusivement à :\n1. Authentifier votre compte.\n2. Situer les incidents sur la carte.\n3. Vous notifier par e-mail de l'évolution de votre signalement (Approuvé/Rejeté).\n\n3.3. Vos Droits\nL'application ne proposant pas actuellement de fonctionnalité de suppression automatique dans l'interface, vous pouvez exercer vos droits d'accès, de rectification ou d'effacement en contactant : S.RICAUD2026@GMAIL.COM."
       },
       "moderation": {
-        "title": "4. Modération et Responsabilité",
-        "content": "Les administrateurs se réservent le droit de rejeter tout signalement ou de suspendre tout compte ne respectant pas ces conditions. L'initiative décline toute responsabilité en cas de mauvaise utilisation de la plateforme."
+        "title": "4. FONCTIONNEMENT ET MODÉRATION",
+        "content": "4.1. Modération 'A Priori'\nTout signalement soumis est placé en statut 'EN ATTENTE' (PENDING). Il n'est pas visible publiquement sur la carte tant qu'il n'a pas été validé manuellement par un administrateur.\n\n4.2. Règles de Contenu et Photos\nEn publiant une photo, vous garantissez en détenir les droits ou l'autorisation nécessaire.\nInterdictions formelles :\n- Photos permettant d'identifier des personnes (visages) ou des véhicules (plaques d'immatriculation lisibles) sans floutage préalable.\n- Propos injurieux, diffamatoires ou discriminatoires.\n- Photos relevant de la vie privée (intérieurs de propriétés, jardins privés non visibles depuis la voie publique).\n\nLes photos sont stockées sur un service tiers (Vercel Blob) accessible publiquement via une URL sécurisée pour les besoins de l'affichage dans l'application.\n\n4.3. Motifs de Rejet\nLes administrateurs se réservent le droit de rejeter un signalement pour les motifs suivants (liste non exhaustive) :\n- Doublon : Le problème a déjà été signalé.\n- Propriété Privée : Le problème ne concerne pas le domaine public.\n- Hors Juridiction : Le signalement est situé hors de la commune de Haux.\n- Manque d'information : La photo ou la localisation est inexploitable.\n- Contenu inapproprié.\n\n4.4. Sanctions\nEn cas d'abus grave ou répété (spam, insultes), les administrateurs peuvent bannir votre compte. Un utilisateur banni ne peut plus soumettre de signalements."
+      },
+      "responsibility": {
+        "title": "5. RESPONSABILITÉ",
+        "content": "5.1. Urgences\nHaux Alerte n'est pas un service d'urgence.\nPour tout danger grave et imminent (accident, fuite de gaz, câble électrique au sol), contactez immédiatement les secours (18 ou 112) ou la Gendarmerie (17).\n\n5.2. Limitation de responsabilité\nL'initiative 'HAUX C'EST VOUS' décline toute responsabilité :\n- En cas d'impossibilité technique d'accéder au service.\n- Sur l'exactitude des informations fournies par les utilisateurs.\n- Sur les délais de traitement ou de résolution des problèmes de voirie signalés (ceux-ci relevant de la compétence municipale actuelle)."
+      },
+      "ip": {
+        "title": "6. PROPRIÉTÉ INTELLECTUELLE",
+        "content": "En soumettant un signalement (texte et photo) sur Haux Alerte, vous accordez à l'initiative 'HAUX C'EST VOUS' une licence non exclusive, gratuite et mondiale d'utilisation, de reproduction et de diffusion de ce contenu pour les besoins du projet (affichage sur la carte, communication sur le bilan voirie).\n\nLe code source, le design, le logo et le concept de l'application restent la propriété exclusive de leurs auteurs respectifs."
+      },
+      "jurisdiction": {
+        "title": "7. LOI APPLICABLE ET JURIDICTION",
+        "content": "Les présentes CGU sont régies par le droit français. En cas de litige n'ayant pu faire l'objet d'un accord amiable, les tribunaux compétents seront ceux du ressort de la Cour d'appel de Bordeaux."
       }
     }
   }

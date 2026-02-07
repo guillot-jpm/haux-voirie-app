@@ -31,23 +31,52 @@ export default function CGUPage() {
         <p className="text-lg italic">{t('intro')}</p>
 
         <section>
-          <h2 className="text-xl font-semibold mb-2">{t('sections.definition.title')}</h2>
-          <p>{t('sections.definition.content')}</p>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.legal.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.legal.content')}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.access.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.access.content')}
+          </div>
         </section>
 
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.privacy.title')}</h2>
-          <p>{t('sections.privacy.content')}</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-2">{t('sections.content.title')}</h2>
-          <p>{t('sections.content.content')}</p>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.privacy.content')}
+          </div>
         </section>
 
         <section>
           <h2 className="text-xl font-semibold mb-2">{t('sections.moderation.title')}</h2>
-          <p>{t('sections.moderation.content')}</p>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.moderation.content')}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.responsibility.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.responsibility.content')}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.ip.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.ip.content')}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-2">{t('sections.jurisdiction.title')}</h2>
+          <div className="whitespace-pre-line text-justify">
+            {t('sections.jurisdiction.content')}
+          </div>
         </section>
       </div>
 

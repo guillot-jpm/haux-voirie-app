@@ -41,7 +41,8 @@
     "submittingButton": "Submitting...",
     "cancelButton": "Cancel",
     "bannedUserTitle": "Account Suspended",
-    "bannedUserDescription": "Your account has been suspended. Please contact an administrator for assistance."
+    "bannedUserDescription": "Your account has been suspended. Please contact an administrator for assistance.",
+    "compressingMessage": "Compressing image..."
   },
   "AdminDashboard": {
     "pageTitle": "Admin Dashboard",
@@ -103,21 +104,33 @@
     "backToHome": "Back to Home",
     "intro": "Welcome to Haux Alerte. By using this application, you agree to these terms.",
     "sections": {
-      "definition": {
-        "title": "1. Project Definition",
-        "content": "This application is a private citizen initiative led by 'HAUX C'EST VOUS'. It is in no way an official service of the Haux City Council. The goal is to facilitate citizen reporting to improve life in the commune."
+      "legal": {
+        "title": "1. LEGAL NOTICES AND PURPOSE",
+        "content": "1.1. Service Editor\nThe Haux Alerte application is edited by the citizen initiative 'HAUX C'EST VOUS', represented by Sophie RICAUD.\nContact: S.RICAUD2026@GMAIL.COM\n\n1.2. Nature of the service (Important Warning)\nThis application is a private initiative in the context of the 2026 municipal elections.\nIt is in no way an official service of the Haux City Council.\nReports made on this platform do not trigger immediate technical intervention by current municipal services. They are intended to identify needs for the future municipal program.\n\n1.3. Hosting\nThe application and data are hosted by:\nVercel Inc. (Infrastructure and Photo Storage)\nNeon (Database)"
+      },
+      "access": {
+        "title": "2. ACCESS AND REGISTRATION",
+        "content": "2.1. Authentication\nAccess to reporting features requires authentication via Google or a Magic Link sent by email. You are responsible for the security of your email access.\n\n2.2. Trust System (User Roles)\nTo guarantee the quality of information:\n- New users ('Newcomer'): You can send reports (type and photo), but adding text descriptions is restricted.\n- Confirmed users ('Citizen'): This feature unlocks automatically after validation of several relevant reports by our administrators."
       },
       "privacy": {
-        "title": "2. Data Protection (GDPR)",
-        "content": "We collect your email address exclusively for authentication (Magic Link) and for sending notifications related to your reports. We do not store users' IP addresses. In accordance with GDPR, you have the right to access and delete your data upon simple request."
-      },
-      "content": {
-        "title": "3. Content Rules",
-        "content": "Users agree not to publish insulting, defamatory, or inappropriate descriptions. Attached photos must not allow the identification of individuals without their explicit consent (faces, legible license plates, etc.)."
+        "title": "3. PERSONAL DATA (GDPR)",
+        "content": "In accordance with the General Data Protection Regulation, here is how we process your data:\n\n3.1. Collected Data\n- Mandatory: Email address (for authentication and follow-up notifications).\n- Functional: Geolocation (latitude/longitude) during reporting.\n- Content: Photos and descriptions of road issues.\n- Technical: Session cookies necessary to maintain your connection.\n\n3.2. Purpose\nYour data is used exclusively to:\n1. Authenticate your account.\n2. Locate incidents on the map.\n3. Notify you by email of the progress of your report (Approved/Rejected).\n\n3.3. Your Rights\nAs the application does not currently offer an automatic deletion feature in the interface, you can exercise your rights of access, rectification, or erasure by contacting: S.RICAUD2026@GMAIL.COM."
       },
       "moderation": {
-        "title": "4. Moderation and Liability",
-        "content": "Administrators reserve the right to reject any report or suspend any account that does not comply with these conditions. The initiative declines all responsibility for any misuse of the platform."
+        "title": "4. OPERATION AND MODERATION",
+        "content": "4.1. 'A Priori' Moderation\nAny submitted report is placed in 'PENDING' status. It is not publicly visible on the map until it has been manually validated by an administrator.\n\n4.2. Content Rules and Photos\nBy publishing a photo, you guarantee that you own the rights or necessary authorization.\nFormal Prohibitions:\n- Photos allowing identification of people (faces) or vehicles (legible license plates) without prior blurring.\n- Insulting, defamatory, or discriminatory remarks.\n- Photos relating to private life (interiors of properties, private gardens not visible from the public highway).\n\nPhotos are stored on a third-party service (Vercel Blob) publicly accessible via a secure URL for display in the application.\n\n4.3. Rejection Reasons\nAdministrators reserve the right to reject a report for the following reasons (non-exhaustive list):\n- Duplicate: The issue has already been reported.\n- Private Property: The issue does not concern the public domain.\n- Outside Jurisdiction: The report is located outside the commune of Haux.\n- Lack of information: The photo or location is unusable.\n- Inappropriate content.\n\n4.4. Sanctions\nIn case of serious or repeated abuse (spam, insults), administrators may ban your account. A banned user can no longer submit reports."
+      },
+      "responsibility": {
+        "title": "5. LIABILITY",
+        "content": "5.1. Emergencies\nHaux Alerte is not an emergency service.\nFor any serious and imminent danger (accident, gas leak, electric cable on the ground), immediately contact emergency services (18 or 112) or the Gendarmerie (17).\n\n5.2. Limitation of Liability\nThe 'HAUX C'EST VOUS' initiative declines all liability:\n- In case of technical impossibility to access the service.\n- On the accuracy of information provided by users.\n- On the processing times or resolution of reported road issues (these falling under current municipal competence)."
+      },
+      "ip": {
+        "title": "6. INTELLECTUAL PROPERTY",
+        "content": "By submitting a report (text and photo) on Haux Alerte, you grant the 'HAUX C'EST VOUS' initiative a non-exclusive, free, and worldwide license to use, reproduce, and distribute this content for the needs of the project (display on the map, communication on road assessment).\n\nThe source code, design, logo, and concept of the application remain the exclusive property of their respective authors."
+      },
+      "jurisdiction": {
+        "title": "7. APPLICABLE LAW AND JURISDICTION",
+        "content": "These Terms of Use are governed by French law. In the event of a dispute that cannot be resolved amicably, the competent courts will be those within the jurisdiction of the Court of Appeal of Bordeaux."
       }
     }
   }
