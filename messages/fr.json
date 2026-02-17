@@ -3,9 +3,6 @@
     "approve": "Approuver",
     "reject": "Rejeter",
     "resolve": "Résoudre",
-    "resolveConfirmMessage": "Marquer ce signalement comme résolu ? Il sera retiré de la carte.",
-    "resolveConfirmButton": "Confirmer",
-    "resolveCancelButton": "Annuler",
     "severityLabel": "Gravité",
     "statusLabel": "Statut"
   },

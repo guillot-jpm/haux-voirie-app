@@ -16,9 +16,8 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
   const tEnums = useTranslations('Enums');
   const tReject = useTranslations('RejectionDialog'); // Reuse existing translations
   
-  // Local state to manage the view mode (Details vs Rejection Form vs Resolve Confirm)
+  // Local state to manage the view mode (Details vs Rejection Form)
   const [isRejecting, setIsRejecting] = useState(false);
-  const [resolveConfirm, setResolveConfirm] = useState(false);
   const [reason, setReason] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -80,43 +79,16 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
           </div>
         )}
 
-        <div className="mt-4 pt-2 border-t">
-          {!resolveConfirm ? (
-            <div className="flex justify-end">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setResolveConfirm(true)}
-                disabled={isSubmitting}
-                className="h-8 text-xs text-green-700 hover:text-green-800 hover:bg-green-50"
-              >
-                {t('resolve')}
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <p className="text-xs text-muted-foreground">{t('resolveConfirmMessage')}</p>
-              <div className="flex justify-between gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setResolveConfirm(false)}
-                  disabled={isSubmitting}
-                  className="h-8"
-                >
-                  {t('resolveCancelButton')}
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => handleModeration('RESOLVED')}
-                  disabled={isSubmitting}
-                  className="h-8 text-xs"
-                >
-                  {isSubmitting ? "..." : t('resolveConfirmButton')}
-                </Button>
-              </div>
-            </div>
-          )}
+        <div className="mt-4 pt-2 border-t flex justify-end">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleModeration('RESOLVED')}
+            disabled={isSubmitting}
+            className="h-8 text-xs text-green-700 hover:text-green-800 hover:bg-green-50"
+          >
+            {isSubmitting ? "..." : t('resolve')}
+          </Button>
         </div>
       </div>
     );
