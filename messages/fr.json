@@ -1,7 +1,13 @@
 {
   "AdminPopup": {
     "approve": "Approuver",
-    "reject": "Rejeter"
+    "reject": "Rejeter",
+    "resolve": "Résoudre",
+    "resolveConfirmMessage": "Marquer ce signalement comme résolu ? Il sera retiré de la carte.",
+    "resolveConfirmButton": "Confirmer",
+    "resolveCancelButton": "Annuler",
+    "severityLabel": "Gravité",
+    "statusLabel": "Statut"
   },
   "LoginPage": {
     "title": "Haux Alerte",

@@ -11,7 +11,7 @@ export const NewReportEmail: React.FC<Readonly<NewReportEmailProps>> = ({
     <h1>Nouveau signalement reçu</h1>
     <p>Un nouveau signalement a été effectué sur Haux Alerte.</p>
     <p>
-      Veuillez consulter le tableau de bord pour l'examiner.
+      Veuillez consulter le tableau de bord pour l&apos;examiner.
     </p>
     <a href={adminDashboardUrl}>Voir le tableau de bord</a>
   </div>

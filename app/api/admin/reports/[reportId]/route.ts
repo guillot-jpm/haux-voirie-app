@@ -6,6 +6,7 @@ import { IssueType, Severity, ReportStatus } from "@prisma/client";
 import { Resend } from "resend";
 import { ReportApprovedEmail } from "@/emails/ReportApprovedEmail";
 import { ReportRejectedEmail } from "@/emails/ReportRejectedEmail";
+import { ReportResolvedEmail } from "@/emails/ReportResolvedEmail";
 import { render } from "@react-email/render";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -39,6 +40,7 @@ export async function PATCH(
     issueType?: IssueType;
     severity?: Severity;
     rejectionReason?: string;
+    resolvedAt?: Date;
   } = {};
 
   if (status) {
@@ -46,6 +48,9 @@ export async function PATCH(
       return NextResponse.json({ error: "Invalid status" }, { status: 400 });
     }
     updateData.status = status as ReportStatus;
+    if (status === "RESOLVED") {
+      updateData.resolvedAt = new Date();
+    }
   }
 
   if (description) {
@@ -80,7 +85,7 @@ export async function PATCH(
     // Notification logic
     // We explicitly check 'author.email' here so TypeScript knows it is not null inside the block
     if (
-      (status === "APPROVED" || status === "REJECTED") &&
+      (status === "APPROVED" || status === "REJECTED" || status === "RESOLVED") &&
       author.notifyOnStatusChange &&
       author.email
     ) {
@@ -137,6 +142,22 @@ export async function PATCH(
           from: "Haux Alerte <notifications@haux-alerte.fr>",
           to: author.email,
           subject: "Votre signalement a été rejeté",
+          html: emailHtml,
+        });
+      } else if (status === "RESOLVED") {
+        console.log(`Sending resolution notification to ${author.email}`);
+
+        const emailHtml = await render(
+          ReportResolvedEmail({
+            reportId: updatedReport.id,
+            unsubscribeUrl,
+          })
+        );
+
+        await resend.emails.send({
+          from: "Haux Alerte <notifications@haux-alerte.fr>",
+          to: author.email,
+          subject: "Votre signalement a été résolu",
           html: emailHtml,
         });
       }

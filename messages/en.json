@@ -1,7 +1,13 @@
 {
   "AdminPopup": {
     "approve": "Approve",
-    "reject": "Reject"
+    "reject": "Reject",
+    "resolve": "Resolve",
+    "resolveConfirmMessage": "Mark this report as resolved? It will be removed from the map.",
+    "resolveConfirmButton": "Confirm",
+    "resolveCancelButton": "Cancel",
+    "severityLabel": "Severity",
+    "statusLabel": "Status"
   },
   "LoginPage": {
     "title": "Haux Alerte",

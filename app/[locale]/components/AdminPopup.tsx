@@ -16,13 +16,14 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
   const tEnums = useTranslations('Enums');
   const tReject = useTranslations('RejectionDialog'); // Reuse existing translations
   
-  // Local state to manage the view mode (Details vs Rejection Form)
+  // Local state to manage the view mode (Details vs Rejection Form vs Resolve Confirm)
   const [isRejecting, setIsRejecting] = useState(false);
+  const [resolveConfirm, setResolveConfirm] = useState(false);
   const [reason, setReason] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleModeration = async (
-    newStatus: 'APPROVED' | 'REJECTED',
+    newStatus: 'APPROVED' | 'REJECTED' | 'RESOLVED',
     rejectionReason?: string
   ) => {
     setIsSubmitting(true);
@@ -55,7 +56,73 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
     }
   };
 
-  // --- VIEW 1: REJECTION FORM ---
+  // --- VIEW 1: RESOLVE VIEW (for APPROVED reports) ---
+  if (report.status === 'APPROVED') {
+    return (
+      <div className="space-y-2 min-w-[200px]">
+        <h3 className="font-bold text-base">{tEnums(report.issueType)}</h3>
+
+        <div className="text-sm space-y-1">
+          <p><span className="font-semibold">{t('severityLabel')}:</span> {tEnums(report.severity)}</p>
+          <p><span className="font-semibold">{t('statusLabel')}:</span> {report.status}</p>
+          {report.description && (
+            <p className="border-l-2 pl-2 italic text-muted-foreground">{report.description}</p>
+          )}
+        </div>
+
+        {report.photoUrl && (
+          <div className="mt-2">
+            <img
+              src={report.photoUrl}
+              alt="Report photo"
+              className="rounded-md object-cover w-full max-h-[150px]"
+            />
+          </div>
+        )}
+
+        <div className="mt-4 pt-2 border-t">
+          {!resolveConfirm ? (
+            <div className="flex justify-end">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setResolveConfirm(true)}
+                disabled={isSubmitting}
+                className="h-8 text-xs text-green-700 hover:text-green-800 hover:bg-green-50"
+              >
+                {t('resolve')}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <p className="text-xs text-muted-foreground">{t('resolveConfirmMessage')}</p>
+              <div className="flex justify-between gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setResolveConfirm(false)}
+                  disabled={isSubmitting}
+                  className="h-8"
+                >
+                  {t('resolveCancelButton')}
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => handleModeration('RESOLVED')}
+                  disabled={isSubmitting}
+                  className="h-8 text-xs"
+                >
+                  {isSubmitting ? "..." : t('resolveConfirmButton')}
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // --- VIEW 2: REJECTION FORM ---
   if (isRejecting) {
     return (
       <div className="min-w-[200px] space-y-3">
@@ -107,8 +174,8 @@ const AdminPopup = ({ report, onActionComplete }: AdminPopupProps) => {
       <h3 className="font-bold text-base">{tEnums(report.issueType)}</h3>
       
       <div className="text-sm space-y-1">
-        <p><span className="font-semibold">Severity:</span> {tEnums(report.severity)}</p>
-        <p><span className="font-semibold">Status:</span> {report.status}</p>
+        <p><span className="font-semibold">{t('severityLabel')}:</span> {tEnums(report.severity)}</p>
+        <p><span className="font-semibold">{t('statusLabel')}:</span> {report.status}</p>
         {report.description && (
           <p className="border-l-2 pl-2 italic text-muted-foreground">{report.description}</p>
         )}

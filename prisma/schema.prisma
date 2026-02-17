@@ -81,6 +81,7 @@ model Report {
   description String?
   photoUrl String?
   rejectionReason String?
+  resolvedAt DateTime?
 
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String

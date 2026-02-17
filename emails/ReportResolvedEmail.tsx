@@ -11,22 +11,20 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-interface ReportRejectedEmailProps {
+interface ReportResolvedEmailProps {
   reportId: string;
-  rejectionReason: string;
   unsubscribeUrl: string;
 }
 
 const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
-export const ReportRejectedEmail = ({
+export const ReportResolvedEmail = ({
   reportId,
-  rejectionReason,
   unsubscribeUrl,
-}: ReportRejectedEmailProps) => (
+}: ReportResolvedEmailProps) => (
   <Html>
     <Head />
-    <Preview>Votre signalement a été rejeté</Preview>
+    <Preview>Votre signalement a été résolu !</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
@@ -35,17 +33,13 @@ export const ReportRejectedEmail = ({
           height="48"
           alt="Haux Alerte Logo"
         />
-        <Heading style={h1}>Signalement Rejeté</Heading>
+        <Heading style={h1}>Signalement Résolu</Heading>
         <Text style={text}>
-          Malheureusement, votre signalement n°{reportId} a été rejeté par un
-          administrateur.
+          Bonne nouvelle ! Votre signalement n°{reportId} a été marqué comme
+          résolu par un administrateur. Le problème a été pris en compte.
         </Text>
         <Text style={text}>
-          <strong>Motif du rejet :</strong> {rejectionReason}
-        </Text>
-        <Text style={text}>
-          Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, n&apos;hésitez pas à nous
-          contacter.
+          Merci de votre contribution à l&apos;amélioration de notre commune.
         </Text>
         <Text style={footer}>
           Vous ne souhaitez plus recevoir ces notifications ?{" "}
@@ -58,7 +52,7 @@ export const ReportRejectedEmail = ({
   </Html>
 );
 
-export default ReportRejectedEmail;
+export default ReportResolvedEmail;
 
 const main = {
   backgroundColor: "#f6f9fc",
