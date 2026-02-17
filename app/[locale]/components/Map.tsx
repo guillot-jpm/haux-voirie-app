@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, GeoJSON, useMapEvents, Popup, Marker } from 'r
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { Report } from '@prisma/client';
 import L, { LatLngExpression } from 'leaflet';
@@ -168,9 +168,15 @@ const Map = () => {
     }
   };
 
+  const handleResolveComplete = useCallback((reportId: string) => {
+    setReports(current => current.filter(r => r.id !== reportId));
+  }, []);
+
   const center: LatLngExpression = [44.75, -0.38];
 
   const markers = useMemo(() => {
+    const isAdmin = session?.user?.role === 'ADMIN';
+
     return reports.map((report) => (
       <Marker
         key={report.id}
@@ -178,14 +184,23 @@ const Map = () => {
         icon={getIconBySeverity(report.severity)}
       >
         <Popup>
-          <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
-          <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)} <br />
-          {report.description && <><b>Description:</b> {report.description} <br /></>}
-          {report.photoUrl && <><br /><img src={report.photoUrl} alt="Report photo" style={{ maxWidth: '200px', maxHeight: '200px' }} /></>}
+          {isAdmin ? (
+            <AdminPopup
+              report={report}
+              onActionComplete={handleResolveComplete}
+            />
+          ) : (
+            <>
+              <b>{tReportDialog('issueTypeLabel')}:</b> {tEnums(report.issueType)} <br />
+              <b>{tReportDialog('severityLabel')}:</b> {tEnums(report.severity)} <br />
+              {report.description && <><b>Description:</b> {report.description} <br /></>}
+              {report.photoUrl && <><br /><img src={report.photoUrl} alt="Report photo" style={{ maxWidth: '200px', maxHeight: '200px' }} /></>}
+            </>
+          )}
         </Popup>
       </Marker>
     ));
-  }, [reports, tReportDialog, tEnums]);
+  }, [reports, session, handleResolveComplete, tReportDialog, tEnums]);
 
   const pendingMarkers = useMemo(() => {
     const isAdmin = session?.user?.role === 'ADMIN';

@@ -1,7 +1,10 @@
 {
   "AdminPopup": {
     "approve": "Approve",
-    "reject": "Reject"
+    "reject": "Reject",
+    "resolve": "Resolve",
+    "severityLabel": "Severity",
+    "statusLabel": "Status"
   },
   "LoginPage": {
     "title": "Haux Alerte",
