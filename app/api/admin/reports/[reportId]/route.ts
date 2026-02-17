@@ -93,7 +93,7 @@ export async function PATCH(
         request.headers.get("origin") ||
         process.env.NEXTAUTH_URL ||
         "http://localhost:3000";
-      const unsubscribeUrl = `${origin}/unsubscribe?userId=${author.id}&locale=fr`;
+      const unsubscribeUrl = `${origin}/api/unsubscribe?userId=${author.id}&locale=fr`;
 
       const rejectionReasonTranslations: { [key: string]: string } = {
         DUPLICATE: "Doublon",
