@@ -17,7 +17,7 @@ interface ReportRejectedEmailProps {
   unsubscribeUrl: string;
 }
 
-const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 export const ReportRejectedEmail = ({
   reportId,
@@ -30,7 +30,7 @@ export const ReportRejectedEmail = ({
     <Body style={main}>
       <Container style={container}>
         <Img
-          src={`${baseUrl}/_next/image?url=%2Flogo.png&w=48&q=75`}
+          src={`${baseUrl}/logo.png`}
           width="48"
           height="48"
           alt="Haux Alerte Logo"
